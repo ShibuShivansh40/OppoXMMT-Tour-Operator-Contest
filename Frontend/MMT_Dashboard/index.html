@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MMT UGC Admin Dashboard | OPPO x MakeMyTrip Campaign</title>
+  <meta name="description"
+    content="Moderation backoffice for MakeMyTrip admin teams to approve or reject traveler UGC photos and videos.">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mmtBlue: '#0052e4',
+            mmtLightBlue: '#eef4ff',
+            mmtIndigo: '#0a2240',
+            mmtOrange: '#ff5a00',
+            oppoGreen: '#005a36',
+            oppoEmerald: '#00b064',
+            oppoMint: '#00e5ff'
+          },
+          fontFamily: {
+            sans: ['Lato', 'Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Lato', sans-serif;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: rgba(156, 163, 175, 0.3);
+      border-radius: 20px;
+    }
+  </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
+
+  <!-- Main Top Bar -->
+  <header class="bg-mmtIndigo text-white py-4 px-6 flex items-center justify-between shadow-md">
+    <div class="flex items-center gap-3">
+      <div class="bg-white text-mmtBlue font-extrabold px-3 py-1 rounded-lg text-sm flex items-center gap-1">
+        <span class="text-mmtOrange">make</span>my<span class="text-mmtOrange">trip</span>
+      </div>
+      <span class="text-slate-400">|</span>
+      <span class="text-xs uppercase tracking-wider text-oppoEmerald font-bold bg-white/10 px-2 py-0.5 rounded">Admin
+        Dashboard</span>
+    </div>
+
+    <div class="flex items-center gap-4 text-xs">
+      <!-- Configurable API Endpoint -->
+      <div class="bg-white/10 px-3 py-1.5 rounded-lg border border-white/10 flex gap-2 items-center">
+        <span class="text-slate-300 font-medium">Server API:</span>
+        <input type="text" id="apiEndpoint" value="http://localhost:5000"
+          class="bg-black/35 text-white border-none rounded px-2 py-0.5 w-36 focus:outline-none focus:ring-1 focus:ring-oppoEmerald text-xxs">
+        <button id="refreshBtn" class="hover:text-oppoEmerald transition-colors" title="Reload Stats">🔄</button>
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full bg-mmtBlue flex items-center justify-center font-bold border border-white/20">A
+        </div>
+        <span class="font-medium hidden md:inline">MMT Moderator</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Container -->
+  <div class="flex flex-1 flex-col md:flex-row min-h-screen">
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-full md:w-64 bg-slate-900 text-slate-300 p-6 flex flex-col gap-6">
+      <div class="text-xxs uppercase tracking-widest text-slate-500 font-semibold">Workspace</div>
+      <nav class="flex flex-col gap-2">
+        <button id="navOverview"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl bg-mmtBlue text-white font-medium text-sm transition-all text-left">
+          <span>📊</span> Overview & KPIs
+        </button>
+        <button id="navModeration"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 hover:text-white text-sm transition-all text-left">
+          <span>🛡️</span> Moderation Queue
+          <span id="pendingBadge"
+            class="ml-auto bg-mmtOrange text-white text-xxs font-bold px-2 py-0.5 rounded-full hidden">0</span>
+        </button>
+      </nav>
+
+      <div class="mt-auto pt-6 border-t border-slate-800 text-xxs text-slate-500 flex flex-col gap-2">
+        <p>OPPO x MMT UGC Platform</p>
+        <p>Build v1.0.0 (AWS Lambda)</p>
+      </div>
+    </aside>
+
+    <!-- Main Content Panel -->
+    <main class="flex-1 p-6 md:p-10 flex flex-col gap-8">
+
+      <!-- NOTIFICATION SYSTEM -->
+      <div id="toast" class="hidden text-xs rounded-xl p-3 shadow-md flex items-center gap-2 transition-all"></div>
+
+      <!-- PAGE 1: OVERVIEW & KPIS -->
+      <section id="sectionOverview" class="flex flex-col gap-6">
+        <div>
+          <h2 class="text-2xl font-extrabold tracking-tight text-slate-900">Campaign Overview</h2>
+          <p class="text-sm text-slate-500 mt-1">Real-time counts, key metrics, and activity analysis for OPPO UGC
+            entries.</p>
+        </div>
+
+        <!-- KPI Tracker Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+          <!-- Card 1 -->
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex items-center justify-between">
+            <div>
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Submissions</p>
+              <h3 id="kpiTotal" class="text-3xl font-extrabold text-slate-800 mt-1">0</h3>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-blue-50 text-mmtBlue flex items-center justify-center text-xl">📁</div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex items-center justify-between">
+            <div>
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Approved Media</p>
+              <h3 id="kpiApproved" class="text-3xl font-extrabold text-emerald-600 mt-1">0</h3>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl">✅
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex items-center justify-between">
+            <div>
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Pending Moderation</p>
+              <h3 id="kpiPending" class="text-3xl font-extrabold text-mmtOrange mt-1">0</h3>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-orange-50 text-mmtOrange flex items-center justify-center text-xl">⏳
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex items-center justify-between">
+            <div>
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Unique Locations</p>
+              <h3 id="kpiLocations" class="text-3xl font-extrabold text-indigo-600 mt-1">0</h3>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl">📍
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Quick Info Panel -->
+        <div
+          class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col md:flex-row items-center gap-6 justify-between">
+          <div class="flex gap-4 items-center">
+            <div class="text-4xl">💡</div>
+            <div>
+              <h4 class="font-bold text-slate-800">Pending entries are waiting for your approval!</h4>
+              <p class="text-xs text-slate-500 mt-0.5">Approved submissions will instantly sync with the OPPO Client
+                dashboard for winner selection.</p>
+            </div>
+          </div>
+          <button id="goToQueueBtn"
+            class="bg-mmtBlue hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-xl text-xs shadow-md transition-all whitespace-nowrap">Open
+            Moderation Queue</button>
+        </div>
+      </section>
+
+      <!-- PAGE 2: MODERATION QUEUE (Initially hidden) -->
+      <section id="sectionModeration" class="hidden flex flex-col gap-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-extrabold tracking-tight text-slate-900">Moderation Queue</h2>
+            <p class="text-sm text-slate-500 mt-1">Inspect uploaded travel assets, verify files, and approve them for
+              client viewing.</p>
+          </div>
+
+          <!-- Filters -->
+          <div class="flex items-center gap-2 text-xs bg-white p-1.5 border border-slate-200 rounded-xl flex-wrap">
+            <button id="filterAll" class="hover:bg-slate-100 text-slate-600 font-semibold py-1.5 px-3 rounded-lg">All
+              Entries</button>
+            <button id="filterPending"
+              class="bg-mmtBlue text-white font-semibold py-1.5 px-3 rounded-lg">Pending</button>
+            <button id="filterApproved"
+              class="hover:bg-slate-100 text-slate-600 font-semibold py-1.5 px-3 rounded-lg">Approved</button>
+            <button id="filterRejected"
+              class="hover:bg-slate-100 text-slate-600 font-semibold py-1.5 px-3 rounded-lg">Rejected</button>
+          </div>
+        </div>
+
+        <!-- Submission List Grid / Table -->
+        <div class="bg-white border border-slate-150 rounded-2xl overflow-hidden shadow-sm flex flex-col">
+
+          <!-- Loading State -->
+          <div id="queueLoading" class="py-20 text-center flex flex-col items-center gap-3">
+            <span class="text-3xl animate-spin">⏳</span>
+            <p class="text-xs font-semibold text-slate-500">Fetching contest entries from Database...</p>
+          </div>
+
+          <!-- Empty State -->
+          <div id="queueEmpty" class="hidden py-20 text-center flex flex-col items-center gap-3">
+            <span class="text-4xl">🎉</span>
+            <p class="text-sm font-bold text-slate-800">Clear queue! No records found</p>
+            <p class="text-xs text-slate-400">All submissions in this category are fully moderated.</p>
+          </div>
+
+          <!-- Submissions Queue list -->
+          <div class="overflow-x-auto w-full">
+            <table id="queueTable" class="w-full text-left text-sm border-collapse hidden">
+              <thead>
+                <tr
+                  class="bg-slate-50 text-slate-400 text-xxs font-bold uppercase tracking-wider border-b border-slate-100">
+                  <th class="p-4 pl-6">ID</th>
+                  <th class="p-4">Submitter Profile</th>
+                  <th class="p-4">File Details</th>
+                  <th class="p-4">Destination Info</th>
+                  <th class="p-4">File Size / Date</th>
+                  <th class="p-4 text-right pr-6">Action Moderation</th>
+                </tr>
+              </thead>
+              <tbody id="queueBody" class="divide-y divide-slate-100 text-slate-700 font-medium">
+                <!-- Dynamically rendered rows -->
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </section>
+
+
+
+    </main>
+  </div>
+
+  <!-- Image Lightbox Modal Overlay -->
+  <div id="imageModal" class="hidden fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-6"
+    onclick="closeImageModal()">
+    <button class="absolute top-4 right-4 text-white text-3xl font-bold" onclick="closeImageModal()">×</button>
+    <img id="modalImg" src="" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl border border-white/10">
+  </div>
+
+  <!-- Script Logic -->
+  <script>
+    // State management
+    let state = {
+      apiBaseUrl: 'http://localhost:5000',
+      activeTab: 'overview', // 'overview' or 'moderation'
+      currentFilter: 'pending', // 'pending', 'approved', 'rejected'
+      submissions: [],
+      stats: { total: 0, approved: 0, pending: 0, uniqueLocations: 0 }
+    };
+
+    // DOM Elements
+    const elements = {
+      apiEndpoint: document.getElementById('apiEndpoint'),
+      refreshBtn: document.getElementById('refreshBtn'),
+      toast: document.getElementById('toast'),
+      navOverview: document.getElementById('navOverview'),
+      navModeration: document.getElementById('navModeration'),
+      pendingBadge: document.getElementById('pendingBadge'),
+      sectionOverview: document.getElementById('sectionOverview'),
+      sectionModeration: document.getElementById('sectionModeration'),
+      goToQueueBtn: document.getElementById('goToQueueBtn'),
+      filterAll: document.getElementById('filterAll'),
+      filterPending: document.getElementById('filterPending'),
+      filterApproved: document.getElementById('filterApproved'),
+      filterRejected: document.getElementById('filterRejected'),
+      queueLoading: document.getElementById('queueLoading'),
+      queueEmpty: document.getElementById('queueEmpty'),
+      queueTable: document.getElementById('queueTable'),
+      queueBody: document.getElementById('queueBody'),
+      kpiTotal: document.getElementById('kpiTotal'),
+      kpiApproved: document.getElementById('kpiApproved'),
+      kpiPending: document.getElementById('kpiPending'),
+      kpiLocations: document.getElementById('kpiLocations'),
+      imageModal: document.getElementById('imageModal'),
+      modalImg: document.getElementById('modalImg')
+    };
+
+    // Initialize Server API configuration
+    if (window.location.origin && window.location.origin !== 'null') {
+      state.apiBaseUrl = window.location.origin;
+      elements.apiEndpoint.value = window.location.origin;
+    } else {
+      state.apiBaseUrl = elements.apiEndpoint.value.trim();
+    }
+
+    elements.apiEndpoint.addEventListener('input', (e) => {
+      state.apiBaseUrl = e.target.value.trim();
+      loadAllData();
+    });
+
+    elements.refreshBtn.addEventListener('click', () => {
+      loadAllData();
+    });
+
+    // Helper functions
+    function showToast(text, type = 'success') {
+      elements.toast.classList.remove('hidden', 'bg-red-500/20', 'text-red-600', 'bg-emerald-500/20', 'text-emerald-600', 'border-red-500/20', 'border-emerald-500/20');
+
+      if (type === 'error') {
+        elements.toast.classList.add('bg-red-500/20', 'text-red-600', 'border', 'border-red-500/20');
+      } else {
+        elements.toast.classList.add('bg-emerald-500/20', 'text-emerald-600', 'border', 'border-emerald-500/20');
+      }
+      elements.toast.innerText = text;
+      elements.toast.classList.remove('hidden');
+
+      setTimeout(() => {
+        elements.toast.classList.add('hidden');
+      }, 4000);
+    }
+
+    // Switch Tabs
+    function setTab(tabName) {
+      state.activeTab = tabName;
+
+      // Update sidebar styling
+      const tabs = [
+        { el: elements.navOverview, name: 'overview' },
+        { el: elements.navModeration, name: 'moderation' }
+      ];
+      tabs.forEach(item => {
+        if (item.name === tabName) {
+          item.el.classList.add('bg-mmtBlue', 'text-white');
+          item.el.classList.remove('hover:bg-slate-800', 'hover:text-white');
+        } else {
+          item.el.classList.remove('bg-mmtBlue', 'text-white');
+          item.el.classList.add('hover:bg-slate-800', 'hover:text-white');
+        }
+      });
+
+      // Toggle page visibilities
+      elements.sectionOverview.classList.toggle('hidden', tabName !== 'overview');
+      elements.sectionModeration.classList.toggle('hidden', tabName !== 'moderation');
+
+      // Load specific tab data
+      if (tabName === 'moderation') {
+        fetchSubmissions();
+      }
+    }
+
+    elements.navOverview.addEventListener('click', () => setTab('overview'));
+    elements.navModeration.addEventListener('click', () => setTab('moderation'));
+    elements.goToQueueBtn.addEventListener('click', () => setTab('moderation'));
+
+    // Filter lists
+    function setFilter(filterType) {
+      state.currentFilter = filterType;
+      const filters = [
+        { el: elements.filterAll, key: 'all' },
+        { el: elements.filterPending, key: 'pending' },
+        { el: elements.filterApproved, key: 'approved' },
+        { el: elements.filterRejected, key: 'rejected' }
+      ];
+
+      filters.forEach(item => {
+        if (item.key === filterType) {
+          item.el.classList.add('bg-mmtBlue', 'text-white');
+          item.el.classList.remove('hover:bg-slate-100', 'text-slate-600');
+        } else {
+          item.el.classList.remove('bg-mmtBlue', 'text-white');
+          item.el.classList.add('hover:bg-slate-100', 'text-slate-600');
+        }
+      });
+
+      fetchSubmissions();
+    }
+
+    elements.filterAll.addEventListener('click', () => setFilter('all'));
+    elements.filterPending.addEventListener('click', () => setFilter('pending'));
+    elements.filterApproved.addEventListener('click', () => setFilter('approved'));
+    elements.filterRejected.addEventListener('click', () => setFilter('rejected'));
+
+    // API fetches
+    async function loadAllData() {
+      await fetchStats();
+      if (state.activeTab === 'moderation') {
+        await fetchSubmissions();
+      }
+    }
+
+    async function fetchStats() {
+      try {
+        const res = await fetch(`${state.apiBaseUrl}/api/submissions/stats`);
+        const result = await res.json();
+        if (res.ok && result.success) {
+          state.stats = result.data;
+          elements.kpiTotal.innerText = state.stats.total;
+          elements.kpiApproved.innerText = state.stats.approved;
+          elements.kpiPending.innerText = state.stats.pending;
+          elements.kpiLocations.innerText = state.stats.uniqueLocations;
+
+          if (state.stats.pending > 0) {
+            elements.pendingBadge.innerText = state.stats.pending;
+            elements.pendingBadge.classList.remove('hidden');
+          } else {
+            elements.pendingBadge.classList.add('hidden');
+          }
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('Failed to fetch dashboard stats.', 'error');
+      }
+    }
+
+
+
+    async function fetchSubmissions() {
+      elements.queueLoading.classList.remove('hidden');
+      elements.queueEmpty.classList.add('hidden');
+      elements.queueTable.classList.add('hidden');
+
+      try {
+        // If filter is 'all', fetch without status filter to get every submission
+        const url = state.currentFilter === 'all'
+          ? `${state.apiBaseUrl}/api/submissions`
+          : `${state.apiBaseUrl}/api/submissions?status=${state.currentFilter}`;
+
+        const res = await fetch(url);
+        const result = await res.json();
+        if (res.ok && result.success) {
+          state.submissions = result.data;
+          renderQueue();
+        } else {
+          showToast('Failed to load queue.', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('Connection to Backend API failed.', 'error');
+      } finally {
+        elements.queueLoading.classList.add('hidden');
+      }
+    }
+    function renderQueue() {
+      elements.queueBody.innerHTML = '';
+      if (state.submissions.length === 0) {
+        elements.queueEmpty.classList.remove('hidden');
+        elements.queueTable.classList.add('hidden');
+        return;
+      }
+
+      elements.queueTable.classList.remove('hidden');
+      elements.queueEmpty.classList.add('hidden');
+
+      state.submissions.forEach(sub => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50 transition-colors border-b border-slate-100 text-xs';
+
+        // --- Cell 1: ID ---
+        const tdId = document.createElement('td');
+        tdId.className = 'p-4 pl-6 font-mono text-slate-400 text-xs';
+        tdId.textContent = '#' + sub.id;
+        tr.appendChild(tdId);
+
+        // --- Cell 2: Submitter profile ---
+        const tdProfile = document.createElement('td');
+        tdProfile.className = 'p-4';
+        const roleBadgeEl = document.createElement('span');
+        roleBadgeEl.className = sub.user_role === 'traveler'
+          ? 'bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs font-bold'
+          : 'bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded text-xs font-bold';
+        roleBadgeEl.textContent = sub.user_role === 'traveler' ? 'Traveler' : 'Operator';
+        const identifierP = document.createElement('p');
+        identifierP.className = 'font-bold text-slate-800 text-xs';
+        identifierP.textContent = sub.user_identifier;
+        const roleP = document.createElement('p');
+        roleP.className = 'mt-0.5';
+        roleP.appendChild(roleBadgeEl);
+        tdProfile.appendChild(identifierP);
+        tdProfile.appendChild(roleP);
+        tr.appendChild(tdProfile);
+
+        // --- Cell 3: Preview (fully DOM-built, no innerHTML URL injection) ---
+        const tdPreview = document.createElement('td');
+        tdPreview.className = 'p-4';
+
+        const previewWrapper = document.createElement('div');
+        previewWrapper.className = 'flex items-center gap-2 cursor-pointer';
+        previewWrapper.style.cursor = 'pointer';
+
+        const isVideo = sub.file_name && /\.(mp4|mov|avi|mkv|webm)$/i.test(sub.file_name);
+
+        if (isVideo) {
+          const videoThumb = document.createElement('div');
+          videoThumb.className = 'w-12 h-12 rounded bg-slate-100 border border-slate-200 flex items-center justify-center text-xl flex-shrink-0';
+          videoThumb.textContent = '🎥';
+          previewWrapper.appendChild(videoThumb);
+          previewWrapper.addEventListener('click', () => window.open(sub.media_url, '_blank'));
+        } else {
+          const thumb = document.createElement('img');
+          thumb.src = sub.media_url;
+          thumb.className = 'w-12 h-12 rounded object-cover border border-slate-200 flex-shrink-0';
+          thumb.style.minWidth = '48px';
+          thumb.alt = sub.file_name || 'UGC Asset';
+          thumb.onerror = () => { thumb.src = 'https://placehold.co/100x100?text=Media'; };
+          previewWrapper.appendChild(thumb);
+          previewWrapper.addEventListener('click', () => openImageModal(sub.media_url));
+        }
+
+        const labelDiv = document.createElement('div');
+        labelDiv.style.maxWidth = '150px';
+        const fileNameP = document.createElement('p');
+        fileNameP.className = 'text-slate-800 font-bold text-xs truncate';
+        fileNameP.title = sub.file_name || '';
+        fileNameP.textContent = sub.file_name || 'Unknown file';
+        const hintP = document.createElement('p');
+        hintP.className = 'text-slate-400';
+        hintP.style.fontSize = '10px';
+        hintP.textContent = isVideo ? 'Click to open video' : 'Click to preview';
+        labelDiv.appendChild(fileNameP);
+        labelDiv.appendChild(hintP);
+        previewWrapper.appendChild(labelDiv);
+        tdPreview.appendChild(previewWrapper);
+        tr.appendChild(tdPreview);
+
+        // --- Cell 4: Destination Info ---
+        const tdDest = document.createElement('td');
+        tdDest.className = 'p-4';
+        const locationP = document.createElement('p');
+        locationP.className = 'font-bold text-slate-800 text-xs';
+        locationP.textContent = '📍 ' + (sub.location || '—');
+        tdDest.appendChild(locationP);
+        if (sub.tour_manager) {
+          const managerP = document.createElement('p');
+          managerP.className = 'text-slate-400 mt-0.5';
+          managerP.style.fontSize = '10px';
+          managerP.textContent = '🧭 ' + sub.tour_manager;
+          tdDest.appendChild(managerP);
+        }
+        tr.appendChild(tdDest);
+
+        // --- Cell 5: File Size / Date ---
+        const tdSize = document.createElement('td');
+        tdSize.className = 'p-4';
+        const sizeMB = (sub.file_size / (1024 * 1024)).toFixed(2) + ' MB';
+        const dateFormatted = sub.travel_date
+          ? new Date(sub.travel_date + 'T00:00:00').toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
+          : '—';
+        const sizeP = document.createElement('p');
+        sizeP.className = 'text-slate-700 font-bold text-xs';
+        sizeP.textContent = sizeMB;
+        const dateP = document.createElement('p');
+        dateP.className = 'text-slate-400 mt-0.5';
+        dateP.style.fontSize = '10px';
+        dateP.textContent = dateFormatted;
+        tdSize.appendChild(sizeP);
+        tdSize.appendChild(dateP);
+        tr.appendChild(tdSize);
+
+        // --- Cell 6: Action Buttons ---
+        const tdAction = document.createElement('td');
+        tdAction.className = 'p-4 pr-6 text-right';
+
+        if (sub.status === 'pending') {
+          const btnWrap = document.createElement('div');
+          btnWrap.className = 'flex justify-end gap-2';
+
+          const approveBtn = document.createElement('button');
+          approveBtn.className = 'bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-1.5 px-3 rounded-lg text-xs active:scale-95 transition-all';
+          approveBtn.textContent = 'Approve';
+          approveBtn.addEventListener('click', () => moderate(sub.id, 'approved'));
+
+          const rejectBtn = document.createElement('button');
+          rejectBtn.className = 'bg-red-500 hover:bg-red-600 text-white font-bold py-1.5 px-3 rounded-lg text-xs active:scale-95 transition-all';
+          rejectBtn.textContent = 'Reject';
+          rejectBtn.addEventListener('click', () => moderate(sub.id, 'rejected'));
+
+          btnWrap.appendChild(approveBtn);
+          btnWrap.appendChild(rejectBtn);
+          tdAction.appendChild(btnWrap);
+        } else {
+          const actionWrap = document.createElement('div');
+          actionWrap.className = 'flex justify-end gap-2 items-center';
+
+          const badge = document.createElement('span');
+          badge.className = sub.status === 'approved'
+            ? 'capitalize text-xs font-bold px-2 py-1 rounded-full bg-emerald-100 text-emerald-700'
+            : 'capitalize text-xs font-bold px-2 py-1 rounded-full bg-red-100 text-red-700';
+          badge.textContent = sub.status;
+
+          const changeBtn = document.createElement('button');
+          changeBtn.className = 'text-slate-400 hover:text-slate-600 underline font-semibold text-xs';
+          changeBtn.textContent = 'Change';
+          const newStatus = sub.status === 'approved' ? 'rejected' : 'approved';
+          changeBtn.addEventListener('click', () => moderate(sub.id, newStatus));
+
+          actionWrap.appendChild(badge);
+          actionWrap.appendChild(changeBtn);
+          tdAction.appendChild(actionWrap);
+        }
+
+        tr.appendChild(tdAction);
+        elements.queueBody.appendChild(tr);
+      });
+    }
+
+    // Moderate Submission status
+    async function moderate(id, targetStatus) {
+      try {
+        const res = await fetch(`${state.apiBaseUrl}/api/submissions/${id}/moderate`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ status: targetStatus })
+        });
+        const result = await res.json();
+        if (res.ok && result.success) {
+          showToast(`Submission #${id} was marked as ${targetStatus}!`, 'success');
+          await loadAllData();
+        } else {
+          showToast('Failed to moderate submission.', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('Connection to backend API failed.', 'error');
+      }
+    }
+
+
+
+    // Modal helpers
+    function openImageModal(url) {
+      elements.modalImg.src = url;
+      elements.imageModal.classList.remove('hidden');
+    }
+
+    function closeImageModal() {
+      elements.imageModal.classList.add('hidden');
+      elements.modalImg.src = '';
+    }
+
+    // Export helpers globally to resolve inline onclick reference errors
+    window.openImageModal = openImageModal;
+    window.closeImageModal = closeImageModal;
+    window.moderate = moderate;
+
+    // Initial load
+    loadAllData();
+  </script>
+</body>
+
+</html>

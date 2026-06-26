@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OPPO UGC Client Dashboard | OPPO x MakeMyTrip Campaign</title>
+  <meta name="description"
+    content="Official client dashboard for the OPPO marketing team to browse approved submissions, select contest winners, and export campaign data.">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            oppoGreen: '#005a36',
+            oppoEmerald: '#00b064',
+            oppoDark: '#0b1610',
+            mmtBlue: '#0052e4',
+            mmtOrange: '#ff5a00'
+          },
+          fontFamily: {
+            sans: ['Lato', 'Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- SheetJS Library for multi-sheet Excel report generation -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Lato', sans-serif;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: rgba(156, 163, 175, 0.3);
+      border-radius: 20px;
+    }
+  </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
+
+  <!-- Main Top Bar -->
+  <header class="bg-[#05140d] text-white py-4 px-6 flex items-center justify-between shadow-md sticky top-0 z-30">
+    <div class="flex items-center gap-3">
+      <div class="text-oppoEmerald font-bold tracking-widest text-lg font-mono uppercase">
+        OPPO
+      </div>
+      <span class="text-white/20">×</span>
+      <div
+        class="bg-white/10 text-white font-semibold px-2 py-0.5 rounded text-xs flex items-center gap-0.5 border border-white/5">
+        <span class="text-mmtBlue">make</span><span class="text-mmtOrange">my</span><span
+          class="text-slate-200">trip</span>
+      </div>
+      <span class="text-slate-600">|</span>
+      <span
+        class="text-[10px] uppercase tracking-wider text-oppoEmerald font-bold bg-oppoGreen/20 px-2.5 py-0.5 rounded border border-oppoEmerald/30">Client
+        Dashboard</span>
+    </div>
+
+    <div class="flex items-center gap-4 text-xs">
+      <!-- Configurable API Endpoint -->
+      <div class="bg-white/10 px-3 py-1.5 rounded-lg border border-white/10 flex gap-2 items-center">
+        <span class="text-slate-300 font-medium">Server API:</span>
+        <input type="text" id="apiEndpoint" value="http://localhost:5000"
+          class="bg-black/35 text-white border-none rounded px-2 py-0.5 w-36 focus:outline-none focus:ring-1 focus:ring-oppoEmerald text-xxs">
+        <button id="refreshBtn" class="hover:text-oppoEmerald transition-colors" title="Reload Gallery">🔄</button>
+      </div>
+      <div class="flex items-center gap-2">
+        <div
+          class="w-8 h-8 rounded-full bg-oppoGreen flex items-center justify-center font-bold border border-white/20">O
+        </div>
+        <span class="font-medium hidden md:inline">OPPO Admin</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Container -->
+  <div class="flex flex-1 flex-col md:flex-row min-h-screen">
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-full md:w-64 bg-[#0b1b14] text-slate-300 p-6 flex flex-col gap-6">
+      <div class="text-xxs uppercase tracking-widest text-slate-500 font-semibold">Workspace</div>
+      <nav class="flex flex-col gap-2">
+        <button id="tabShowcase"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl bg-oppoGreen text-white font-medium text-sm transition-all text-left w-full">
+          <span>🖼️</span> Showcase Gallery
+        </button>
+        <button id="tabWinners"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800/40 text-slate-300 hover:text-white text-sm transition-all text-left w-full">
+          <span>🏆</span> Selected Winners
+          <span id="winnersBadge"
+            class="ml-auto bg-oppoEmerald text-black font-bold text-[10px] px-2 py-0.5 rounded-full hidden">0</span>
+        </button>
+      </nav>
+
+      <div class="mt-auto pt-6 border-t border-slate-800 text-xxs text-slate-500 flex flex-col gap-2">
+        <p>OPPO x MMT UGC Platform</p>
+        <p>Client Review Module</p>
+      </div>
+    </aside>
+
+    <!-- Main Content Panel -->
+    <main class="flex-1 p-6 md:p-10 flex flex-col gap-8">
+
+      <!-- Toast Notification -->
+      <div id="toast"
+        class="hidden text-xs rounded-xl p-3 shadow-md flex items-center gap-2 border border-slate-100 transition-all">
+      </div>
+
+      <!-- Title & Action Bar -->
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+        <div>
+          <h2 class="text-2xl font-extrabold tracking-tight text-slate-900" id="galleryTitle">Showcase Gallery</h2>
+          <p class="text-sm text-slate-500 mt-1" id="galleryDesc">Review MMT-approved entries, mark contest winners, and
+            compile audit logs.</p>
+        </div>
+
+        <!-- Export Report Button -->
+        <button id="exportExcelBtn"
+          class="bg-oppoGreen hover:bg-opacity-95 text-white font-semibold py-2.5 px-5 rounded-xl shadow-md transition-all text-xs tracking-wide flex items-center gap-2 active:scale-95">
+          <span>📊</span> Generate Multi-Sheet Excel Report
+        </button>
+      </div>
+
+      <!-- Stats Summary Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Approved Submissions</p>
+            <h3 id="statApproved" class="text-3xl font-extrabold text-slate-800 mt-1">0</h3>
+          </div>
+          <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-oppoEmerald flex items-center justify-center text-xl">🖼️
+          </div>
+        </div>
+        <div
+          class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex items-center justify-between border-oppoGreen/20 bg-oppoGreen/5">
+          <div>
+            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Selected Winners</p>
+            <h3 id="statWinners" class="text-3xl font-extrabold text-oppoGreen mt-1">0</h3>
+          </div>
+          <div class="w-12 h-12 rounded-2xl bg-oppoGreen/15 text-oppoGreen flex items-center justify-center text-xl">🏆
+          </div>
+        </div>
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Active Locations</p>
+            <h3 id="statLocations" class="text-3xl font-extrabold text-slate-800 mt-1">0</h3>
+          </div>
+          <div class="w-12 h-12 rounded-2xl bg-blue-50 text-mmtBlue flex items-center justify-center text-xl">📍</div>
+        </div>
+      </div>
+
+      <!-- Quick Info Card -->
+      <div
+        class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col md:flex-row items-center gap-6 justify-between">
+        <div class="flex gap-4 items-center">
+          <div class="text-4xl">💡</div>
+          <div>
+            <h4 class="font-bold text-slate-800">Contest Audit Reports Ready!</h4>
+            <p class="text-xs text-slate-500 mt-0.5">Use the Generate Excel Report button to fetch all campaign data,
+              approved media URLs, and winner contact details in one file.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAIN GALLERY SECTION -->
+      <section id="gallerySection" class="flex flex-col gap-6">
+        <!-- Loading indicator -->
+        <div id="galleryLoading" class="py-20 text-center flex flex-col items-center gap-3">
+          <span class="text-3xl animate-spin text-oppoEmerald">⏳</span>
+          <p class="text-xs font-semibold text-slate-400">Loading approved traveler images...</p>
+        </div>
+
+        <!-- Empty state -->
+        <div id="galleryEmpty"
+          class="hidden py-20 text-center flex flex-col items-center gap-3 bg-white rounded-2xl border border-slate-150 shadow-sm">
+          <span class="text-4xl">📭</span>
+          <p class="text-sm font-bold text-slate-800">No approved entries found</p>
+          <p class="text-xs text-slate-500">Make sure MMT moderators have approved files in their dashboard queue.</p>
+        </div>
+
+        <!-- Gallery Grid -->
+        <div id="galleryGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 hidden">
+          <!-- Dynamically populated -->
+        </div>
+      </section>
+
+      <!-- SELECTED WINNERS SECTION (Initially hidden) -->
+      <section id="winnersSection" class="hidden flex flex-col gap-6">
+        <!-- Empty state -->
+        <div id="winnersEmpty"
+          class="hidden py-20 text-center flex flex-col items-center gap-3 bg-white rounded-2xl border border-slate-150 shadow-sm">
+          <span class="text-4xl">🏆</span>
+          <p class="text-sm font-bold text-slate-800">No winners selected yet</p>
+          <p class="text-xs text-slate-500">Go to the Showcase tab and click "Mark Winner" on your favorite submissions.
+          </p>
+        </div>
+
+        <!-- Winners Grid -->
+        <div id="winnersGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 hidden">
+          <!-- Dynamically populated -->
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Lightbox Modal -->
+  <div id="imageModal" class="hidden fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-6"
+    onclick="closeImageModal()">
+    <button class="absolute top-4 right-4 text-white text-3xl font-bold" onclick="closeImageModal()">×</button>
+    <img id="modalImg" src="" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl border border-white/10">
+  </div>
+
+  <!-- Script Logic -->
+  <script>
+    // State management
+    let state = {
+      apiBaseUrl: 'http://localhost:5000',
+      activeTab: 'showcase', // 'showcase' or 'winners'
+      approvedEntries: [],
+      winnersList: []
+    };
+
+    // DOM Elements
+    const elements = {
+      apiEndpoint: document.getElementById('apiEndpoint'),
+      refreshBtn: document.getElementById('refreshBtn'),
+      toast: document.getElementById('toast'),
+      exportExcelBtn: document.getElementById('exportExcelBtn'),
+      statApproved: document.getElementById('statApproved'),
+      statWinners: document.getElementById('statWinners'),
+      statLocations: document.getElementById('statLocations'),
+      tabShowcase: document.getElementById('tabShowcase'),
+      tabWinners: document.getElementById('tabWinners'),
+      winnersBadge: document.getElementById('winnersBadge'),
+      gallerySection: document.getElementById('gallerySection'),
+      galleryLoading: document.getElementById('galleryLoading'),
+      galleryEmpty: document.getElementById('galleryEmpty'),
+      galleryGrid: document.getElementById('galleryGrid'),
+      winnersSection: document.getElementById('winnersSection'),
+      winnersEmpty: document.getElementById('winnersEmpty'),
+      winnersGrid: document.getElementById('winnersGrid'),
+      imageModal: document.getElementById('imageModal'),
+      modalImg: document.getElementById('modalImg'),
+    };
+
+    // Load initial config dynamically
+    if (window.location.origin && window.location.origin !== 'null') {
+      state.apiBaseUrl = window.location.origin;
+      elements.apiEndpoint.value = window.location.origin;
+    } else {
+      state.apiBaseUrl = elements.apiEndpoint.value.trim();
+    }
+
+    elements.apiEndpoint.addEventListener('input', (e) => {
+      state.apiBaseUrl = e.target.value.trim();
+      loadAllData();
+    });
+
+    elements.refreshBtn.addEventListener('click', () => {
+      loadAllData();
+    });
+
+    // Toast helpers
+    function showToast(text, type = 'success') {
+      elements.toast.classList.remove('hidden', 'bg-red-50', 'text-red-700', 'border-red-100', 'bg-emerald-50', 'text-emerald-700', 'border-emerald-100');
+
+      if (type === 'error') {
+        elements.toast.classList.add('bg-red-50', 'text-red-700', 'border', 'border-red-100');
+      } else {
+        elements.toast.classList.add('bg-emerald-50', 'text-emerald-700', 'border', 'border-emerald-100');
+      }
+      elements.toast.innerText = text;
+      elements.toast.classList.remove('hidden');
+
+      setTimeout(() => {
+        elements.toast.classList.add('hidden');
+      }, 4000);
+    }
+
+    // Tabs toggle
+    function setTab(tabName) {
+      state.activeTab = tabName;
+      const galleryTitle = document.getElementById('galleryTitle');
+      const galleryDesc = document.getElementById('galleryDesc');
+
+      if (tabName === 'showcase') {
+        elements.tabShowcase.className = 'flex items-center gap-3 px-4 py-3 rounded-xl bg-oppoGreen text-white font-medium text-sm transition-all text-left w-full';
+        elements.tabWinners.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800/40 text-slate-300 hover:text-white text-sm transition-all text-left w-full';
+        elements.gallerySection.classList.remove('hidden');
+        elements.winnersSection.classList.add('hidden');
+        galleryTitle.innerText = "Showcase Gallery";
+        galleryDesc.innerText = "Review MMT-approved entries, mark contest winners, and compile audit logs.";
+      } else {
+        elements.tabWinners.className = 'flex items-center gap-3 px-4 py-3 rounded-xl bg-oppoGreen text-white font-medium text-sm transition-all text-left w-full';
+        elements.tabShowcase.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800/40 text-slate-300 hover:text-white text-sm transition-all text-left w-full';
+        elements.gallerySection.classList.add('hidden');
+        elements.winnersSection.classList.remove('hidden');
+        galleryTitle.innerText = "Contest Winners";
+        galleryDesc.innerText = "Browse list of selected contest winners and verify their campaign submissions.";
+        renderWinnersList();
+      }
+    }
+
+    elements.tabShowcase.addEventListener('click', () => setTab('showcase'));
+    elements.tabWinners.addEventListener('click', () => setTab('winners'));
+
+    // API fetches
+    async function loadAllData() {
+      elements.galleryLoading.classList.remove('hidden');
+      elements.galleryEmpty.classList.add('hidden');
+      elements.galleryGrid.classList.add('hidden');
+
+      try {
+        // Fetch approved entries
+        const res = await fetch(`${state.apiBaseUrl}/api/submissions?status=approved`);
+        const result = await res.json();
+
+        if (res.ok && result.success) {
+          state.approvedEntries = result.data;
+          state.winnersList = state.approvedEntries.filter(entry => entry.is_winner);
+
+          // Render stats
+          elements.statApproved.innerText = state.approvedEntries.length;
+          elements.statWinners.innerText = state.winnersList.length;
+          elements.statLocations.innerText = [...new Set(state.approvedEntries.map(e => e.location))].length;
+
+          // Render Winner Badge count
+          if (state.winnersList.length > 0) {
+            elements.winnersBadge.innerText = state.winnersList.length;
+            elements.winnersBadge.classList.remove('hidden');
+          } else {
+            elements.winnersBadge.classList.add('hidden');
+          }
+
+          renderGallery();
+          if (state.activeTab === 'winners') {
+            renderWinnersList();
+          }
+        } else {
+          showToast('Failed to load campaign data.', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('Connection to Backend API failed.', 'error');
+      } finally {
+        elements.galleryLoading.classList.add('hidden');
+      }
+    }
+
+    // Render approved entries showcase
+    function renderGallery() {
+      elements.galleryGrid.innerHTML = '';
+      if (state.approvedEntries.length === 0) {
+        elements.galleryEmpty.classList.remove('hidden');
+        return;
+      }
+
+      elements.galleryGrid.classList.remove('hidden');
+      state.approvedEntries.forEach(entry => {
+        const card = createEntryCard(entry);
+        elements.galleryGrid.appendChild(card);
+      });
+    }
+
+    // Render winners dashboard
+    function renderWinnersList() {
+      elements.winnersGrid.innerHTML = '';
+      elements.winnersEmpty.classList.add('hidden');
+      elements.winnersGrid.classList.add('hidden');
+
+      if (state.winnersList.length === 0) {
+        elements.winnersEmpty.classList.remove('hidden');
+        return;
+      }
+
+      elements.winnersGrid.classList.remove('hidden');
+      state.winnersList.forEach(entry => {
+        const card = createEntryCard(entry);
+        elements.winnersGrid.appendChild(card);
+      });
+    }
+
+    // Helper: create card element
+    function createEntryCard(entry) {
+      const div = document.createElement('div');
+      div.className = 'bg-white rounded-2xl overflow-hidden shadow-sm flex flex-col group relative border border-slate-100';
+
+      const winnerStatus = entry.is_winner;
+      const winnerBtnClass = winnerStatus
+        ? 'bg-oppoGreen text-white border-oppoGreen hover:bg-opacity-90'
+        : 'bg-slate-50 text-slate-700 border-slate-200 hover:border-oppoGreen hover:text-oppoGreen';
+
+      // Traveler / operator badge
+      const roleBadge = entry.user_role === 'traveler'
+        ? '<span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-[10px] font-bold">Traveler</span>'
+        : '<span class="bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded text-[10px] font-bold">Operator</span>';
+
+      // Advanced metadata tags for visual wow and context
+      const nameEl = entry.full_name
+        ? `<h3 class="text-sm font-bold text-slate-800 tracking-wide mt-1">${entry.full_name}</h3>`
+        : '<h3 class="text-sm font-bold text-slate-400 tracking-wide mt-1 italic">Anonymous Submitter</h3>';
+
+      const handleBadge = entry.insta_handle
+        ? `<span class="bg-purple-50 text-purple-700 border border-purple-100 px-2 py-0.5 rounded text-[10px] font-medium tracking-wide">📸 @${entry.insta_handle.replace(/^@/, '')}</span>`
+        : '';
+      const deviceBadge = entry.device
+        ? `<span class="bg-slate-50 text-slate-600 border border-slate-100 px-2 py-0.5 rounded text-[10px] font-medium">📱 ${entry.device}</span>`
+        : '';
+      const operatorBadge = entry.tour_manager
+        ? `<span class="bg-emerald-50 text-emerald-700 border border-emerald-100 px-2 py-0.5 rounded text-[10px] font-medium">👤 OP: ${entry.tour_manager}</span>`
+        : '';
+
+      const tagsRow = (handleBadge || deviceBadge || operatorBadge)
+        ? `<div class="flex flex-wrap gap-1.5 mt-2.5">${handleBadge}${deviceBadge}${operatorBadge}</div>`
+        : '';
+
+      // Detect if media is video by file extension
+      const isVideo = entry.file_name && /\.(mp4|mov|avi|mkv|webm)$/i.test(entry.file_name);
+
+      div.innerHTML = `
+        <!-- Image Container (click handler set via JS below, NOT inline onclick) -->
+        <div id="img-container-${entry.id}" class="relative aspect-video w-full overflow-hidden cursor-pointer">
+          ${isVideo
+          ? `<div class="w-full h-full bg-slate-900 flex items-center justify-center text-4xl">🎥</div>`
+          : `<img src="${entry.media_url}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://placehold.co/400x300?text=UGC+Campaign+Asset'" alt="${entry.file_name || 'UGC Asset'}">`
+        }
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-85"></div>
+          
+          <!-- Role and ID -->
+          <div class="absolute top-3 left-3 flex gap-2">
+            ${roleBadge}
+            <span class="bg-black/60 text-white font-mono text-[9px] px-1.5 py-0.5 rounded">#${entry.id}</span>
+          </div>
+
+          <!-- Selection Badge -->
+          ${winnerStatus ? '<div class="absolute top-3 right-3 text-xs bg-yellow-400 text-black font-extrabold px-2 py-0.5 rounded-full shadow-lg flex items-center gap-1">🏆 Winner</div>' : ''}
+
+          <!-- Details Bottom -->
+          <div class="absolute bottom-3 left-3 right-3">
+            <h4 class="text-xs font-bold text-white flex items-center gap-1">📍 ${entry.location || '—'}</h4>
+          </div>
+        </div>
+
+        <!-- Body & Winner Action Button -->
+        <div class="p-4 flex flex-col justify-between grow gap-4 text-xs">
+          <div class="flex flex-col">
+            <div class="flex justify-between items-center text-[10px] text-slate-400">
+              <span>Contact: ${entry.user_identifier}</span>
+              <span>${new Date(entry.travel_date + 'T00:00:00').toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}</span>
+            </div>
+            
+            ${nameEl}
+            <p class="text-slate-400 text-xxs truncate mt-1.5" title="${entry.file_name}">${entry.file_name || '—'}</p>
+            ${tagsRow}
+          </div>
+
+          <button onclick="toggleWinner(${entry.id}, ${winnerStatus})"
+            class="w-full border py-2 px-3 rounded-lg text-xxs font-bold transition-all active:scale-95 flex items-center justify-center gap-1.5 ${winnerBtnClass}">
+            <span>🏆</span> ${winnerStatus ? 'Revoke Winner Status' : 'Mark as Winner'}
+          </button>
+        </div>
+      `;
+
+      // Attach click handler via addEventListener (NOT inline onclick) to safely handle any URL
+      const imgContainer = div.querySelector(`#img-container-${entry.id}`);
+      if (imgContainer) {
+        imgContainer.addEventListener('click', () => {
+          if (isVideo) {
+            window.open(entry.media_url, '_blank');
+          } else {
+            openImageModal(entry.media_url);
+          }
+        });
+      }
+
+      return div;
+    }
+
+    // Toggle Contest Winner status
+    async function toggleWinner(id, currentStatus) {
+      try {
+        const res = await fetch(`${state.apiBaseUrl}/api/submissions/${id}/winner`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ isWinner: !currentStatus })
+        });
+        const result = await res.json();
+
+        if (res.ok && result.success) {
+          showToast(!currentStatus ? 'Winner selected successfully! 🏆' : 'Winner status revoked.', 'success');
+          await loadAllData();
+        } else {
+          showToast('Failed to select winner.', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('Connection to backend API failed.', 'error');
+      }
+    }
+
+    // Modal view
+    function openImageModal(url) {
+      elements.modalImg.src = url;
+      elements.imageModal.classList.remove('hidden');
+    }
+
+    // Close Modal
+    function closeImageModal() {
+      elements.imageModal.classList.add('hidden');
+      elements.modalImg.src = '';
+    }
+
+    // Explicitly bind to window to resolve inline HTML onclick reference errors
+    window.openImageModal = openImageModal;
+    window.closeImageModal = closeImageModal;
+    window.toggleWinner = toggleWinner;
+
+    // EXPORT REPORT: Automated Multi-Sheet Excel generation
+    elements.exportExcelBtn.addEventListener('click', async () => {
+      elements.exportExcelBtn.disabled = true;
+      elements.exportExcelBtn.innerText = 'Extracting report data...';
+
+      try {
+        // Fetch all submissions from API (approved, pending, rejected)
+        const response = await fetch(`${state.apiBaseUrl}/api/submissions`);
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+          throw new Error('Could not retrieve full dataset from server.');
+        }
+
+        const allData = result.data;
+        const totalCount = allData.length;
+        const approvedCount = allData.filter(d => d.status === 'approved').length;
+        const rejectedCount = allData.filter(d => d.status === 'rejected').length;
+        const pendingCount = allData.filter(d => d.status === 'pending').length;
+        const winnerCount = allData.filter(d => d.is_winner).length;
+        const uniqueLocations = [...new Set(allData.map(d => d.location))].length;
+
+        // SHEET 1: Campaign Overview
+        const summaryData = [
+          ['OPPO x MakeMyTrip UGC Campaign Report', ''],
+          ['Generated Date', new Date().toLocaleString()],
+          ['', ''],
+          ['Metric Description', 'Value'],
+          ['Total Campaign Submissions Logged', totalCount],
+          ['Approved Assets Queue', approvedCount],
+          ['Rejected Assets Queue', rejectedCount],
+          ['Pending Moderation Assets', pendingCount],
+          ['Selected Campaign Winners', winnerCount],
+          ['Unique Active Travel Destinations', uniqueLocations]
+        ];
+
+        // SHEET 2: Approved Entries
+        const approvedRows = [
+          ['Submission ID', 'Full Name', 'Submitter (Contact/OP)', 'Source Role', 'Instagram Handle', 'Device Used', 'Tour Operator/Manager', 'Travel Location', 'Travel Date', 'File Size (Bytes)', 'S3 Asset Address', 'Winner status']
+        ];
+
+        allData.filter(d => d.status === 'approved').forEach(item => {
+          approvedRows.push([
+            item.id,
+            item.full_name || '',
+            item.user_identifier,
+            item.user_role,
+            item.insta_handle || '',
+            item.device || '',
+            item.tour_manager || '',
+            item.location,
+            item.travel_date.split('T')[0],
+            item.file_size,
+            item.media_url,
+            item.is_winner ? 'WINNER' : ''
+          ]);
+        });
+
+        // SHEET 3: Contest Winners
+        const winnerRows = [
+          ['Winner ID', 'Full Name', 'Contact/Code', 'Source Role', 'Instagram Handle', 'Device Used', 'Tour Operator/Manager', 'Winning Destination', 'Shoot Date', 'S3 URL Link', 'Winner Selection Date']
+        ];
+
+        allData.filter(d => d.is_winner).forEach(item => {
+          winnerRows.push([
+            item.id,
+            item.full_name || '',
+            item.user_identifier,
+            item.user_role,
+            item.insta_handle || '',
+            item.device || '',
+            item.tour_manager || '',
+            item.location,
+            item.travel_date.split('T')[0],
+            item.media_url,
+            item.winner_selected_at ? item.winner_selected_at.split('T')[0] : ''
+          ]);
+        });
+
+        // Build Excel Workbook via SheetJS
+        const wb = XLSX.utils.book_new();
+
+        // Add Sheets
+        const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
+        XLSX.utils.book_append_sheet(wb, wsSummary, 'Campaign Overview');
+
+        const wsApproved = XLSX.utils.aoa_to_sheet(approvedRows);
+        XLSX.utils.book_append_sheet(wb, wsApproved, 'Approved Submissions');
+
+        const wsWinners = XLSX.utils.aoa_to_sheet(winnerRows);
+        XLSX.utils.book_append_sheet(wb, wsWinners, 'Selected Winners');
+
+        // Write Workbook to browser trigger download
+        XLSX.writeFile(wb, 'OPPO_UGC_Campaign_Report.xlsx');
+
+        showToast('Excel report generated and downloaded successfully! 📊', 'success');
+
+      } catch (err) {
+        console.error(err);
+        showToast(err.message || 'Excel export operation failed.', 'error');
+      } finally {
+        elements.exportExcelBtn.disabled = false;
+        elements.exportExcelBtn.innerText = 'Generate Multi-Sheet Excel Report';
+      }
+    });
+
+    // Initial load
+    loadAllData();
+  </script>
+</body>
+
+</html>

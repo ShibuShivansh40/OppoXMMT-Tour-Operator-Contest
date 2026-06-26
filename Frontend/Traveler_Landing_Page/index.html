@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Super Every Journey | OPPO x MakeMyTrip UGC Campaign</title>
+
+  <!-- SEO Tags -->
+  <meta name="description"
+    content="OPPO x MakeMyTrip presents Super Every Journey. Share your travel stories, upload 1 to 9 photos from your trip, and stand a chance to win exclusive rewards.">
+  <meta name="keywords"
+    content="OPPO, MakeMyTrip, Super Every Journey, ShotOnOPPO, Travel Contest, Photography, Prizes, Travel Vouchers">
+  <link rel="shortcut icon" href="//imgak.mmtcdn.com/seo/cms-staticpages/sites/default/files/favicon_0.ico"
+    type="image/vnd.microsoft.icon">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mmtBlue: '#0052e4',
+            mmtIndigo: '#1e3459',
+            mmtOrange: '#ff5a00',
+            oppoGreen: '#005a36',
+            oppoEmerald: '#00b064',
+            oppoMint: '#00e5ff',
+            darkBg: '#050c1a',
+            cardBg: '#0b162c'
+          },
+          fontFamily: {
+            sans: ['Lato', 'Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://promos.makemytrip.com/css/glider.css">
+
+  <style>
+    body {
+      font-family: 'Lato', sans-serif;
+      background-color: #f8fafc;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .glass-card {
+      background: rgba(11, 22, 44, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .custom-gradient-text {
+      background: linear-gradient(135deg, #00e5ff 0%, #00b064 50%, #0052e4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .text-glow {
+      text-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+    }
+
+    /* Glider.js styles overrides */
+    .sliderContainer {
+      position: relative;
+    }
+
+    .glider-contain {
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .video-grid {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      /* Firefox */
+      -ms-overflow-style: none;
+      /* IE 10+ */
+    }
+
+    .video-grid::-webkit-scrollbar {
+      display: none;
+      /* Safari and Chrome */
+    }
+
+    .videoCol {
+      flex: 0 0 85%;
+      margin: 0 10px;
+      scroll-snap-align: start;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      background: #000;
+      overflow: hidden;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+
+    @media (min-width: 768px) {
+      .videoCol {
+        flex: 0 0 31%;
+      }
+    }
+
+    .videoCol iframe {
+      width: 100%;
+      height: 200px;
+      border: 0;
+      display: block;
+    }
+
+    /* Custom Scrollbar for dropdowns */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 3px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Accordion transitions */
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
+    }
+
+    .accordion-content.open {
+      max-height: 1000px;
+      transition: max-height 0.5s cubic-bezier(1, 0, 1, 0);
+    }
+  </style>
+</head>
+
+<<body class="text-slate-800 flex flex-col justify-between antialiased min-h-screen">
+
+  <!-- Desktop Logo Band (MMT logo only, visible on all screens as standard top bar) -->
+  <div class="w-full bg-white border-b border-gray-150 py-3.5 px-6 md:px-12">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      <a href="https://www.makemytrip.com" target="_blank" rel="noopener noreferrer">
+        <img src="https://promos.makemytrip.com/images/mmtlogo.webp" alt="MakeMyTrip Logo" class="max-w-[125px]">
+      </a>
+    </div>
+  </div>
+
+  <!-- Hero Header Picture Band -->
+  <header class="w-full relative overflow-hidden">
+    <picture>
+      <source media="(max-width: 767px)" srcset="https://promos.makemytrip.com/images/OPPOTopBandMobileNew-130126.webp">
+      <img src="https://promos.makemytrip.com/images/Top-Band-OPPO_07-01-2026.webp" alt="OPPO Reno15 Header Banner"
+        class="w-full h-auto object-cover min-h-[140px] md:min-h-auto">
+    </picture>
+
+    <!-- Floating Admin API Config (Kept for integration/testing flexibility) -->
+    <div class="absolute top-3 right-3 z-30 opacity-40 hover:opacity-100 transition-opacity">
+      <div class="glass-card rounded-lg p-1.5 flex gap-1.5 items-center text-[10px] scale-90 origin-top-right">
+        <span class="text-gray-400">Endpoint:</span>
+        <input type="text" id="apiEndpoint" value="http://localhost:5000"
+          class="bg-black/40 text-gray-200 border border-white/10 rounded px-1.5 py-0.5 w-24 focus:outline-none focus:border-oppoEmerald">
+      </div>
+    </div>
+  </header>
+
+  <!-- Dark Navy Blue Wrapper for Intro & Steps -->
+  <div class="w-full bg-[#1e3459] text-white py-10 px-4">
+    <div class="max-w-4xl mx-auto text-center flex flex-col items-center">
+      <!-- Paragraph -->
+      <p class="text-gray-300 text-sm md:text-base leading-relaxed font-light max-w-2xl px-2">
+        From hidden streets and iconic landmarks to unforgettable sunsets and spontaneous adventures - share the shots
+        that defines your journey.
+      </p>
+
+      <!-- Dotted Line Divider -->
+      <div class="w-32 border-t-2 border-dotted border-gray-500 my-6"></div>
+
+      <!-- Title -->
+      <h2 class="text-xl md:text-2xl font-bold tracking-wide mb-8">How to Participate?</h2>
+
+      <!-- 3-Column Card -->
+      <div
+        class="bg-white rounded-xl shadow-xl border border-gray-200 flex flex-col md:flex-row w-full text-slate-800 py-8 px-6 md:px-0">
+
+        <!-- Step 1 -->
+        <div class="flex-1 flex flex-col items-center text-center px-6 py-4 md:py-2">
+          <!-- SVG Camera -->
+          <!-- PNG Camera -->
+          <img src="camera.png" alt="Camera" class="w-12 h-12 mb-4 object-contain">
+          <p class="text-sm font-semibold text-[#1e3459] max-w-[200px] leading-snug">
+            Capture your best travel moment on your smartphone.
+          </p>
+        </div>
+
+        <!-- Divider -->
+        <div class="hidden md:block w-px border-r border-dotted border-gray-300 py-8"></div>
+
+        <!-- Step 2 -->
+        <div
+          class="flex-1 flex flex-col items-center text-center px-6 py-4 md:py-2 border-t border-dotted border-gray-200 md:border-t-0">
+          <!-- SVG Upload -->
+          <!-- PNG Upload -->
+          <img src="upload.png" alt="Upload" class="w-12 h-12 mb-4 object-contain">
+          <p class="text-sm font-semibold text-[#1e3459] max-w-[220px] leading-snug">
+            Upload your entry on the MakeMyTrip contest page.
+          </p>
+        </div>
+
+        <!-- Divider -->
+        <div class="hidden md:block w-px border-r border-dotted border-gray-300 py-8"></div>
+
+        <!-- Step 3 -->
+        <div
+          class="flex-1 flex flex-col items-center text-center px-6 py-4 md:py-2 border-t border-dotted border-gray-200 md:border-t-0">
+          <!-- SVG Trophy -->
+          <!-- PNG Trophy -->
+          <img src="trophy.png" alt="Trophy" class="w-12 h-12 mb-4 object-contain">
+          <p class="text-sm font-semibold text-[#1e3459] max-w-[200px] leading-snug">
+            Win rewards.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Light Gray/White Body Wrapper -->
+  <div class="w-full bg-[#f8fafc] text-slate-800 py-12 px-4 flex-grow">
+    <main class="w-full max-w-4xl mx-auto flex flex-col gap-12">
+
+      <!-- Accordions Section: Rules & Guidelines -->
+      <section class="w-full flex flex-col gap-5">
+
+        <!-- Accordion 1: Prizes & Judgement Criteria -->
+        <div class="bg-white rounded-xl border border-gray-200 shadow-md overflow-hidden transition-all duration-300">
+          <button type="button"
+            class="accordion-toggle w-full px-6 py-4 flex items-center justify-between text-left focus:outline-none bg-[#eef4ff] hover:bg-[#e0ecff] transition-colors"
+            data-target="accordion1">
+            <span class="text-base font-bold text-[#1e3459] tracking-wide">Prizes and Criteria</span>
+            <span class="text-[#1e3459] text-xl font-bold transition-transform duration-300"
+              id="icon-accordion1">＋</span>
+          </button>
+
+          <div id="accordion1" class="accordion-content">
+            <div class="p-6 border-t border-gray-200 bg-[#fbfdff] flex flex-col gap-6 text-sm text-[#334e68]">
+
+              <div>
+                <h4 class="text-[#0052e4] font-extrabold uppercase tracking-wider mb-4 text-xs">WHAT CAN YOU WIN?</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                  <!-- Monthly Winners -->
+                  <div class="bg-white rounded-xl p-4 border border-gray-150 shadow-sm flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-full bg-[#eef4ff] flex items-center justify-center flex-shrink-0">
+                      <img src="gift.png" alt="Gift" class="w-5 h-5 object-contain">
+                    </div>
+                    <div>
+                      <span class="text-[#1e3459] font-bold block mb-1.5 text-sm uppercase">Monthly Winners</span>
+                      <ul class="list-disc pl-4 space-y-1 text-xs text-[#486581]">
+                        <li>MakeMyTrip Travel Vouchers</li>
+                        <li>OPPO Gift Hampers</li>
+                        <li>Featured on OPPO & MakeMyTrip channels</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <!-- Grand Winners -->
+                  <div class="bg-white rounded-xl p-4 border border-gray-150 shadow-sm flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-full bg-[#eef4ff] flex items-center justify-center flex-shrink-0">
+                      <img src="trophy_small.png" alt="Trophy" class="w-5 h-5 object-contain">
+                    </div>
+                    <div>
+                      <span class="text-[#1e3459] font-bold block mb-1.5 text-sm uppercase">Grand Winners</span>
+                      <ul class="list-disc pl-4 space-y-1 text-xs text-[#486581]">
+                        <li>OPPO Find X9s</li>
+                        <li>Premium Travel Voucher</li>
+                        <li>Featured as the face of Super Every Journey</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- Judgement Criteria -->
+              <div class="border-t border-gray-200 pt-5">
+                <h4 class="text-[#0052e4] font-extrabold uppercase tracking-wider mb-3 text-xs">WHAT MAKES A WINNING
+                  ENTRY?</h4>
+                <p class="text-xs text-[#627d98] mb-4">Entries are judged on:</p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div class="bg-white rounded-xl p-3 border border-gray-150 shadow-sm text-center">
+                    <div class="text-2xl font-extrabold text-[#0052e4]">35%</div>
+                    <div class="text-[10px] text-[#486581] uppercase mt-1 font-bold">Storytelling</div>
+                  </div>
+                  <div class="bg-white rounded-xl p-3 border border-gray-150 shadow-sm text-center">
+                    <div class="text-2xl font-extrabold text-[#0052e4]">25%</div>
+                    <div class="text-[10px] text-[#486581] uppercase mt-1 font-bold">Emotional Impact</div>
+                  </div>
+                  <div class="bg-white rounded-xl p-3 border border-gray-150 shadow-sm text-center">
+                    <div class="text-2xl font-extrabold text-[#0052e4]">20%</div>
+                    <div class="text-[10px] text-[#486581] uppercase mt-1 font-bold">Creativity</div>
+                  </div>
+                  <div class="bg-white rounded-xl p-3 border border-gray-150 shadow-sm text-center">
+                    <div class="text-2xl font-extrabold text-[#0052e4]">20%</div>
+                    <div class="text-[10px] text-[#486581] uppercase mt-1 font-bold">Technical Quality</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bonus Opportunity -->
+              <div class="bg-[#eef4ff] border border-blue-200 rounded-xl p-4 flex gap-3.5 items-center">
+                <div class="text-2xl">🔥</div>
+                <div class="text-xs">
+                  <span class="font-bold text-[#1e3459] uppercase tracking-wider block">BONUS OPPORTUNITY</span>
+                  <p class="text-[#486581] mt-1 leading-relaxed">
+                    Outstanding entries captured on <strong>OPPO, OnePlus, or realme</strong> devices may be shortlisted
+                    for the <strong>LUMO Photography Awards 2026</strong> - OPPO's global photography competition with
+                    prizes up to <strong>$20,000</strong>!
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Accordion 2: Entry & Eligibility Guidelines -->
+        <div class="bg-white rounded-xl border border-gray-200 shadow-md overflow-hidden transition-all duration-300">
+          <button type="button"
+            class="accordion-toggle w-full px-6 py-4 flex items-center justify-between text-left focus:outline-none bg-[#eef4ff] hover:bg-[#e0ecff] transition-colors"
+            data-target="accordion2">
+            <span class="text-base font-bold text-[#1e3459] tracking-wide">Entry and Eligibility</span>
+            <span class="text-[#1e3459] text-xl font-bold transition-transform duration-300"
+              id="icon-accordion2">＋</span>
+          </button>
+
+          <div id="accordion2" class="accordion-content">
+            <div class="p-6 border-t border-gray-200 bg-[#fbfdff] flex flex-col gap-6 text-sm text-[#334e68]">
+
+              <div>
+                <h4 class="text-[#0052e4] font-extrabold uppercase tracking-wider mb-2.5 text-xs">ENTRY THEMES</h4>
+                <p class="text-xs text-[#627d98] mb-3">Your entry can fall under any of these themes - judges will
+                  assign the category, just shoot what moves you...</p>
+                <ul class="space-y-2 text-xs text-[#486581]">
+                  <li>📸 <strong>Personal Memories:</strong> Self-portraits, personal travel memories, and emotional
+                    connections to places.</li>
+                  <li>✨ <strong>Unexpected Encounters:</strong> Spontaneous candid captures, unplanned interactions, and
+                    sudden moments of wonder.</li>
+                  <li>⛰️ <strong>Grand Landscapes:</strong> Architecture, epic natural wonders, iconic landmarks, and
+                    vistas.</li>
+                  <li>🏃‍♂️ <strong>Life in Motion:</strong> Cultural festivals, action, streets, local movement, and
+                    immersive lifestyle.</li>
+                </ul>
+              </div>
+
+              <div class="border-t border-gray-200 pt-5">
+                <h4 class="text-[#0052e4] font-extrabold uppercase tracking-wider mb-3 text-xs">ELIGIBILITY</h4>
+                <ul class="list-disc pl-5 space-y-1.5 text-xs text-[#486581]">
+                  <li>Open to all smartphone users aged <strong>18 and above</strong>.</li>
+                  <li>Only <strong>JPG/JPEG format images</strong> are eligible for upload.</li>
+                  <li>Must be a MakeMyTrip user (domestic and international travelers welcome).</li>
+                  <li>Not eligible in: Germany, United States, Sudan, North Korea, Syria, Iran, Cuba, or the Crimea
+                    region.</li>
+                  <li>Employees of OPPO, OnePlus, realme, and MakeMyTrip are not eligible to win.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Branding Carousel / YouTube Showcase -->
+      <section class="w-full">
+        <div class="text-center mb-6">
+          <h3 class="text-xs uppercase tracking-[0.2em] text-[#0052e4] font-bold">Campaign Showcase</h3>
+          <h2 class="text-xl md:text-2xl font-extrabold mt-1 text-[#1e3459]">Captured on OPPO Reno15 Series</h2>
+        </div>
+
+        <div class="sliderContainer max-w-4xl mx-auto px-1 md:px-10 relative">
+          <!-- Horizontal scroll wrapper for responsive swipe on mobile -->
+          <div class="video-grid" id="videoSlider">
+            <div class="videoCol bg-slate-900 border border-slate-200">
+              <iframe src="https://www.youtube-nocookie.com/embed/6Bp9SypIcHk"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <div class="videoCol bg-slate-900 border border-slate-200">
+              <iframe src="https://www.youtube-nocookie.com/embed/cp8JPQCH-nI"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <div class="videoCol bg-slate-900 border border-slate-200">
+              <iframe src="https://www.youtube-nocookie.com/embed/BBfEey7p6dU"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <div class="videoCol bg-slate-900 border border-slate-200">
+              <iframe src="https://www.youtube-nocookie.com/embed/l0zpGYWlPwg"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <div class="videoCol bg-slate-900 border border-slate-200">
+              <iframe src="https://www.youtube-nocookie.com/embed/ADb2gfmEkok"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+          </div>
+
+          <!-- Navigation Buttons (Desktop only) -->
+          <button type="button" id="sliderPrev"
+            class="hidden md:flex absolute top-1/2 -left-3 -translate-y-1/2 w-10 h-10 items-center justify-center rounded-full bg-slate-800/90 hover:bg-[#0052e4] text-white border border-slate-200 active:scale-95 transition-all text-lg font-bold shadow-lg">
+            ‹
+          </button>
+          <button type="button" id="sliderNext"
+            class="hidden md:flex absolute top-1/2 -right-3 -translate-y-1/2 w-10 h-10 items-center justify-center rounded-full bg-slate-800/90 hover:bg-[#0052e4] text-white border border-slate-200 active:scale-95 transition-all text-lg font-bold shadow-lg">
+            ›
+          </button>
+        </div>
+      </section>
+
+      <!-- Contest Form (Enter Your Details) -->
+      <section class="w-full text-center" id="contestFormSection">
+
+        <!-- Section Title -->
+        <div class="text-center mb-6">
+          <span class="text-xs uppercase tracking-[0.2em] text-[#0052e4] font-bold">Contest Registration</span>
+          <h2 class="text-2xl md:text-3xl font-extrabold text-[#1e3459] mt-1">Enter Your Details</h2>
+        </div>
+
+        <!-- Main Form Container Card -->
+        <div
+          class="bg-[#1e3459] text-white rounded-2xl shadow-2xl p-6 md:p-8 flex flex-col gap-6 relative overflow-hidden transition-all duration-300">
+
+          <!-- Global Notifications -->
+          <div id="notification" class="hidden text-xs rounded-xl p-3 flex items-center gap-2 transition-all"></div>
+
+          <!-- The Main Contest Form details -->
+          <form id="campaignForm" class="flex flex-col gap-5 text-left">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Full Name -->
+              <div>
+                <label for="fullName"
+                  class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1.5">Full Name</label>
+                <input type="text" id="fullName" placeholder="Enter Your Full Name" required
+                  class="w-full bg-white border border-gray-300 rounded-lg py-2.5 px-4 text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-sm">
+              </div>
+
+              <!-- Mobile Number -->
+              <div>
+                <label for="phoneNumber"
+                  class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1.5">Mobile
+                  Number</label>
+                <div class="relative flex items-center">
+                  <span class="absolute left-3 text-slate-400 text-sm font-semibold pointer-events-none">+91</span>
+                  <input type="tel" id="phoneNumber" placeholder="9876543210" maxlength="10" required
+                    class="w-full bg-white border border-gray-300 rounded-lg py-2.5 pl-12 pr-4 text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-sm">
+                </div>
+              </div>
+            </div>
+
+            <!-- Location Picker -->
+            <div class="relative">
+              <label for="locationInput"
+                class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1.5">Location</label>
+              <input type="text" id="locationInput" placeholder="Start typing your Destination" autocomplete="off"
+                required
+                class="w-full bg-white border border-gray-300 rounded-lg py-2.5 px-4 text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-sm">
+              <ul id="locationDropdown"
+                class="hidden absolute left-0 right-0 mt-1 max-h-48 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-xl z-20 divide-y divide-gray-100 custom-scrollbar text-slate-800">
+                <!-- Populated by script -->
+              </ul>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Tour Manager -->
+              <div class="relative">
+                <label for="tourManager"
+                  class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1.5">Tour Manager</label>
+                <input type="text" id="tourManager" placeholder="Start typing your manager's name" autocomplete="off"
+                  required
+                  class="w-full bg-white border border-gray-300 rounded-lg py-2.5 px-4 text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-sm">
+                <ul id="operatorDropdown"
+                  class="hidden absolute left-0 right-0 mt-1 max-h-48 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-xl z-20 divide-y divide-gray-100 custom-scrollbar text-slate-800">
+                  <!-- Populated by script -->
+                </ul>
+              </div>
+
+              <!-- Start Date of Trip -->
+              <div>
+                <label for="travelDate"
+                  class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1.5">Start Date of
+                  Trip</label>
+                <input type="date" id="travelDate" required
+                  class="w-full bg-white border border-gray-300 rounded-lg py-2 px-4 text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-sm">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Device Dropdown Selector -->
+              <div class="relative">
+                <label for="deviceInput"
+                  class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1.5">Device Name</label>
+                <input type="text" id="deviceInput" placeholder="Start typing your device's name" autocomplete="off"
+                  required
+                  class="w-full bg-white border border-gray-300 rounded-lg py-2.5 px-4 text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-sm">
+                <ul id="deviceDropdown"
+                  class="hidden absolute left-0 right-0 mt-1 max-h-48 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-xl z-20 divide-y divide-gray-100 custom-scrollbar text-slate-800">
+                  <!-- Populated by script -->
+                </ul>
+              </div>
+
+              <!-- Instagram Handle -->
+              <div>
+                <label for="instaHandle"
+                  class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1.5">Instagram
+                  Handle</label>
+                <div class="relative flex items-center">
+                  <span class="absolute left-3 text-slate-400 text-sm font-semibold pointer-events-none">@</span>
+                  <input type="text" id="instaHandle" placeholder="instagram_handle"
+                    class="w-full bg-white border border-gray-300 rounded-lg py-2.5 pl-8 pr-4 text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-sm">
+                </div>
+              </div>
+            </div>
+
+            <!-- Media Upload Section -->
+            <div>
+              <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">
+                UPLOAD YOUR ENTRY <span class="text-xs text-gray-400 font-semibold">(Images can be of Format : jpeg,
+                  jpg, png)</span>
+              </label>
+
+              <!-- Drag and Drop Zone -->
+              <div id="dropZone"
+                class="border-2 border-dashed border-gray-400 hover:border-[#0052e4] rounded-xl p-6 text-center cursor-pointer transition-all bg-[#eef4ff] flex flex-col items-center justify-center relative overflow-hidden group">
+                <input type="file" id="mediaFile" accept="image/*,video/*" multiple
+                  class="absolute inset-0 opacity-0 cursor-pointer">
+                <img src="upload.png" alt="Upload"
+                  class="w-10 h-10 mb-2 group-hover:scale-105 transition-transform object-contain">
+                <span class="text-sm text-slate-800 font-bold mb-1" id="dropLabel">Upload Your Photo</span>
+                <span class="text-[10px] text-slate-500 font-semibold" id="dropHelper">Share 1 to 9 images or videos
+                  from your trip. Keep original files</span>
+              </div>
+
+              <!-- Selected Files Thumbnail Preview List -->
+              <div id="fileListContainer" class="hidden mt-4 flex flex-col gap-2.5">
+                <h5 class="text-xs font-bold text-gray-300 uppercase tracking-wider">Selected Entries (<span
+                    id="fileCountDisplay">0</span> of 9)</h5>
+                <div id="previewGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  <!-- Dynamically populated thumbnails -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Total S3 Upload progress bar -->
+            <div id="uploadProgressContainer" class="hidden flex flex-col gap-1 text-xs">
+              <div class="flex justify-between font-semibold">
+                <span id="progressLabel" class="text-gray-300">Uploading to AWS S3...</span>
+                <span id="progressPercent" class="text-[#0052e4]">0%</span>
+              </div>
+              <div class="w-full bg-gray-800 rounded-full h-1.5 overflow-hidden">
+                <div id="progressBar" class="bg-[#0052e4] h-full w-0 transition-all duration-250"></div>
+              </div>
+            </div>
+
+            <button type="submit" id="submitBtn"
+              class="w-full bg-[#eef4ff] hover:bg-[#e0ecff] text-[#1e3459] font-extrabold py-3.5 px-4 rounded-xl shadow-lg active:scale-[0.98] transition-all text-sm tracking-widest uppercase mt-2 border border-gray-200">
+              SUBMIT MY ENTRY
+            </button>
+          </form>
+
+          <!-- Successful Entry Modal / Cover -->
+          <div id="successCard"
+            class="hidden absolute inset-0 bg-[#1e3459]/95 flex flex-col items-center justify-center p-6 text-center z-30 transition-all">
+            <div class="text-5xl mb-4 animate-bounce">🎉</div>
+            <h3 class="text-2xl font-extrabold text-white">You're in!</h3>
+            <h4 class="text-[#00e5ff] text-sm font-bold mt-1">Your entry has been received.</h4>
+            <p class="text-gray-300 text-xs mt-3 max-w-sm leading-relaxed">
+              Monthly winners are announced within 15 working days of each submission window closing. Good luck.
+            </p>
+
+            <!-- Mock Coupon Code Award -->
+            <div
+              class="mt-6 w-full max-w-xs bg-white text-gray-900 rounded-2xl p-4 border-2 border-dashed border-emerald-400/50 relative flex flex-col gap-1.5 items-center shadow-lg">
+              <span
+                class="text-[9px] uppercase tracking-[0.2em] text-[#0052e4] font-bold bg-[#eef4ff] px-2.5 py-1 rounded-full">MakeMyTrip
+                Voucher</span>
+              <p class="text-xs text-gray-500 font-bold text-center">Get up to ₹2,500 off on International Hotels!</p>
+              <div
+                class="text-base font-black tracking-widest bg-gray-100 border border-gray-200 text-[#0052e4] select-all px-4 py-2 rounded-xl mt-1.5 font-mono cursor-pointer transition-colors hover:bg-gray-200"
+                title="Click to copy" id="couponCode">
+                OPPOXMMT2026
+              </div>
+              <p class="text-[9px] text-gray-400 font-medium" id="couponClipboardMsg">Voucher code copied to clipboard!
+              </p>
+            </div>
+            <button type="button" id="resetBtn"
+              class="mt-8 text-gray-300 hover:text-white text-xs underline font-semibold tracking-wider uppercase">Submit
+              another trip entry</button>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="w-full bg-[#0b1c3a] border-t border-white/5 py-6 px-6 md:px-12 text-[#8fa0b5] text-xs mt-0">
+    <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="font-semibold text-center md:text-left">
+        Travel. Capture. Inspire. <span class="text-white font-bold">#SuperEveryJourney</span> <span
+          class="text-[#00e5ff] font-bold">#ShotOnOPPO</span>
+      </div>
+      <div class="font-medium text-center md:text-right">
+        A MakeMyTrip x OPPO Initiative
+      </div>
+    </div>
+  </footer>ll rights reserved.</p>
+  </div>
+  </footer>
+
+  <!-- Script Logic -->
+  <script>
+    // State management
+    let state = {
+      isLoggedIn: false,
+      phoneNumber: '',
+      selectedFiles: [], // array of File objects
+      apiBaseUrl: window.location.origin,
+      destinations: [],
+      operators: [],
+      devices: []
+    };
+
+    // DOM Elements
+    const elements = {
+      apiEndpoint: document.getElementById('apiEndpoint'),
+      notification: document.getElementById('notification'),
+      phoneNumber: document.getElementById('phoneNumber'),
+      campaignForm: document.getElementById('campaignForm'),
+      fullName: document.getElementById('fullName'),
+      locationInput: document.getElementById('locationInput'),
+      locationDropdown: document.getElementById('locationDropdown'),
+      tourManager: document.getElementById('tourManager'),
+      operatorDropdown: document.getElementById('operatorDropdown'),
+      travelDate: document.getElementById('travelDate'),
+      deviceInput: document.getElementById('deviceInput'),
+      deviceDropdown: document.getElementById('deviceDropdown'),
+      instaHandle: document.getElementById('instaHandle'),
+      dropZone: document.getElementById('dropZone'),
+      mediaFile: document.getElementById('mediaFile'),
+      fileListContainer: document.getElementById('fileListContainer'),
+      fileCountDisplay: document.getElementById('fileCountDisplay'),
+      previewGrid: document.getElementById('previewGrid'),
+      uploadProgressContainer: document.getElementById('uploadProgressContainer'),
+      progressLabel: document.getElementById('progressLabel'),
+      progressPercent: document.getElementById('progressPercent'),
+      progressBar: document.getElementById('progressBar'),
+      submitBtn: document.getElementById('submitBtn'),
+      successCard: document.getElementById('successCard'),
+      resetBtn: document.getElementById('resetBtn'),
+      couponCode: document.getElementById('couponCode'),
+      couponClipboardMsg: document.getElementById('couponClipboardMsg'),
+      imageModal: document.getElementById('imageModal'),
+      modalImg: document.getElementById('modalImg'),
+      videoSlider: document.getElementById('videoSlider'),
+      sliderPrev: document.getElementById('sliderPrev'),
+      sliderNext: document.getElementById('sliderNext')
+    };
+
+    // Load initial API endpoint configuration
+    state.apiBaseUrl = elements.apiEndpoint.value.trim();
+    elements.apiEndpoint.addEventListener('input', (e) => {
+      state.apiBaseUrl = e.target.value.trim();
+      loadMetadata();
+    });
+
+    // Preset Date picker to today by default (use local date, NOT toISOString which is UTC)
+    const now = new Date();
+    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    elements.travelDate.value = today;
+
+    // Prefill Device Dropdown logic removed — now populated dynamically via API
+
+    // Fetch dynamic metadata lists from API
+    async function loadMetadata() {
+      try {
+        const [locRes, opRes, devRes] = await Promise.all([
+          fetch(`${state.apiBaseUrl}/api/metadata/locations`),
+          fetch(`${state.apiBaseUrl}/api/metadata/operators`),
+          fetch(`${state.apiBaseUrl}/api/metadata/devices`)
+        ]);
+        const locData = await locRes.json();
+        const opData = await opRes.json();
+        const devData = await devRes.json();
+        if (locData.success) state.destinations = locData.data;
+        if (opData.success) state.operators = opData.data;
+        if (devData.success) state.devices = devData.data;
+      } catch (err) {
+        console.error('Failed to fetch campaign metadata:', err);
+      }
+    }
+    loadMetadata();
+
+    // Helper functions
+    function showNotification(text, type = 'success') {
+      elements.notification.classList.remove('hidden', 'bg-red-500/20', 'text-red-400', 'bg-emerald-500/20', 'text-emerald-400', 'border-red-500/20', 'border-emerald-500/20');
+
+      if (type === 'error') {
+        elements.notification.classList.add('bg-red-500/20', 'text-red-400', 'border', 'border-red-500/20');
+      } else {
+        elements.notification.classList.add('bg-emerald-500/20', 'text-emerald-400', 'border', 'border-emerald-500/20');
+      }
+      elements.notification.innerText = text;
+
+      setTimeout(() => {
+        elements.notification.classList.add('hidden');
+      }, 6000);
+    }
+
+    // --- Accordion Event Listeners ---
+    document.querySelectorAll('.accordion-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-target');
+        const content = document.getElementById(targetId);
+        const icon = document.getElementById('icon-' + targetId);
+
+        if (content.classList.contains('open')) {
+          content.classList.remove('open');
+          icon.innerText = '＋';
+          icon.style.transform = 'rotate(0deg)';
+        } else {
+          content.classList.add('open');
+          icon.innerText = '－';
+          icon.style.transform = 'rotate(180deg)';
+        }
+      });
+    });
+
+    // --- Video Slider / Carousel Navigation ---
+    elements.sliderNext.addEventListener('click', () => {
+      const scrollAmount = elements.videoSlider.clientWidth * 0.8;
+      elements.videoSlider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    });
+
+    // --- Video Slider / Carousel Navigation Prev ---
+    elements.sliderPrev.addEventListener('click', () => {
+      const scrollAmount = elements.videoSlider.clientWidth * 0.8;
+      elements.videoSlider.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    });
+
+    // --- Autocomplete Dropdown Logic: Location ---
+    elements.locationInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      if (!query) {
+        elements.locationDropdown.classList.add('hidden');
+        return;
+      }
+
+      const filtered = state.destinations.filter(dest => dest.toLowerCase().includes(query));
+
+      if (filtered.length === 0) {
+        elements.locationDropdown.classList.add('hidden');
+        return;
+      }
+
+      elements.locationDropdown.innerHTML = '';
+      filtered.forEach(dest => {
+        const li = document.createElement('li');
+        li.className = 'px-4 py-2.5 text-xs text-slate-800 hover:bg-blue-50 hover:text-[#0052e4] cursor-pointer transition-colors';
+        li.innerText = dest;
+        li.addEventListener('click', () => {
+          elements.locationInput.value = dest;
+          elements.locationDropdown.classList.add('hidden');
+        });
+        elements.locationDropdown.appendChild(li);
+      });
+
+      elements.locationDropdown.classList.remove('hidden');
+    });
+
+    // --- Autocomplete Dropdown Logic: Tour Operator ---
+    elements.tourManager.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      if (!query) {
+        elements.operatorDropdown.classList.add('hidden');
+        return;
+      }
+
+      const filtered = state.operators.filter(op => op.toLowerCase().includes(query));
+
+      if (filtered.length === 0) {
+        elements.operatorDropdown.classList.add('hidden');
+        return;
+      }
+
+      elements.operatorDropdown.innerHTML = '';
+      filtered.forEach(op => {
+        const li = document.createElement('li');
+        li.className = 'px-4 py-2.5 text-xs text-slate-800 hover:bg-blue-50 hover:text-[#0052e4] cursor-pointer transition-colors';
+        li.innerText = op;
+        li.addEventListener('click', () => {
+          elements.tourManager.value = op;
+          elements.operatorDropdown.classList.add('hidden');
+        });
+        elements.operatorDropdown.appendChild(li);
+      });
+
+      elements.operatorDropdown.classList.remove('hidden');
+    });
+
+    // --- Autocomplete Dropdown Logic: Device Name ---
+    elements.deviceInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      if (!query) {
+        elements.deviceDropdown.classList.add('hidden');
+        return;
+      }
+
+      const filtered = state.devices.filter(dev => dev.toLowerCase().includes(query));
+
+      if (filtered.length === 0) {
+        elements.deviceDropdown.classList.add('hidden');
+        return;
+      }
+
+      elements.deviceDropdown.innerHTML = '';
+      filtered.forEach(dev => {
+        const li = document.createElement('li');
+        li.className = 'px-4 py-2.5 text-xs text-slate-800 hover:bg-blue-50 hover:text-[#0052e4] cursor-pointer transition-colors';
+        li.innerText = dev;
+        li.addEventListener('click', () => {
+          elements.deviceInput.value = dev;
+          elements.deviceDropdown.classList.add('hidden');
+        });
+        elements.deviceDropdown.appendChild(li);
+      });
+
+      elements.deviceDropdown.classList.remove('hidden');
+    });
+
+    // Hide autocompletes when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!elements.locationInput.contains(e.target) && !elements.locationDropdown.contains(e.target)) {
+        elements.locationDropdown.classList.add('hidden');
+      }
+      if (!elements.tourManager.contains(e.target) && !elements.operatorDropdown.contains(e.target)) {
+        elements.operatorDropdown.classList.add('hidden');
+      }
+      if (!elements.deviceInput.contains(e.target) && !elements.deviceDropdown.contains(e.target)) {
+        elements.deviceDropdown.classList.add('hidden');
+      }
+    });
+
+
+    // --- Multiple File Upload & Preview Handler (1 to 9 files) ---
+    elements.mediaFile.addEventListener('change', (e) => {
+      handleFilesAdded(e.target.files);
+    });
+
+    elements.dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      elements.dropZone.classList.add('border-oppoEmerald', 'bg-oppoGreen/5');
+    });
+
+    elements.dropZone.addEventListener('dragleave', () => {
+      elements.dropZone.classList.remove('border-oppoEmerald', 'bg-oppoGreen/5');
+    });
+
+    elements.dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      elements.dropZone.classList.remove('border-oppoEmerald', 'bg-oppoGreen/5');
+      if (e.dataTransfer.files.length > 0) {
+        handleFilesAdded(e.dataTransfer.files);
+      }
+    });
+
+    function handleFilesAdded(fileList) {
+      if (!fileList || fileList.length === 0) return;
+
+      const currentCount = state.selectedFiles.length;
+      if (currentCount + fileList.length > 9) {
+        showNotification('Maximum 9 campaign files can be uploaded per contest entry.', 'error');
+        return;
+      }
+
+      for (let i = 0; i < fileList.length; i++) {
+        const file = fileList[i];
+
+        // 1. Enforce size limit (Traveler = 10MB)
+        const limitBytes = 10 * 1024 * 1024;
+        if (file.size > limitBytes) {
+          showNotification(`"${file.name}" is too large. Max size allowed is 10MB.`, 'error');
+          continue;
+        }
+
+        // 2. Alert if image is not JPG/JPEG/PNG
+        const ext = file.name.split('.').pop().toLowerCase();
+        const isValidImage = ext === 'jpg' || ext === 'jpeg' || ext === 'png' ||
+          file.type === 'image/jpeg' || file.type === 'image/png';
+
+        if (file.type.startsWith('image/') && !isValidImage) {
+          showNotification(`"${file.name}" has an ineligible format. Only JPG, JPEG, or PNG format images are eligible.`, 'error');
+          continue;
+        }
+
+        if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
+          showNotification(`"${file.name}" is an unsupported format. Please upload images/videos.`, 'error');
+          continue;
+        }
+
+        // 3. Add to state
+        state.selectedFiles.push(file);
+      }
+
+      // Reset file input value to allow adding the same file again if removed
+      elements.mediaFile.value = '';
+
+      renderFilePreviews();
+    }
+
+    function removeFile(index) {
+      state.selectedFiles.splice(index, 1);
+      renderFilePreviews();
+    }
+
+    function renderFilePreviews() {
+      const files = state.selectedFiles;
+      elements.fileCountDisplay.innerText = files.length;
+
+      if (files.length === 0) {
+        elements.fileListContainer.classList.add('hidden');
+        elements.dropLabel.innerText = "Upload Your Photo / Video";
+        return;
+      }
+
+      elements.fileListContainer.classList.remove('hidden');
+      elements.previewGrid.innerHTML = '';
+
+      // Update drop zone text
+      elements.dropLabel.innerText = `Add More Files (${files.length} of 9 selected)`;
+
+      files.forEach((file, index) => {
+        const card = document.createElement('div');
+        card.className = 'bg-black/40 border border-white/10 rounded-xl p-3 flex flex-col gap-2 relative overflow-hidden group shadow';
+
+        // Delete button
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-red-500/80 hover:bg-red-600 text-white font-bold text-xxs flex items-center justify-center shadow focus:outline-none transition-colors z-10';
+        removeBtn.innerHTML = '×';
+        removeBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          removeFile(index);
+        });
+        card.appendChild(removeBtn);
+
+        // Preview thumbnail holder
+        const thumb = document.createElement('div');
+        thumb.className = 'w-full h-24 rounded-lg bg-slate-900/60 overflow-hidden flex items-center justify-center text-xl relative';
+
+        if (file.type.startsWith('image/')) {
+          const img = document.createElement('img');
+          img.className = 'w-full h-full object-cover transition-transform duration-300 group-hover:scale-105';
+          img.src = URL.createObjectURL(file);
+          img.onload = () => URL.revokeObjectURL(img.src); // memory release
+          thumb.appendChild(img);
+
+          // Dark overlay with zoom text on hover
+          const overlay = document.createElement('div');
+          overlay.className = 'absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-[10px] text-white font-bold gap-1 pointer-events-none';
+          overlay.innerHTML = '🔍 Preview';
+          thumb.appendChild(overlay);
+
+          thumb.className += ' cursor-pointer group';
+          thumb.addEventListener('click', () => {
+            openImageModal(file);
+          });
+        } else {
+          // Video preview placeholder
+          thumb.innerHTML = '🎥';
+          const videoName = document.createElement('span');
+          videoName.className = 'absolute bottom-1 left-1 bg-black/60 text-[8px] text-gray-300 px-1 py-0.5 rounded truncate max-w-[90%]';
+          videoName.innerText = 'VIDEO';
+          thumb.appendChild(videoName);
+        }
+        card.appendChild(thumb);
+
+        // Details text
+        const details = document.createElement('div');
+        details.className = 'overflow-hidden';
+
+        const name = document.createElement('p');
+        name.className = 'text-[10px] text-gray-200 font-semibold truncate';
+        name.innerText = file.name;
+        details.appendChild(name);
+
+        const size = document.createElement('p');
+        size.className = 'text-[9px] text-gray-500';
+        size.innerText = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
+        details.appendChild(size);
+
+        card.appendChild(details);
+        elements.previewGrid.appendChild(card);
+      });
+    }
+
+
+    // --- Form submission & Direct-to-S3 Multi-Upload Handler ---
+    elements.campaignForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const fullName = elements.fullName.value.trim();
+      const phoneVal = elements.phoneNumber.value.trim();
+      const location = elements.locationInput.value.trim();
+      const tourManager = elements.tourManager.value.trim();
+      const travelDate = elements.travelDate.value;
+      const device = elements.deviceInput.value.trim();
+      const instaHandle = elements.instaHandle.value.trim();
+
+      if (!fullName) {
+        showNotification('Please enter your full name.', 'error');
+        return;
+      }
+      if (!/^\d{10}$/.test(phoneVal)) {
+        showNotification('Please enter a valid 10-digit mobile number.', 'error');
+        return;
+      }
+      state.phoneNumber = '+91' + phoneVal;
+      if (!location) {
+        showNotification('Please provide your travel destination.', 'error');
+        return;
+      }
+      if (!tourManager) {
+        showNotification('Please specify who was your tour manager/operator.', 'error');
+        return;
+      }
+      if (!travelDate) {
+        showNotification('Please pick your travel start date.', 'error');
+        return;
+      }
+      if (!device) {
+        showNotification('Please select which smartphone was used to capture the photo.', 'error');
+        return;
+      }
+      if (state.selectedFiles.length === 0) {
+        showNotification('Please select 1 to 9 images/videos from your trip to submit.', 'error');
+        return;
+      }
+
+      // Lock buttons
+      elements.submitBtn.disabled = true;
+      elements.submitBtn.innerText = 'Uploading your entry...';
+
+      try {
+        elements.uploadProgressContainer.classList.remove('hidden');
+        const filesCount = state.selectedFiles.length;
+
+        // Helper: derive MIME type from file extension if file.type is empty
+        function getReliableMimeType(file) {
+          if (file.type && file.type !== '') return file.type;
+          const ext = file.name.split('.').pop().toLowerCase();
+          const mimeMap = {
+            jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png',
+            gif: 'image/gif', webp: 'image/webp', heic: 'image/heic',
+            mp4: 'video/mp4', mov: 'video/quicktime', avi: 'video/x-msvideo',
+            mkv: 'video/x-matroska', webm: 'video/webm'
+          };
+          return mimeMap[ext] || 'application/octet-stream';
+        }
+
+        // Loop through each selected file to upload it directly to S3 and then log in DB
+        for (let i = 0; i < filesCount; i++) {
+          const file = state.selectedFiles[i];
+          const fileType = getReliableMimeType(file);
+          elements.progressLabel.innerText = `[${i + 1}/${filesCount}] Uploading "${file.name}"...`;
+
+          // Step A: Request S3 Pre-signed URL from Backend
+          const presignedRes = await fetch(`${state.apiBaseUrl}/api/upload/presigned-url`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              fileName: file.name,
+              fileType: fileType,
+              fileSize: file.size,
+              userRole: 'traveler',
+              userIdentifier: state.phoneNumber
+            })
+          });
+
+          const presignedData = await presignedRes.json();
+          if (!presignedRes.ok || !presignedData.success) {
+            throw new Error(presignedData.message || `Failed to get upload URL for "${file.name}"`);
+          }
+
+          const { uploadUrl, mediaUrl, isMock } = presignedData.data;
+
+          // Step B: Upload file data directly to S3 URL via PUT
+          // XHR used here for upload progress tracking support
+          await new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open('PUT', uploadUrl, true);
+            // IMPORTANT: Must exactly match ContentType used when signing the URL
+            xhr.setRequestHeader('Content-Type', fileType);
+
+            xhr.upload.onprogress = (event) => {
+              if (event.lengthComputable) {
+                const filePercent = Math.round((event.loaded / event.total) * 100);
+                const overallPercent = Math.round(((i / filesCount) * 100) + (filePercent / filesCount));
+                elements.progressBar.style.width = overallPercent + '%';
+                elements.progressPercent.innerText = overallPercent + '%';
+              }
+            };
+
+            xhr.onload = () => {
+              if (xhr.status === 200 || xhr.status === 201) {
+                resolve();
+              } else {
+                // Log the full S3 error response for debugging
+                console.error(`[S3 Upload] Failed for "${file.name}". Status: ${xhr.status}`, xhr.responseText);
+                reject(new Error(`Upload failed (${xhr.status}): ${xhr.responseText ? xhr.responseText.substring(0, 200) : 'Unknown S3 error'}`));
+              }
+            };
+
+            xhr.onerror = () => {
+              console.error('[S3 Upload] Network/CORS error during PUT to S3');
+              reject(new Error('Network error during upload. Check browser console for CORS details.'));
+            };
+
+            xhr.send(file);
+          });
+
+          // Step C: Save submission record/metadata logs to Database
+          elements.progressLabel.innerText = `[${i + 1}/${filesCount}] Saving entry logs...`;
+
+          const submissionRes = await fetch(`${state.apiBaseUrl}/api/submissions`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              userIdentifier: state.phoneNumber,
+              userRole: 'traveler',
+              mediaUrl: mediaUrl,
+              fileName: file.name,
+              fileSize: file.size,
+              location: location,
+              travelDate: travelDate,
+              fullName: fullName,
+              tourManager: tourManager,
+              device: device,
+              instaHandle: instaHandle || null
+            })
+          });
+
+          const submissionData = await submissionRes.json();
+          if (!submissionRes.ok || !submissionData.success) {
+            throw new Error(submissionData.message || `Failed to save entry for "${file.name}"`);
+          }
+        }
+
+        // Show successful completion view
+        elements.successCard.classList.remove('hidden');
+        elements.successCard.scrollIntoView({ behavior: 'smooth' });
+
+        // Auto-copy voucher code
+        navigator.clipboard.writeText('OPPOXMMT2026')
+          .then(() => { elements.couponClipboardMsg.innerText = 'Voucher code copied to clipboard!'; })
+          .catch(() => { elements.couponClipboardMsg.innerText = 'Voucher: OPPOXMMT2026'; });
+
+      } catch (err) {
+        console.error('[Submit Error]', err);
+        showNotification(err.message || 'An error occurred during contest entry submission.', 'error');
+      } finally {
+        elements.submitBtn.disabled = false;
+        elements.submitBtn.innerText = 'Submit My Entry';
+        elements.uploadProgressContainer.classList.add('hidden');
+        elements.progressBar.style.width = '0%';
+        elements.progressPercent.innerText = '0%';
+      }
+    });
+
+    // Copy coupon on manual click
+    elements.couponCode.addEventListener('click', () => {
+      navigator.clipboard.writeText(elements.couponCode.innerText.trim());
+      elements.couponClipboardMsg.innerText = 'Voucher code copied to clipboard!';
+    });
+
+    // Reset Form for another trip/submission
+    elements.resetBtn.addEventListener('click', () => {
+      elements.successCard.classList.add('hidden');
+      state.selectedFiles = [];
+      renderFilePreviews();
+    });
+
+    // Image Modal Lightbox Helpers
+    let activeObjectUrl = null;
+
+    function openImageModal(file) {
+      if (activeObjectUrl) {
+        URL.revokeObjectURL(activeObjectUrl);
+        activeObjectUrl = null;
+      }
+
+      activeObjectUrl = URL.createObjectURL(file);
+      elements.modalImg.src = activeObjectUrl;
+      elements.imageModal.classList.remove('hidden');
+    }
+
+    function closeImageModal() {
+      elements.imageModal.classList.add('hidden');
+      elements.modalImg.src = '';
+      if (activeObjectUrl) {
+        URL.revokeObjectURL(activeObjectUrl);
+        activeObjectUrl = null;
+      }
+    }
+
+    window.openImageModal = openImageModal;
+    window.closeImageModal = closeImageModal;
+
+  </script>
+
+  <!-- Image Lightbox Modal Overlay -->
+  <div id="imageModal" class="hidden fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-6"
+    onclick="closeImageModal()">
+    <button class="absolute top-4 right-4 text-white text-3xl font-bold" onclick="closeImageModal()">&times;</button>
+    <img id="modalImg" src="" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl border border-white/10">
+  </div>
+
+  </body>
+
+</html>

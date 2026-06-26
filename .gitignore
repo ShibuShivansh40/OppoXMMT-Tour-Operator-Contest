@@ -1,0 +1,20 @@
+# Node
+Backend/node_modules/
+node_modules/
+
+# Environment files - NEVER commit secrets
+Backend/.env
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test/scratch files
+test_photo.jpg
+Backend/test_s3.js
+Backend/test_upload_pipeline.js
+Backend/fix_s3_cors.js
