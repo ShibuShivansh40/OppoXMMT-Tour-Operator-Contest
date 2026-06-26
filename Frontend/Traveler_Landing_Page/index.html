@@ -384,49 +384,6 @@
 
       </section>
 
-      <!-- Branding Carousel / YouTube Showcase -->
-      <section class="w-full">
-        <div class="text-center mb-6">
-          <h3 class="text-xs uppercase tracking-[0.2em] text-[#0052e4] font-bold">Campaign Showcase</h3>
-          <h2 class="text-xl md:text-2xl font-extrabold mt-1 text-[#1e3459]">Captured on OPPO Reno15 Series</h2>
-        </div>
-
-        <div class="sliderContainer max-w-4xl mx-auto px-1 md:px-10 relative">
-          <!-- Horizontal scroll wrapper for responsive swipe on mobile -->
-          <div class="video-grid" id="videoSlider">
-            <div class="videoCol bg-slate-900 border border-slate-200">
-              <iframe src="https://www.youtube-nocookie.com/embed/6Bp9SypIcHk"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            </div>
-            <div class="videoCol bg-slate-900 border border-slate-200">
-              <iframe src="https://www.youtube-nocookie.com/embed/cp8JPQCH-nI"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            </div>
-            <div class="videoCol bg-slate-900 border border-slate-200">
-              <iframe src="https://www.youtube-nocookie.com/embed/BBfEey7p6dU"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            </div>
-            <div class="videoCol bg-slate-900 border border-slate-200">
-              <iframe src="https://www.youtube-nocookie.com/embed/l0zpGYWlPwg"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            </div>
-            <div class="videoCol bg-slate-900 border border-slate-200">
-              <iframe src="https://www.youtube-nocookie.com/embed/ADb2gfmEkok"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            </div>
-          </div>
-
-          <!-- Navigation Buttons (Desktop only) -->
-          <button type="button" id="sliderPrev"
-            class="hidden md:flex absolute top-1/2 -left-3 -translate-y-1/2 w-10 h-10 items-center justify-center rounded-full bg-slate-800/90 hover:bg-[#0052e4] text-white border border-slate-200 active:scale-95 transition-all text-lg font-bold shadow-lg">
-            ‹
-          </button>
-          <button type="button" id="sliderNext"
-            class="hidden md:flex absolute top-1/2 -right-3 -translate-y-1/2 w-10 h-10 items-center justify-center rounded-full bg-slate-800/90 hover:bg-[#0052e4] text-white border border-slate-200 active:scale-95 transition-all text-lg font-bold shadow-lg">
-            ›
-          </button>
-        </div>
-      </section>
 
       <!-- Contest Form (Enter Your Details) -->
       <section class="w-full text-center" id="contestFormSection">
@@ -673,10 +630,7 @@
       couponCode: document.getElementById('couponCode'),
       couponClipboardMsg: document.getElementById('couponClipboardMsg'),
       imageModal: document.getElementById('imageModal'),
-      modalImg: document.getElementById('modalImg'),
-      videoSlider: document.getElementById('videoSlider'),
-      sliderPrev: document.getElementById('sliderPrev'),
-      sliderNext: document.getElementById('sliderNext')
+      modalImg: document.getElementById('modalImg')
     };
 
     // Load initial API endpoint configuration
@@ -748,17 +702,6 @@
       });
     });
 
-    // --- Video Slider / Carousel Navigation ---
-    elements.sliderNext.addEventListener('click', () => {
-      const scrollAmount = elements.videoSlider.clientWidth * 0.8;
-      elements.videoSlider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-    });
-
-    // --- Video Slider / Carousel Navigation Prev ---
-    elements.sliderPrev.addEventListener('click', () => {
-      const scrollAmount = elements.videoSlider.clientWidth * 0.8;
-      elements.videoSlider.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-    });
 
     // --- Autocomplete Dropdown Logic: Location ---
     elements.locationInput.addEventListener('input', (e) => {
