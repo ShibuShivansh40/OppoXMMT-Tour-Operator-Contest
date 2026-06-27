@@ -17,9 +17,12 @@
           colors: {
             oppoGreen: '#005a36',
             oppoEmerald: '#00b064',
+            oppoMint: '#00e5ff',
             oppoDark: '#0b1610',
             mmtBlue: '#0052e4',
-            mmtOrange: '#ff5a00'
+            mmtOrange: '#ff5a00',
+            darkBg: '#020a06',
+            cardBg: '#05120c'
           },
           fontFamily: {
             sans: ['Lato', 'Inter', 'sans-serif'],
@@ -32,62 +35,81 @@
   <!-- SheetJS Library for multi-sheet Excel report generation -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Lato', sans-serif;
+      background-color: #020a06;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .glass-card {
+      background: rgba(5, 18, 12, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 176, 100, 0.12);
+    }
+
+    .custom-gradient-text {
+      background: linear-gradient(135deg, #00e5ff 0%, #00b064 50%, #0052e4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .text-glow {
+      text-shadow: 0 0 20px rgba(0, 229, 255, 0.35);
     }
 
     .custom-scrollbar::-webkit-scrollbar {
       width: 6px;
+      height: 6px;
     }
 
     .custom-scrollbar::-webkit-scrollbar-track {
-      background: transparent;
+      background: rgba(0, 0, 0, 0.2);
     }
 
     .custom-scrollbar::-webkit-scrollbar-thumb {
-      background-color: rgba(156, 163, 175, 0.3);
-      border-radius: 20px;
+      background: rgba(0, 176, 100, 0.2);
+      border-radius: 3px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 176, 100, 0.35);
     }
   </style>
 </head>
 
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
+<body class="text-slate-100 min-h-screen flex flex-col antialiased bg-gradient-to-br from-[#020a06] via-[#05120c] to-[#0a2215]">
 
   <!-- Main Top Bar -->
-  <header class="bg-[#05140d] text-white py-4 px-6 flex items-center justify-between shadow-md sticky top-0 z-30">
+  <header class="bg-[#05120c]/90 border-b border-white/5 text-white py-4 px-6 flex items-center justify-between shadow-lg sticky top-0 z-30 backdrop-blur-md">
     <div class="flex items-center gap-3">
-      <div class="text-oppoEmerald font-bold tracking-widest text-lg font-mono uppercase">
+      <div class="text-oppoEmerald font-black tracking-widest text-lg font-mono uppercase text-glow">
         OPPO
       </div>
       <span class="text-white/20">×</span>
-      <div
-        class="bg-white/10 text-white font-semibold px-2 py-0.5 rounded text-xs flex items-center gap-0.5 border border-white/5">
-        <span class="text-mmtBlue">make</span><span class="text-mmtOrange">my</span><span
-          class="text-slate-200">trip</span>
-      </div>
-      <span class="text-slate-600">|</span>
-      <span
-        class="text-[10px] uppercase tracking-wider text-oppoEmerald font-bold bg-oppoGreen/20 px-2.5 py-0.5 rounded border border-oppoEmerald/30">Client
-        Dashboard</span>
+      <a href="https://www.makemytrip.com" target="_blank" rel="noopener noreferrer">
+        <img src="https://promos.makemytrip.com/images/mmtlogo.webp" alt="MakeMyTrip Logo" class="max-w-[130px]"
+          style="background-color: white; padding: 8px 12px; border-radius: 10px;">
+      </a>
+      <span class="text-white/20">|</span>
+      <p class="text-base md:text-lg uppercase tracking-wider text-oppoMint font-extrabold text-glow">Client Dashboard</p>
     </div>
 
     <div class="flex items-center gap-4 text-xs">
       <!-- Configurable API Endpoint -->
-      <div class="bg-white/10 px-3 py-1.5 rounded-lg border border-white/10 flex gap-2 items-center">
-        <span class="text-slate-300 font-medium">Server API:</span>
+      <div class="bg-white/5 px-3 py-1.5 rounded-lg border border-white/10 flex gap-2 items-center">
+        <span class="text-slate-400 font-medium">Server API:</span>
         <input type="text" id="apiEndpoint" value="http://localhost:5000"
-          class="bg-black/35 text-white border-none rounded px-2 py-0.5 w-36 focus:outline-none focus:ring-1 focus:ring-oppoEmerald text-xxs">
-        <button id="refreshBtn" class="hover:text-oppoEmerald transition-colors" title="Reload Gallery">🔄</button>
+          class="bg-black/40 text-gray-200 border-none rounded px-2.5 py-0.5 w-36 focus:outline-none focus:ring-1 focus:ring-oppoEmerald text-xxs">
+        <button id="refreshBtn" class="hover:text-oppoMint transition-colors" title="Reload Gallery">🔄</button>
       </div>
       <div class="flex items-center gap-2">
-        <div
-          class="w-8 h-8 rounded-full bg-oppoGreen flex items-center justify-center font-bold border border-white/20">O
+        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-oppoGreen to-oppoEmerald flex items-center justify-center font-bold text-white shadow-md border border-white/20">O
         </div>
-        <span class="font-medium hidden md:inline">OPPO Admin</span>
+        <span class="font-semibold hidden md:inline text-slate-200">OPPO Admin</span>
       </div>
     </div>
   </header>
@@ -96,23 +118,23 @@
   <div class="flex flex-1 flex-col md:flex-row min-h-screen">
 
     <!-- Sidebar Navigation -->
-    <aside class="w-full md:w-64 bg-[#0b1b14] text-slate-300 p-6 flex flex-col gap-6">
-      <div class="text-xxs uppercase tracking-widest text-slate-500 font-semibold">Workspace</div>
+    <aside class="w-full md:w-64 bg-[#05120c]/85 border-r border-white/5 p-6 flex flex-col gap-6 backdrop-blur-md">
+      <div class="text-xxs uppercase tracking-widest text-slate-500 font-bold">Workspace</div>
       <nav class="flex flex-col gap-2">
         <button id="tabShowcase"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl bg-oppoGreen text-white font-medium text-sm transition-all text-left w-full">
+          class="flex items-center gap-3 px-4 py-3 rounded-xl bg-oppoGreen text-white font-bold text-sm transition-all duration-300 text-left w-full shadow-lg shadow-oppoGreen/25">
           <span>🖼️</span> Showcase Gallery
         </button>
         <button id="tabWinners"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800/40 text-slate-300 hover:text-white text-sm transition-all text-left w-full">
+          class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full">
           <span>🏆</span> Selected Winners
           <span id="winnersBadge"
-            class="ml-auto bg-oppoEmerald text-black font-bold text-[10px] px-2 py-0.5 rounded-full hidden">0</span>
+            class="ml-auto bg-oppoEmerald text-black font-extrabold text-[10px] px-2.5 py-0.5 rounded-full hidden">0</span>
         </button>
       </nav>
 
-      <div class="mt-auto pt-6 border-t border-slate-800 text-xxs text-slate-500 flex flex-col gap-2">
-        <p>OPPO x MMT UGC Platform</p>
+      <div class="mt-auto pt-6 border-t border-white/5 text-xxs text-slate-500 flex flex-col gap-2">
+        <p class="font-medium text-slate-400">OPPO x MMT UGC Platform</p>
         <p>Client Review Module</p>
       </div>
     </aside>
@@ -122,61 +144,55 @@
 
       <!-- Toast Notification -->
       <div id="toast"
-        class="hidden text-xs rounded-xl p-3 shadow-md flex items-center gap-2 border border-slate-100 transition-all">
+        class="hidden text-xs rounded-xl p-3.5 shadow-xl flex items-center gap-2.5 border transition-all duration-300 z-40">
       </div>
 
       <!-- Title & Action Bar -->
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
         <div>
-          <h2 class="text-2xl font-extrabold tracking-tight text-slate-900" id="galleryTitle">Showcase Gallery</h2>
-          <p class="text-sm text-slate-500 mt-1" id="galleryDesc">Review MMT-approved entries, mark contest winners, and
-            compile audit logs.</p>
+          <h2 class="text-2xl md:text-3xl font-black tracking-tight text-white uppercase" id="galleryTitle">Showcase Gallery</h2>
+          <p class="text-sm text-slate-400 mt-1" id="galleryDesc">Review MMT-approved entries, mark contest winners, and compile audit logs.</p>
         </div>
 
         <!-- Export Report Button -->
         <button id="exportExcelBtn"
-          class="bg-oppoGreen hover:bg-opacity-95 text-white font-semibold py-2.5 px-5 rounded-xl shadow-md transition-all text-xs tracking-wide flex items-center gap-2 active:scale-95">
+          class="bg-gradient-to-r from-oppoEmerald to-oppoGreen hover:from-oppoMint hover:to-oppoEmerald text-white font-extrabold py-2.5 px-5 rounded-xl shadow-lg shadow-oppoEmerald/10 transition-all duration-300 text-xs tracking-wide flex items-center gap-2 active:scale-95 font-sans">
           <span>📊</span> Generate Multi-Sheet Excel Report
         </button>
       </div>
 
       <!-- Stats Summary Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex items-center justify-between">
+        <div class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-[#00b064]/20">
           <div>
-            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Approved Submissions</p>
-            <h3 id="statApproved" class="text-3xl font-extrabold text-slate-800 mt-1">0</h3>
+            <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Approved Submissions</p>
+            <h3 id="statApproved" class="text-3xl font-extrabold text-white mt-1">0</h3>
           </div>
-          <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-oppoEmerald flex items-center justify-center text-xl">🖼️
-          </div>
+          <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-oppoEmerald flex items-center justify-center text-xl">🖼️</div>
         </div>
-        <div
-          class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex items-center justify-between border-oppoGreen/20 bg-oppoGreen/5">
+        <div class="glass-card rounded-2xl p-6 flex items-center justify-between border-[#00b064]/25 bg-oppoGreen/10 transition-all duration-300 hover:scale-[1.03] hover:border-[#00e5ff]/20">
           <div>
-            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Selected Winners</p>
-            <h3 id="statWinners" class="text-3xl font-extrabold text-oppoGreen mt-1">0</h3>
+            <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Selected Winners</p>
+            <h3 id="statWinners" class="text-3xl font-extrabold text-oppoMint mt-1 text-glow">0</h3>
           </div>
-          <div class="w-12 h-12 rounded-2xl bg-oppoGreen/15 text-oppoGreen flex items-center justify-center text-xl">🏆
-          </div>
+          <div class="w-12 h-12 rounded-2xl bg-[#00b064]/20 border border-[#00b064]/30 text-oppoMint flex items-center justify-center text-xl text-glow">🏆</div>
         </div>
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex items-center justify-between">
+        <div class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-[#00b064]/20">
           <div>
-            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Active Locations</p>
-            <h3 id="statLocations" class="text-3xl font-extrabold text-slate-800 mt-1">0</h3>
+            <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Active Locations</p>
+            <h3 id="statLocations" class="text-3xl font-extrabold text-white mt-1">0</h3>
           </div>
-          <div class="w-12 h-12 rounded-2xl bg-blue-50 text-mmtBlue flex items-center justify-center text-xl">📍</div>
+          <div class="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-[#00e5ff] flex items-center justify-center text-xl">📍</div>
         </div>
       </div>
 
       <!-- Quick Info Card -->
-      <div
-        class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col md:flex-row items-center gap-6 justify-between">
+      <div class="glass-card rounded-2xl p-6 flex flex-col md:flex-row items-center gap-6 justify-between border-l-4 border-l-oppoMint">
         <div class="flex gap-4 items-center">
-          <div class="text-4xl">💡</div>
+          <div class="text-3xl">💡</div>
           <div>
-            <h4 class="font-bold text-slate-800">Contest Audit Reports Ready!</h4>
-            <p class="text-xs text-slate-500 mt-0.5">Use the Generate Excel Report button to fetch all campaign data,
-              approved media URLs, and winner contact details in one file.</p>
+            <h4 class="font-extrabold text-white">Contest Audit Reports Ready!</h4>
+            <p class="text-xs text-slate-400 mt-0.5">Use the Generate Excel Report button to fetch all campaign data, approved media URLs, and winner contact details in one file.</p>
           </div>
         </div>
       </div>
@@ -185,15 +201,15 @@
       <section id="gallerySection" class="flex flex-col gap-6">
         <!-- Loading indicator -->
         <div id="galleryLoading" class="py-20 text-center flex flex-col items-center gap-3">
-          <span class="text-3xl animate-spin text-oppoEmerald">⏳</span>
+          <span class="text-3xl animate-spin text-oppoMint text-glow">⏳</span>
           <p class="text-xs font-semibold text-slate-400">Loading approved traveler images...</p>
         </div>
 
         <!-- Empty state -->
         <div id="galleryEmpty"
-          class="hidden py-20 text-center flex flex-col items-center gap-3 bg-white rounded-2xl border border-slate-150 shadow-sm">
+          class="hidden py-20 text-center flex flex-col items-center gap-3 glass-card rounded-2xl shadow-lg">
           <span class="text-4xl">📭</span>
-          <p class="text-sm font-bold text-slate-800">No approved entries found</p>
+          <p class="text-sm font-bold text-white">No approved entries found</p>
           <p class="text-xs text-slate-500">Make sure MMT moderators have approved files in their dashboard queue.</p>
         </div>
 
@@ -207,11 +223,10 @@
       <section id="winnersSection" class="hidden flex flex-col gap-6">
         <!-- Empty state -->
         <div id="winnersEmpty"
-          class="hidden py-20 text-center flex flex-col items-center gap-3 bg-white rounded-2xl border border-slate-150 shadow-sm">
+          class="hidden py-20 text-center flex flex-col items-center gap-3 glass-card rounded-2xl shadow-lg">
           <span class="text-4xl">🏆</span>
-          <p class="text-sm font-bold text-slate-800">No winners selected yet</p>
-          <p class="text-xs text-slate-500">Go to the Showcase tab and click "Mark Winner" on your favorite submissions.
-          </p>
+          <p class="text-sm font-bold text-white">No winners selected yet</p>
+          <p class="text-xs text-slate-500">Go to the Showcase tab and click "Mark Winner" on your favorite submissions.</p>
         </div>
 
         <!-- Winners Grid -->
@@ -226,8 +241,10 @@
   <!-- Lightbox Modal -->
   <div id="imageModal" class="hidden fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-6"
     onclick="closeImageModal()">
-    <button class="absolute top-4 right-4 text-white text-3xl font-bold" onclick="closeImageModal()">×</button>
-    <img id="modalImg" src="" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl border border-white/10">
+    <button class="absolute top-4 right-4 text-white text-3xl font-bold hover:scale-115 transition-transform" onclick="closeImageModal()">×</button>
+    <div class="relative max-w-4xl max-h-full flex items-center justify-center animate-zoom-in" onclick="event.stopPropagation()">
+      <img id="modalImg" src="" class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl border border-white/10">
+    </div>
   </div>
 
   <!-- Script Logic -->
@@ -282,12 +299,12 @@
 
     // Toast helpers
     function showToast(text, type = 'success') {
-      elements.toast.classList.remove('hidden', 'bg-red-50', 'text-red-700', 'border-red-100', 'bg-emerald-50', 'text-emerald-700', 'border-emerald-100');
+      elements.toast.classList.remove('hidden', 'bg-red-500/10', 'text-red-400', 'border-red-500/20', 'bg-emerald-500/10', 'text-oppoMint', 'border-emerald-500/20');
 
       if (type === 'error') {
-        elements.toast.classList.add('bg-red-50', 'text-red-700', 'border', 'border-red-100');
+        elements.toast.classList.add('bg-red-500/10', 'text-red-400', 'border', 'border-red-500/20');
       } else {
-        elements.toast.classList.add('bg-emerald-50', 'text-emerald-700', 'border', 'border-emerald-100');
+        elements.toast.classList.add('bg-emerald-500/10', 'text-oppoMint', 'border', 'border-emerald-500/20');
       }
       elements.toast.innerText = text;
       elements.toast.classList.remove('hidden');
@@ -304,15 +321,15 @@
       const galleryDesc = document.getElementById('galleryDesc');
 
       if (tabName === 'showcase') {
-        elements.tabShowcase.className = 'flex items-center gap-3 px-4 py-3 rounded-xl bg-oppoGreen text-white font-medium text-sm transition-all text-left w-full';
-        elements.tabWinners.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800/40 text-slate-300 hover:text-white text-sm transition-all text-left w-full';
+        elements.tabShowcase.className = 'flex items-center gap-3 px-4 py-3 rounded-xl bg-oppoGreen text-white font-bold text-sm transition-all duration-300 text-left w-full shadow-lg shadow-oppoGreen/25';
+        elements.tabWinners.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full';
         elements.gallerySection.classList.remove('hidden');
         elements.winnersSection.classList.add('hidden');
         galleryTitle.innerText = "Showcase Gallery";
         galleryDesc.innerText = "Review MMT-approved entries, mark contest winners, and compile audit logs.";
       } else {
-        elements.tabWinners.className = 'flex items-center gap-3 px-4 py-3 rounded-xl bg-oppoGreen text-white font-medium text-sm transition-all text-left w-full';
-        elements.tabShowcase.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800/40 text-slate-300 hover:text-white text-sm transition-all text-left w-full';
+        elements.tabWinners.className = 'flex items-center gap-3 px-4 py-3 rounded-xl bg-oppoGreen text-white font-bold text-sm transition-all duration-300 text-left w-full shadow-lg shadow-oppoGreen/25';
+        elements.tabShowcase.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full';
         elements.gallerySection.classList.add('hidden');
         elements.winnersSection.classList.remove('hidden');
         galleryTitle.innerText = "Contest Winners";
@@ -375,6 +392,7 @@
         return;
       }
 
+      elements.galleryEmpty.classList.add('hidden');
       elements.galleryGrid.classList.remove('hidden');
       state.approvedEntries.forEach(entry => {
         const card = createEntryCard(entry);
@@ -403,31 +421,30 @@
     // Helper: create card element
     function createEntryCard(entry) {
       const div = document.createElement('div');
-      div.className = 'bg-white rounded-2xl overflow-hidden shadow-sm flex flex-col group relative border border-slate-100';
+      div.className = 'glass-card rounded-2xl overflow-hidden shadow-lg flex flex-col group relative border border-[#00b064]/10 hover:border-[#00b064]/25 transition-all duration-300';
 
       const winnerStatus = entry.is_winner;
       const winnerBtnClass = winnerStatus
-        ? 'bg-oppoGreen text-white border-oppoGreen hover:bg-opacity-90'
-        : 'bg-slate-50 text-slate-700 border-slate-200 hover:border-oppoGreen hover:text-oppoGreen';
+        ? 'bg-oppoEmerald text-white border-oppoEmerald hover:bg-opacity-95 shadow shadow-oppoEmerald/25'
+        : 'bg-white/5 text-slate-300 border-white/10 hover:border-oppoEmerald hover:text-oppoEmerald';
 
       // Traveler / operator badge
       const roleBadge = entry.user_role === 'traveler'
-        ? '<span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-[10px] font-bold">Traveler</span>'
-        : '<span class="bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded text-[10px] font-bold">Operator</span>';
+        ? '<span class="bg-blue-500/10 text-[#00e5ff] border border-blue-500/20 px-2 py-0.5 rounded text-[10px] font-bold">Traveler</span>'
+        : '<span class="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2 py-0.5 rounded text-[10px] font-bold">Operator</span>';
 
-      // Advanced metadata tags for visual wow and context
       const nameEl = entry.full_name
-        ? `<h3 class="text-sm font-bold text-slate-800 tracking-wide mt-1">${entry.full_name}</h3>`
-        : '<h3 class="text-sm font-bold text-slate-400 tracking-wide mt-1 italic">Anonymous Submitter</h3>';
+        ? `<h3 class="text-sm font-bold text-white tracking-wide mt-1">${entry.full_name}</h3>`
+        : '<h3 class="text-sm font-bold text-slate-500 tracking-wide mt-1 italic">Anonymous Submitter</h3>';
 
       const handleBadge = entry.insta_handle
-        ? `<span class="bg-purple-50 text-purple-700 border border-purple-100 px-2 py-0.5 rounded text-[10px] font-medium tracking-wide">📸 @${entry.insta_handle.replace(/^@/, '')}</span>`
+        ? `<span class="bg-purple-500/10 text-purple-300 border border-purple-500/20 px-2 py-0.5 rounded text-[10px] font-medium tracking-wide">📸 @${entry.insta_handle.replace(/^@/, '')}</span>`
         : '';
       const deviceBadge = entry.device
-        ? `<span class="bg-slate-50 text-slate-600 border border-slate-100 px-2 py-0.5 rounded text-[10px] font-medium">📱 ${entry.device}</span>`
+        ? `<span class="bg-white/5 text-slate-300 border border-white/10 px-2 py-0.5 rounded text-[10px] font-medium">📱 ${entry.device}</span>`
         : '';
       const operatorBadge = entry.tour_manager
-        ? `<span class="bg-emerald-50 text-emerald-700 border border-emerald-100 px-2 py-0.5 rounded text-[10px] font-medium">👤 OP: ${entry.tour_manager}</span>`
+        ? `<span class="bg-[#00b064]/10 text-oppoEmerald border border-[#00b064]/20 px-2 py-0.5 rounded text-[10px] font-medium">👤 OP: ${entry.tour_manager}</span>`
         : '';
 
       const tagsRow = (handleBadge || deviceBadge || operatorBadge)
@@ -438,13 +455,13 @@
       const isVideo = entry.file_name && /\.(mp4|mov|avi|mkv|webm)$/i.test(entry.file_name);
 
       div.innerHTML = `
-        <!-- Image Container (click handler set via JS below, NOT inline onclick) -->
-        <div id="img-container-${entry.id}" class="relative aspect-video w-full overflow-hidden cursor-pointer">
+        <!-- Image Container -->
+        <div id="img-container-${entry.id}" class="relative aspect-video w-full overflow-hidden cursor-pointer bg-slate-950">
           ${isVideo
           ? `<div class="w-full h-full bg-slate-900 flex items-center justify-center text-4xl">🎥</div>`
-          : `<img src="${entry.media_url}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://placehold.co/400x300?text=UGC+Campaign+Asset'" alt="${entry.file_name || 'UGC Asset'}">`
+          : `<img src="${entry.media_url}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/400x300?text=UGC+Campaign+Asset'" alt="${entry.file_name || 'UGC Asset'}">`
         }
-          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-85"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent opacity-90"></div>
           
           <!-- Role and ID -->
           <div class="absolute top-3 left-3 flex gap-2">
@@ -453,7 +470,7 @@
           </div>
 
           <!-- Selection Badge -->
-          ${winnerStatus ? '<div class="absolute top-3 right-3 text-xs bg-yellow-400 text-black font-extrabold px-2 py-0.5 rounded-full shadow-lg flex items-center gap-1">🏆 Winner</div>' : ''}
+          ${winnerStatus ? '<div class="absolute top-3 right-3 text-xs bg-yellow-400 text-black font-extrabold px-2.5 py-0.5 rounded-full shadow-lg flex items-center gap-1 border border-yellow-300">🏆 Winner</div>' : ''}
 
           <!-- Details Bottom -->
           <div class="absolute bottom-3 left-3 right-3">
@@ -470,7 +487,7 @@
             </div>
             
             ${nameEl}
-            <p class="text-slate-400 text-xxs truncate mt-1.5" title="${entry.file_name}">${entry.file_name || '—'}</p>
+            <p class="text-slate-500 text-xxs truncate mt-1.5" title="${entry.file_name}">${entry.file_name || '—'}</p>
             ${tagsRow}
           </div>
 

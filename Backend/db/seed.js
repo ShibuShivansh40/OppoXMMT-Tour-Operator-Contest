@@ -114,16 +114,72 @@ function postSubmission(data) {
   });
 }
 
+function moderateSubmission(id, status) {
+  return new Promise((resolve, reject) => {
+    const postData = JSON.stringify({ status });
+    const req = http.request(
+      {
+        hostname: 'localhost',
+        port: 5000,
+        path: `/api/submissions/${id}/moderate`,
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(postData)
+        }
+      },
+      (res) => {
+        let body = '';
+        res.on('data', chunk => body += chunk);
+        res.on('end', () => {
+          if (res.statusCode === 200) {
+            resolve(JSON.parse(body));
+          } else {
+            reject(new Error(`Failed to moderate submission: ${res.statusCode} - ${body}`));
+          }
+        });
+      }
+    );
+
+    req.on('error', (e) => reject(e));
+    req.write(postData);
+    req.end();
+  });
+}
+
 async function run() {
   console.log('Seeding mock data to running server...');
+  const seededIds = [];
   for (const sub of submissions) {
     try {
       const res = await postSubmission(sub);
       console.log(`Successfully seeded submission: ${res.data.file_name} (ID: ${res.data.id})`);
+      seededIds.push(res.data.id);
     } catch (err) {
       console.error(err.message);
     }
   }
+
+  console.log('Moderating some submissions to approved/rejected status for testing...');
+  // Approve the first 3 submissions, reject the 4th, leave others pending
+  const moderateActions = [
+    { id: seededIds[0], status: 'approved' },
+    { id: seededIds[1], status: 'approved' },
+    { id: seededIds[2], status: 'approved' },
+    { id: seededIds[3], status: 'rejected' }
+  ];
+
+  for (const action of moderateActions) {
+    if (action.id) {
+      try {
+        await moderateSubmission(action.id, action.status);
+        console.log(`Successfully moderated submission ID ${action.id} to '${action.status}'`);
+      } catch (err) {
+        console.error(`Failed to moderate ID ${action.id}: ${err.message}`);
+      }
+    }
+  }
+
   console.log('Seeding completed.');
 }
 

@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const s3 = require('../config/s3');
 
 /**
  * Log a new submission metadata after file upload.
@@ -63,11 +64,15 @@ async function createSubmission(req, res) {
       instaHandle || null
     ];
     const result = await db.query(queryText, params);
+    const signedUrl = await s3.getSignedDownloadUrl(result.rows[0].media_url);
 
     return res.status(201).json({
       success: true,
       message: 'Submission successfully recorded.',
-      data: result.rows[0]
+      data: {
+        ...result.rows[0],
+        media_url: signedUrl
+      }
     });
   } catch (error) {
     console.error('[Submission Controller] Error creating submission:', error);
@@ -114,11 +119,15 @@ async function getSubmissions(req, res) {
     queryText += ' ORDER BY id DESC';
 
     const result = await db.query(queryText, params);
+    const signedRows = await Promise.all(result.rows.map(async (row) => {
+      const signedUrl = await s3.getSignedDownloadUrl(row.media_url);
+      return { ...row, media_url: signedUrl };
+    }));
 
     return res.status(200).json({
       success: true,
       count: result.rowCount,
-      data: result.rows
+      data: signedRows
     });
   } catch (error) {
     console.error('[Submission Controller] Error fetching submissions:', error);
@@ -161,10 +170,15 @@ async function moderateSubmission(req, res) {
       });
     }
 
+    const signedUrl = await s3.getSignedDownloadUrl(result.rows[0].media_url);
+
     return res.status(200).json({
       success: true,
       message: `Submission successfully marked as ${status}.`,
-      data: result.rows[0]
+      data: {
+        ...result.rows[0],
+        media_url: signedUrl
+      }
     });
   } catch (error) {
     console.error('[Submission Controller] Error moderating submission:', error);
@@ -210,10 +224,15 @@ async function selectWinner(req, res) {
       });
     }
 
+    const signedUrl = await s3.getSignedDownloadUrl(result.rows[0].media_url);
+
     return res.status(200).json({
       success: true,
       message: val ? 'Winner successfully selected!' : 'Winner status revoked.',
-      data: result.rows[0]
+      data: {
+        ...result.rows[0],
+        media_url: signedUrl
+      }
     });
   } catch (error) {
     console.error('[Submission Controller] Error selecting winner:', error);

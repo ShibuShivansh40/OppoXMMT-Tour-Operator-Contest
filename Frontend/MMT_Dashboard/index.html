@@ -17,11 +17,13 @@
           colors: {
             mmtBlue: '#0052e4',
             mmtLightBlue: '#eef4ff',
-            mmtIndigo: '#0a2240',
+            mmtIndigo: '#1e3459',
             mmtOrange: '#ff5a00',
             oppoGreen: '#005a36',
             oppoEmerald: '#00b064',
-            oppoMint: '#00e5ff'
+            oppoMint: '#00e5ff',
+            darkBg: '#050c1a',
+            cardBg: '#0b162c'
           },
           fontFamily: {
             sans: ['Lato', 'Inter', 'sans-serif'],
@@ -36,48 +38,73 @@
   <style>
     body {
       font-family: 'Lato', sans-serif;
+      background-color: #050c1a;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .glass-card {
+      background: rgba(11, 22, 44, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .custom-gradient-text {
+      background: linear-gradient(135deg, #00e5ff 0%, #00b064 50%, #0052e4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .text-glow {
+      text-shadow: 0 0 20px rgba(0, 229, 255, 0.35);
     }
 
     .custom-scrollbar::-webkit-scrollbar {
       width: 6px;
+      height: 6px;
     }
 
     .custom-scrollbar::-webkit-scrollbar-track {
-      background: transparent;
+      background: rgba(0, 0, 0, 0.2);
     }
 
     .custom-scrollbar::-webkit-scrollbar-thumb {
-      background-color: rgba(156, 163, 175, 0.3);
-      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 3px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.25);
     }
   </style>
 </head>
 
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
+<body class="text-slate-100 min-h-screen flex flex-col antialiased bg-gradient-to-br from-[#050c1a] via-[#091428] to-[#0c1f3d]">
 
   <!-- Main Top Bar -->
-  <header class="bg-mmtIndigo text-white py-4 px-6 flex items-center justify-between shadow-md">
+  <header class="bg-[#0b162c]/90 border-b border-white/5 text-white py-4 px-6 flex items-center justify-between shadow-lg backdrop-blur-md z-10">
     <div class="flex items-center gap-3">
-      <div class="bg-white text-mmtBlue font-extrabold px-3 py-1 rounded-lg text-sm flex items-center gap-1">
-        <span class="text-mmtOrange">make</span>my<span class="text-mmtOrange">trip</span>
-      </div>
-      <span class="text-slate-400">|</span>
-      <span class="text-xs uppercase tracking-wider text-oppoEmerald font-bold bg-white/10 px-2 py-0.5 rounded">Admin
-        Dashboard</span>
+      <a href="https://www.makemytrip.com" target="_blank" rel="noopener noreferrer">
+        <img src="https://promos.makemytrip.com/images/mmtlogo.webp" alt="MakeMyTrip Logo" class="max-w-[130px]"
+          style="background-color: white; padding: 8px 12px; border-radius: 10px;">
+      </a>
+      <span class="text-white/20">|</span>
+      <p class="text-base md:text-lg uppercase tracking-wider text-oppoMint font-extrabold text-glow">Admin Dashboard</p>
     </div>
 
     <div class="flex items-center gap-4 text-xs">
       <!-- Configurable API Endpoint -->
-      <div class="bg-white/10 px-3 py-1.5 rounded-lg border border-white/10 flex gap-2 items-center">
-        <span class="text-slate-300 font-medium">Server API:</span>
+      <div class="bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg flex gap-2 items-center">
+        <span class="text-slate-400 font-medium">Server API:</span>
         <input type="text" id="apiEndpoint" value="http://localhost:5000"
-          class="bg-black/35 text-white border-none rounded px-2 py-0.5 w-36 focus:outline-none focus:ring-1 focus:ring-oppoEmerald text-xxs">
-        <button id="refreshBtn" class="hover:text-oppoEmerald transition-colors" title="Reload Stats">🔄</button>
+          class="bg-black/40 text-gray-200 border-none rounded px-2.5 py-0.5 w-36 focus:outline-none focus:ring-1 focus:ring-oppoEmerald text-xxs">
+        <button id="refreshBtn" class="hover:text-oppoMint transition-colors" title="Reload Stats">🔄</button>
       </div>
       <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-full bg-mmtBlue flex items-center justify-center font-bold border border-white/20">A
+        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-[#0052e4] to-[#00b064] flex items-center justify-center font-bold text-white shadow-md border border-white/20">M
         </div>
-        <span class="font-medium hidden md:inline">MMT Moderator</span>
+        <span class="font-semibold hidden md:inline text-slate-200">MMT Moderator</span>
       </div>
     </div>
   </header>
@@ -86,23 +113,27 @@
   <div class="flex flex-1 flex-col md:flex-row min-h-screen">
 
     <!-- Sidebar Navigation -->
-    <aside class="w-full md:w-64 bg-slate-900 text-slate-300 p-6 flex flex-col gap-6">
-      <div class="text-xxs uppercase tracking-widest text-slate-500 font-semibold">Workspace</div>
+    <aside class="w-full md:w-64 bg-[#0b162c]/80 border-r border-white/5 p-6 flex flex-col gap-6 backdrop-blur-md">
+      <div class="text-xxs uppercase tracking-widest text-slate-500 font-bold">Workspace</div>
       <nav class="flex flex-col gap-2">
         <button id="navOverview"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl bg-mmtBlue text-white font-medium text-sm transition-all text-left">
+          class="flex items-center gap-3 px-4 py-3 rounded-xl bg-mmtBlue text-white font-bold text-sm transition-all duration-300 text-left shadow-lg shadow-mmtBlue/20">
           <span>📊</span> Overview & KPIs
         </button>
         <button id="navModeration"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 hover:text-white text-sm transition-all text-left">
+          class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 hover:text-white text-slate-400 font-bold text-sm transition-all duration-300 text-left">
           <span>🛡️</span> Moderation Queue
           <span id="pendingBadge"
             class="ml-auto bg-mmtOrange text-white text-xxs font-bold px-2 py-0.5 rounded-full hidden">0</span>
         </button>
+        <button id="navGallery"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 hover:text-white text-slate-400 font-bold text-sm transition-all duration-300 text-left">
+          <span>🖼️</span> UGC Gallery
+        </button>
       </nav>
 
-      <div class="mt-auto pt-6 border-t border-slate-800 text-xxs text-slate-500 flex flex-col gap-2">
-        <p>OPPO x MMT UGC Platform</p>
+      <div class="mt-auto pt-6 border-t border-white/5 text-xxs text-slate-500 flex flex-col gap-2">
+        <p class="font-medium text-slate-400">OPPO x MMT UGC Platform</p>
         <p>Build v1.0.0 (AWS Lambda)</p>
       </div>
     </aside>
@@ -111,74 +142,67 @@
     <main class="flex-1 p-6 md:p-10 flex flex-col gap-8">
 
       <!-- NOTIFICATION SYSTEM -->
-      <div id="toast" class="hidden text-xs rounded-xl p-3 shadow-md flex items-center gap-2 transition-all"></div>
+      <div id="toast" class="hidden text-xs rounded-xl p-3.5 shadow-xl flex items-center gap-2.5 transition-all duration-300 z-40 border"></div>
 
       <!-- PAGE 1: OVERVIEW & KPIS -->
       <section id="sectionOverview" class="flex flex-col gap-6">
         <div>
-          <h2 class="text-2xl font-extrabold tracking-tight text-slate-900">Campaign Overview</h2>
-          <p class="text-sm text-slate-500 mt-1">Real-time counts, key metrics, and activity analysis for OPPO UGC
-            entries.</p>
+          <h2 class="text-2xl md:text-3xl font-black tracking-tight text-white uppercase">Campaign <span class="custom-gradient-text text-glow">Overview</span></h2>
+          <p class="text-sm text-slate-400 mt-1">Real-time counts, key metrics, and activity analysis for OPPO UGC entries.</p>
         </div>
 
         <!-- KPI Tracker Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
           <!-- Card 1 -->
-          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex items-center justify-between">
+          <div class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-white/15">
             <div>
-              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Submissions</p>
-              <h3 id="kpiTotal" class="text-3xl font-extrabold text-slate-800 mt-1">0</h3>
+              <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Total Submissions</p>
+              <h3 id="kpiTotal" class="text-3xl font-extrabold text-white mt-1">0</h3>
             </div>
-            <div class="w-12 h-12 rounded-2xl bg-blue-50 text-mmtBlue flex items-center justify-center text-xl">📁</div>
+            <div class="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-[#00e5ff] flex items-center justify-center text-xl">📁</div>
           </div>
 
           <!-- Card 2 -->
-          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex items-center justify-between">
+          <div class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-white/15">
             <div>
-              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Approved Media</p>
-              <h3 id="kpiApproved" class="text-3xl font-extrabold text-emerald-600 mt-1">0</h3>
+              <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Approved Media</p>
+              <h3 id="kpiApproved" class="text-3xl font-extrabold text-oppoEmerald mt-1">0</h3>
             </div>
-            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl">✅
-            </div>
+            <div class="w-12 h-12 rounded-2xl bg-[#00b064]/10 border border-[#00b064]/20 text-[#00b064] flex items-center justify-center text-xl">✅</div>
           </div>
 
           <!-- Card 3 -->
-          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex items-center justify-between">
+          <div class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-white/15">
             <div>
-              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Pending Moderation</p>
+              <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Pending Moderation</p>
               <h3 id="kpiPending" class="text-3xl font-extrabold text-mmtOrange mt-1">0</h3>
             </div>
-            <div class="w-12 h-12 rounded-2xl bg-orange-50 text-mmtOrange flex items-center justify-center text-xl">⏳
-            </div>
+            <div class="w-12 h-12 rounded-2xl bg-[#ff5a00]/10 border border-[#ff5a00]/20 text-[#ff5a00] flex items-center justify-center text-xl">⏳</div>
           </div>
 
           <!-- Card 4 -->
-          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex items-center justify-between">
+          <div class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-white/15">
             <div>
-              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Unique Locations</p>
-              <h3 id="kpiLocations" class="text-3xl font-extrabold text-indigo-600 mt-1">0</h3>
+              <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Unique Locations</p>
+              <h3 id="kpiLocations" class="text-3xl font-extrabold text-[#00e5ff] mt-1">0</h3>
             </div>
-            <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl">📍
-            </div>
+            <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-[#00e5ff] flex items-center justify-center text-xl">📍</div>
           </div>
 
         </div>
 
         <!-- Quick Info Panel -->
-        <div
-          class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col md:flex-row items-center gap-6 justify-between">
+        <div class="glass-card rounded-2xl p-6 flex flex-col md:flex-row items-center gap-6 justify-between border-l-4 border-l-oppoMint">
           <div class="flex gap-4 items-center">
-            <div class="text-4xl">💡</div>
+            <div class="text-3xl">💡</div>
             <div>
-              <h4 class="font-bold text-slate-800">Pending entries are waiting for your approval!</h4>
-              <p class="text-xs text-slate-500 mt-0.5">Approved submissions will instantly sync with the OPPO Client
-                dashboard for winner selection.</p>
+              <h4 class="font-extrabold text-white">Pending entries are waiting for your approval!</h4>
+              <p class="text-xs text-slate-400 mt-0.5">Approved submissions will instantly sync with the OPPO Client dashboard for winner selection.</p>
             </div>
           </div>
           <button id="goToQueueBtn"
-            class="bg-mmtBlue hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-xl text-xs shadow-md transition-all whitespace-nowrap">Open
-            Moderation Queue</button>
+            class="bg-gradient-to-r from-oppoEmerald to-[#0052e4] hover:from-oppoMint hover:to-oppoEmerald text-white font-extrabold py-2.5 px-5 rounded-xl text-xs shadow-md transition-all duration-300 active:scale-95 whitespace-nowrap font-sans">Open Moderation Queue</button>
         </div>
       </section>
 
@@ -186,46 +210,40 @@
       <section id="sectionModeration" class="hidden flex flex-col gap-6">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h2 class="text-2xl font-extrabold tracking-tight text-slate-900">Moderation Queue</h2>
-            <p class="text-sm text-slate-500 mt-1">Inspect uploaded travel assets, verify files, and approve them for
-              client viewing.</p>
+            <h2 class="text-2xl font-black tracking-tight text-white uppercase">Moderation <span class="custom-gradient-text text-glow">Queue</span></h2>
+            <p class="text-sm text-slate-400 mt-1">Inspect uploaded travel assets, verify files, and approve them for client viewing.</p>
           </div>
 
           <!-- Filters -->
-          <div class="flex items-center gap-2 text-xs bg-white p-1.5 border border-slate-200 rounded-xl flex-wrap">
-            <button id="filterAll" class="hover:bg-slate-100 text-slate-600 font-semibold py-1.5 px-3 rounded-lg">All
-              Entries</button>
-            <button id="filterPending"
-              class="bg-mmtBlue text-white font-semibold py-1.5 px-3 rounded-lg">Pending</button>
-            <button id="filterApproved"
-              class="hover:bg-slate-100 text-slate-600 font-semibold py-1.5 px-3 rounded-lg">Approved</button>
-            <button id="filterRejected"
-              class="hover:bg-slate-100 text-slate-600 font-semibold py-1.5 px-3 rounded-lg">Rejected</button>
+          <div class="flex items-center gap-1 text-xs bg-[#0b162c] p-1 border border-white/10 rounded-xl flex-wrap font-sans">
+            <button id="filterAll" class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200">All Entries</button>
+            <button id="filterPending" class="bg-mmtBlue text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200 shadow-md">Pending</button>
+            <button id="filterApproved" class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200">Approved</button>
+            <button id="filterRejected" class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200">Rejected</button>
           </div>
         </div>
 
         <!-- Submission List Grid / Table -->
-        <div class="bg-white border border-slate-150 rounded-2xl overflow-hidden shadow-sm flex flex-col">
+        <div class="glass-card rounded-2xl overflow-hidden shadow-2xl flex flex-col border border-white/5">
 
           <!-- Loading State -->
           <div id="queueLoading" class="py-20 text-center flex flex-col items-center gap-3">
             <span class="text-3xl animate-spin">⏳</span>
-            <p class="text-xs font-semibold text-slate-500">Fetching contest entries from Database...</p>
+            <p class="text-xs font-semibold text-slate-400">Fetching contest entries from Database...</p>
           </div>
 
           <!-- Empty State -->
           <div id="queueEmpty" class="hidden py-20 text-center flex flex-col items-center gap-3">
             <span class="text-4xl">🎉</span>
-            <p class="text-sm font-bold text-slate-800">Clear queue! No records found</p>
-            <p class="text-xs text-slate-400">All submissions in this category are fully moderated.</p>
+            <p class="text-sm font-bold text-white">Clear queue! No records found</p>
+            <p class="text-xs text-slate-500">All submissions in this category are fully moderated.</p>
           </div>
 
           <!-- Submissions Queue list -->
-          <div class="overflow-x-auto w-full">
+          <div class="overflow-x-auto w-full custom-scrollbar">
             <table id="queueTable" class="w-full text-left text-sm border-collapse hidden">
               <thead>
-                <tr
-                  class="bg-slate-50 text-slate-400 text-xxs font-bold uppercase tracking-wider border-b border-slate-100">
+                <tr class="bg-white/5 text-slate-300 text-xxs font-extrabold uppercase tracking-widest border-b border-white/5">
                   <th class="p-4 pl-6">ID</th>
                   <th class="p-4">Submitter Profile</th>
                   <th class="p-4">File Details</th>
@@ -234,7 +252,7 @@
                   <th class="p-4 text-right pr-6">Action Moderation</th>
                 </tr>
               </thead>
-              <tbody id="queueBody" class="divide-y divide-slate-100 text-slate-700 font-medium">
+              <tbody id="queueBody" class="divide-y divide-white/5 text-slate-200 font-medium">
                 <!-- Dynamically rendered rows -->
               </tbody>
             </table>
@@ -243,7 +261,61 @@
         </div>
       </section>
 
+      <!-- PAGE 3: UGC GALLERY -->
+      <section id="sectionGallery" class="hidden flex flex-col gap-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-black tracking-tight text-white uppercase">UGC <span class="custom-gradient-text text-glow">Gallery</span></h2>
+            <p class="text-sm text-slate-400 mt-1">Explore all traveler photos stored in the campaign bucket, grouped and filtered.</p>
+          </div>
 
+          <!-- Dynamic Gallery Filters -->
+          <div class="flex flex-wrap items-center gap-3 text-xs font-sans">
+            <!-- Status Category -->
+            <div class="flex items-center gap-1 bg-[#0b162c] p-1 border border-white/10 rounded-xl">
+              <button id="galFilterAll" class="bg-mmtBlue text-white font-bold py-1.5 px-3 rounded-lg transition-all">All</button>
+              <button id="galFilterPending" class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all">Pending</button>
+              <button id="galFilterApproved" class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all">Approved</button>
+              <button id="galFilterRejected" class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all">Rejected</button>
+            </div>
+
+            <!-- Destination Dropdown Filter -->
+            <div class="relative">
+              <select id="galDestSelect" class="bg-[#0b162c] text-slate-200 border border-white/10 rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-oppoEmerald transition-colors cursor-pointer">
+                <option value="all">📍 All Destinations</option>
+              </select>
+            </div>
+
+            <!-- Device Dropdown Filter -->
+            <div class="relative">
+              <select id="galDeviceSelect" class="bg-[#0b162c] text-slate-200 border border-white/10 rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-oppoEmerald transition-colors cursor-pointer">
+                <option value="all">📷 All Devices</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gallery Grid Container -->
+        <div class="glass-card rounded-2xl p-6 min-h-[400px]">
+          <!-- Loading State -->
+          <div id="galleryLoading" class="py-20 text-center flex flex-col items-center gap-3">
+            <span class="text-3xl animate-spin">⏳</span>
+            <p class="text-xs font-semibold text-slate-400">Loading campaign gallery assets...</p>
+          </div>
+
+          <!-- Empty State -->
+          <div id="galleryEmpty" class="hidden py-20 text-center flex flex-col items-center gap-3">
+            <span class="text-4xl">🖼️</span>
+            <p class="text-sm font-bold text-white">No images found</p>
+            <p class="text-xs text-slate-500">Try adjusting your categories or filters.</p>
+          </div>
+
+          <!-- Images Grid -->
+          <div id="galleryGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 hidden">
+            <!-- Dynamically populated card elements -->
+          </div>
+        </div>
+      </section>
 
     </main>
   </div>
@@ -251,8 +323,11 @@
   <!-- Image Lightbox Modal Overlay -->
   <div id="imageModal" class="hidden fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-6"
     onclick="closeImageModal()">
-    <button class="absolute top-4 right-4 text-white text-3xl font-bold" onclick="closeImageModal()">×</button>
-    <img id="modalImg" src="" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl border border-white/10">
+    <button class="absolute top-4 right-4 text-white text-3xl font-bold hover:scale-115 transition-transform" onclick="closeImageModal()">×</button>
+    <!-- Prevent click inside image or content from closing modal -->
+    <div class="relative max-w-4xl max-h-full flex items-center justify-center animate-zoom-in" onclick="event.stopPropagation()">
+      <img id="modalImg" src="" class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl border border-white/10">
+    </div>
   </div>
 
   <!-- Script Logic -->
@@ -260,8 +335,9 @@
     // State management
     let state = {
       apiBaseUrl: 'http://localhost:5000',
-      activeTab: 'overview', // 'overview' or 'moderation'
-      currentFilter: 'pending', // 'pending', 'approved', 'rejected'
+      activeTab: 'overview', // 'overview' or 'moderation' or 'gallery'
+      currentFilter: 'pending', // 'all', 'pending', 'approved', 'rejected'
+      galFilterStatus: 'all',
       submissions: [],
       stats: { total: 0, approved: 0, pending: 0, uniqueLocations: 0 }
     };
@@ -273,9 +349,11 @@
       toast: document.getElementById('toast'),
       navOverview: document.getElementById('navOverview'),
       navModeration: document.getElementById('navModeration'),
+      navGallery: document.getElementById('navGallery'),
       pendingBadge: document.getElementById('pendingBadge'),
       sectionOverview: document.getElementById('sectionOverview'),
       sectionModeration: document.getElementById('sectionModeration'),
+      sectionGallery: document.getElementById('sectionGallery'),
       goToQueueBtn: document.getElementById('goToQueueBtn'),
       filterAll: document.getElementById('filterAll'),
       filterPending: document.getElementById('filterPending'),
@@ -312,12 +390,12 @@
 
     // Helper functions
     function showToast(text, type = 'success') {
-      elements.toast.classList.remove('hidden', 'bg-red-500/20', 'text-red-600', 'bg-emerald-500/20', 'text-emerald-600', 'border-red-500/20', 'border-emerald-500/20');
+      elements.toast.classList.remove('hidden', 'bg-red-500/10', 'text-red-400', 'border-red-500/20', 'bg-emerald-500/10', 'text-oppoMint', 'border-emerald-500/20');
 
       if (type === 'error') {
-        elements.toast.classList.add('bg-red-500/20', 'text-red-600', 'border', 'border-red-500/20');
+        elements.toast.classList.add('bg-red-500/10', 'text-red-400', 'border', 'border-red-500/20');
       } else {
-        elements.toast.classList.add('bg-emerald-500/20', 'text-emerald-600', 'border', 'border-emerald-500/20');
+        elements.toast.classList.add('bg-emerald-500/10', 'text-oppoMint', 'border', 'border-emerald-500/20');
       }
       elements.toast.innerText = text;
       elements.toast.classList.remove('hidden');
@@ -334,33 +412,40 @@
       // Update sidebar styling
       const tabs = [
         { el: elements.navOverview, name: 'overview' },
-        { el: elements.navModeration, name: 'moderation' }
+        { el: elements.navModeration, name: 'moderation' },
+        { el: elements.navGallery, name: 'gallery' }
       ];
       tabs.forEach(item => {
-        if (item.name === tabName) {
-          item.el.classList.add('bg-mmtBlue', 'text-white');
-          item.el.classList.remove('hover:bg-slate-800', 'hover:text-white');
-        } else {
-          item.el.classList.remove('bg-mmtBlue', 'text-white');
-          item.el.classList.add('hover:bg-slate-800', 'hover:text-white');
+        if (item.el) {
+          if (item.name === tabName) {
+            item.el.classList.add('bg-mmtBlue', 'text-white', 'shadow-lg', 'shadow-mmtBlue/20');
+            item.el.classList.remove('hover:bg-white/5', 'hover:text-white', 'text-slate-400');
+          } else {
+            item.el.classList.remove('bg-mmtBlue', 'text-white', 'shadow-lg', 'shadow-mmtBlue/20');
+            item.el.classList.add('hover:bg-white/5', 'hover:text-white', 'text-slate-400');
+          }
         }
       });
 
       // Toggle page visibilities
       elements.sectionOverview.classList.toggle('hidden', tabName !== 'overview');
       elements.sectionModeration.classList.toggle('hidden', tabName !== 'moderation');
+      elements.sectionGallery.classList.toggle('hidden', tabName !== 'gallery');
 
       // Load specific tab data
       if (tabName === 'moderation') {
         fetchSubmissions();
+      } else if (tabName === 'gallery') {
+        fetchGallerySubmissions();
       }
     }
 
     elements.navOverview.addEventListener('click', () => setTab('overview'));
     elements.navModeration.addEventListener('click', () => setTab('moderation'));
+    elements.navGallery.addEventListener('click', () => setTab('gallery'));
     elements.goToQueueBtn.addEventListener('click', () => setTab('moderation'));
 
-    // Filter lists
+    // Filter lists inside moderation queue
     function setFilter(filterType) {
       state.currentFilter = filterType;
       const filters = [
@@ -371,12 +456,14 @@
       ];
 
       filters.forEach(item => {
-        if (item.key === filterType) {
-          item.el.classList.add('bg-mmtBlue', 'text-white');
-          item.el.classList.remove('hover:bg-slate-100', 'text-slate-600');
-        } else {
-          item.el.classList.remove('bg-mmtBlue', 'text-white');
-          item.el.classList.add('hover:bg-slate-100', 'text-slate-600');
+        if (item.el) {
+          if (item.key === filterType) {
+            item.el.classList.add('bg-mmtBlue', 'text-white', 'shadow-md');
+            item.el.classList.remove('hover:bg-white/5', 'text-slate-400');
+          } else {
+            item.el.classList.remove('bg-mmtBlue', 'text-white', 'shadow-md');
+            item.el.classList.add('hover:bg-white/5', 'text-slate-400');
+          }
         }
       });
 
@@ -393,6 +480,8 @@
       await fetchStats();
       if (state.activeTab === 'moderation') {
         await fetchSubmissions();
+      } else if (state.activeTab === 'gallery') {
+        await fetchGallerySubmissions();
       }
     }
 
@@ -420,15 +509,12 @@
       }
     }
 
-
-
     async function fetchSubmissions() {
       elements.queueLoading.classList.remove('hidden');
       elements.queueEmpty.classList.add('hidden');
       elements.queueTable.classList.add('hidden');
 
       try {
-        // If filter is 'all', fetch without status filter to get every submission
         const url = state.currentFilter === 'all'
           ? `${state.apiBaseUrl}/api/submissions`
           : `${state.apiBaseUrl}/api/submissions?status=${state.currentFilter}`;
@@ -448,6 +534,7 @@
         elements.queueLoading.classList.add('hidden');
       }
     }
+
     function renderQueue() {
       elements.queueBody.innerHTML = '';
       if (state.submissions.length === 0) {
@@ -461,11 +548,11 @@
 
       state.submissions.forEach(sub => {
         const tr = document.createElement('tr');
-        tr.className = 'hover:bg-slate-50 transition-colors border-b border-slate-100 text-xs';
+        tr.className = 'hover:bg-white/5 transition-colors border-b border-white/5 text-xs';
 
         // --- Cell 1: ID ---
         const tdId = document.createElement('td');
-        tdId.className = 'p-4 pl-6 font-mono text-slate-400 text-xs';
+        tdId.className = 'p-4 pl-6 font-mono text-slate-500 text-xs';
         tdId.textContent = '#' + sub.id;
         tr.appendChild(tdId);
 
@@ -474,20 +561,20 @@
         tdProfile.className = 'p-4';
         const roleBadgeEl = document.createElement('span');
         roleBadgeEl.className = sub.user_role === 'traveler'
-          ? 'bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs font-bold'
-          : 'bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded text-xs font-bold';
+          ? 'bg-blue-500/10 text-[#00e5ff] px-2 py-0.5 rounded text-[10px] font-bold border border-blue-500/20'
+          : 'bg-[#00b064]/10 text-oppoEmerald px-2 py-0.5 rounded text-[10px] font-bold border border-[#00b064]/20';
         roleBadgeEl.textContent = sub.user_role === 'traveler' ? 'Traveler' : 'Operator';
         const identifierP = document.createElement('p');
-        identifierP.className = 'font-bold text-slate-800 text-xs';
+        identifierP.className = 'font-bold text-slate-200 text-xs';
         identifierP.textContent = sub.user_identifier;
         const roleP = document.createElement('p');
-        roleP.className = 'mt-0.5';
+        roleP.className = 'mt-1';
         roleP.appendChild(roleBadgeEl);
         tdProfile.appendChild(identifierP);
         tdProfile.appendChild(roleP);
         tr.appendChild(tdProfile);
 
-        // --- Cell 3: Preview (fully DOM-built, no innerHTML URL injection) ---
+        // --- Cell 3: Preview ---
         const tdPreview = document.createElement('td');
         tdPreview.className = 'p-4';
 
@@ -499,14 +586,14 @@
 
         if (isVideo) {
           const videoThumb = document.createElement('div');
-          videoThumb.className = 'w-12 h-12 rounded bg-slate-100 border border-slate-200 flex items-center justify-center text-xl flex-shrink-0';
+          videoThumb.className = 'w-12 h-12 rounded bg-white/5 border border-white/10 flex items-center justify-center text-xl flex-shrink-0';
           videoThumb.textContent = '🎥';
           previewWrapper.appendChild(videoThumb);
           previewWrapper.addEventListener('click', () => window.open(sub.media_url, '_blank'));
         } else {
           const thumb = document.createElement('img');
           thumb.src = sub.media_url;
-          thumb.className = 'w-12 h-12 rounded object-cover border border-slate-200 flex-shrink-0';
+          thumb.className = 'w-12 h-12 rounded object-cover border border-white/10 flex-shrink-0';
           thumb.style.minWidth = '48px';
           thumb.alt = sub.file_name || 'UGC Asset';
           thumb.onerror = () => { thumb.src = 'https://placehold.co/100x100?text=Media'; };
@@ -517,11 +604,11 @@
         const labelDiv = document.createElement('div');
         labelDiv.style.maxWidth = '150px';
         const fileNameP = document.createElement('p');
-        fileNameP.className = 'text-slate-800 font-bold text-xs truncate';
+        fileNameP.className = 'text-slate-200 font-bold text-xs truncate';
         fileNameP.title = sub.file_name || '';
         fileNameP.textContent = sub.file_name || 'Unknown file';
         const hintP = document.createElement('p');
-        hintP.className = 'text-slate-400';
+        hintP.className = 'text-slate-500';
         hintP.style.fontSize = '10px';
         hintP.textContent = isVideo ? 'Click to open video' : 'Click to preview';
         labelDiv.appendChild(fileNameP);
@@ -534,12 +621,12 @@
         const tdDest = document.createElement('td');
         tdDest.className = 'p-4';
         const locationP = document.createElement('p');
-        locationP.className = 'font-bold text-slate-800 text-xs';
+        locationP.className = 'font-bold text-slate-200 text-xs';
         locationP.textContent = '📍 ' + (sub.location || '—');
         tdDest.appendChild(locationP);
         if (sub.tour_manager) {
           const managerP = document.createElement('p');
-          managerP.className = 'text-slate-400 mt-0.5';
+          managerP.className = 'text-slate-500 mt-0.5';
           managerP.style.fontSize = '10px';
           managerP.textContent = '🧭 ' + sub.tour_manager;
           tdDest.appendChild(managerP);
@@ -554,10 +641,10 @@
           ? new Date(sub.travel_date + 'T00:00:00').toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
           : '—';
         const sizeP = document.createElement('p');
-        sizeP.className = 'text-slate-700 font-bold text-xs';
+        sizeP.className = 'text-slate-300 font-bold text-xs';
         sizeP.textContent = sizeMB;
         const dateP = document.createElement('p');
-        dateP.className = 'text-slate-400 mt-0.5';
+        dateP.className = 'text-slate-500 mt-0.5';
         dateP.style.fontSize = '10px';
         dateP.textContent = dateFormatted;
         tdSize.appendChild(sizeP);
@@ -573,12 +660,12 @@
           btnWrap.className = 'flex justify-end gap-2';
 
           const approveBtn = document.createElement('button');
-          approveBtn.className = 'bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-1.5 px-3 rounded-lg text-xs active:scale-95 transition-all';
+          approveBtn.className = 'bg-oppoEmerald hover:bg-oppoEmerald/90 text-white font-extrabold py-1.5 px-3.5 rounded-lg text-xs active:scale-95 transition-all shadow shadow-oppoEmerald/10';
           approveBtn.textContent = 'Approve';
           approveBtn.addEventListener('click', () => moderate(sub.id, 'approved'));
 
           const rejectBtn = document.createElement('button');
-          rejectBtn.className = 'bg-red-500 hover:bg-red-600 text-white font-bold py-1.5 px-3 rounded-lg text-xs active:scale-95 transition-all';
+          rejectBtn.className = 'bg-red-600 hover:bg-red-500 text-white font-extrabold py-1.5 px-3.5 rounded-lg text-xs active:scale-95 transition-all shadow shadow-red-600/10';
           rejectBtn.textContent = 'Reject';
           rejectBtn.addEventListener('click', () => moderate(sub.id, 'rejected'));
 
@@ -591,12 +678,12 @@
 
           const badge = document.createElement('span');
           badge.className = sub.status === 'approved'
-            ? 'capitalize text-xs font-bold px-2 py-1 rounded-full bg-emerald-100 text-emerald-700'
-            : 'capitalize text-xs font-bold px-2 py-1 rounded-full bg-red-100 text-red-700';
+            ? 'capitalize text-xs font-bold px-3 py-1 rounded-full bg-[#00b064]/10 text-oppoEmerald border border-[#00b064]/20'
+            : 'capitalize text-xs font-bold px-3 py-1 rounded-full bg-red-600/10 text-red-400 border border-red-600/20';
           badge.textContent = sub.status;
 
           const changeBtn = document.createElement('button');
-          changeBtn.className = 'text-slate-400 hover:text-slate-600 underline font-semibold text-xs';
+          changeBtn.className = 'text-slate-400 hover:text-white underline font-semibold text-xs transition-colors ml-2';
           changeBtn.textContent = 'Change';
           const newStatus = sub.status === 'approved' ? 'rejected' : 'approved';
           changeBtn.addEventListener('click', () => moderate(sub.id, newStatus));
@@ -634,7 +721,238 @@
       }
     }
 
+    // --- UGC Gallery Workspace Tab Logic ---
+    async function fetchGallerySubmissions() {
+      const loading = document.getElementById('galleryLoading');
+      const empty = document.getElementById('galleryEmpty');
+      const grid = document.getElementById('galleryGrid');
 
+      loading.classList.remove('hidden');
+      empty.classList.add('hidden');
+      grid.classList.add('hidden');
+
+      try {
+        const res = await fetch(`${state.apiBaseUrl}/api/submissions`);
+        const result = await res.json();
+        if (res.ok && result.success) {
+          state.submissions = result.data;
+          populateGalleryFilterDropdowns();
+          renderGallery();
+        } else {
+          showToast('Failed to load gallery items.', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('Connection to Backend API failed.', 'error');
+      } finally {
+        loading.classList.add('hidden');
+      }
+    }
+
+    function populateGalleryFilterDropdowns() {
+      const destSelect = document.getElementById('galDestSelect');
+      const deviceSelect = document.getElementById('galDeviceSelect');
+
+      // Keep only default
+      const prevDest = destSelect.value;
+      const prevDev = deviceSelect.value;
+
+      destSelect.innerHTML = '<option value="all">📍 All Destinations</option>';
+      deviceSelect.innerHTML = '<option value="all">📷 All Devices</option>';
+
+      const locations = [...new Set(state.submissions.map(s => s.location).filter(Boolean))].sort();
+      const devices = [...new Set(state.submissions.map(s => s.device).filter(Boolean))].sort();
+
+      locations.forEach(loc => {
+        const opt = document.createElement('option');
+        opt.value = loc;
+        opt.textContent = loc;
+        destSelect.appendChild(opt);
+      });
+
+      devices.forEach(dev => {
+        const opt = document.createElement('option');
+        opt.value = dev;
+        opt.textContent = dev;
+        deviceSelect.appendChild(opt);
+      });
+
+      // Restore values if still available
+      if (locations.includes(prevDest)) destSelect.value = prevDest;
+      if (devices.includes(prevDev)) deviceSelect.value = prevDev;
+    }
+
+    function renderGallery() {
+      const grid = document.getElementById('galleryGrid');
+      const empty = document.getElementById('galleryEmpty');
+
+      grid.innerHTML = '';
+
+      const statusVal = state.galFilterStatus;
+      const destVal = document.getElementById('galDestSelect').value;
+      const deviceVal = document.getElementById('galDeviceSelect').value;
+
+      const filtered = state.submissions.filter(sub => {
+        const isVideo = sub.file_name && /\.(mp4|mov|avi|mkv|webm)$/i.test(sub.file_name);
+        if (isVideo) return false; // Gallery shows images only
+
+        const matchesStatus = statusVal === 'all' || sub.status === statusVal;
+        const matchesDest = destVal === 'all' || sub.location === destVal;
+        const matchesDevice = deviceVal === 'all' || sub.device === deviceVal;
+
+        return matchesStatus && matchesDest && matchesDevice;
+      });
+
+      if (filtered.length === 0) {
+        empty.classList.remove('hidden');
+        grid.classList.add('hidden');
+        return;
+      }
+
+      empty.classList.add('hidden');
+      grid.classList.remove('hidden');
+
+      filtered.forEach(sub => {
+        const card = document.createElement('div');
+        card.className = 'bg-[#0b162c]/65 border border-white/5 rounded-xl overflow-hidden group hover:border-white/15 transition-all duration-300 flex flex-col shadow-lg relative';
+
+        // Image container
+        const imgContainer = document.createElement('div');
+        imgContainer.className = 'w-full h-40 bg-slate-900/60 relative overflow-hidden flex items-center justify-center cursor-pointer';
+
+        const img = document.createElement('img');
+        img.src = sub.media_url;
+        img.className = 'w-full h-full object-cover transition-transform duration-500 group-hover:scale-110';
+        img.alt = sub.file_name || 'UGC Asset';
+        img.onerror = () => { img.src = 'https://placehold.co/400x300?text=Broken+Media'; };
+        imgContainer.appendChild(img);
+
+        // Hover overlay
+        const overlay = document.createElement('div');
+        overlay.className = 'absolute inset-0 bg-black/55 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-2 p-3 text-center';
+
+        const zoomBtn = document.createElement('button');
+        zoomBtn.className = 'bg-white/10 hover:bg-white/20 text-white rounded-full p-2 text-sm font-bold border border-white/25 transition-all';
+        zoomBtn.innerHTML = '🔍 View';
+        zoomBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openImageModal(sub.media_url);
+        });
+        overlay.appendChild(zoomBtn);
+
+        imgContainer.appendChild(overlay);
+        imgContainer.addEventListener('click', () => openImageModal(sub.media_url));
+        card.appendChild(imgContainer);
+
+        // Body details
+        const body = document.createElement('div');
+        body.className = 'p-4 flex flex-col gap-1.5 flex-grow text-xs text-slate-300';
+
+        const titleP = document.createElement('p');
+        titleP.className = 'font-bold text-white truncate text-sm';
+        titleP.textContent = sub.full_name || 'Anonymous Submitter';
+
+        const deviceSpan = document.createElement('p');
+        deviceSpan.className = 'text-[10px] text-slate-400 truncate';
+        deviceSpan.textContent = `📱 ${sub.device || 'Unknown Device'}`;
+
+        const locSpan = document.createElement('p');
+        locSpan.className = 'text-[10px] text-oppoMint font-semibold truncate';
+        locSpan.textContent = `📍 ${sub.location || 'Unknown Location'}`;
+
+        body.appendChild(titleP);
+        body.appendChild(deviceSpan);
+        body.appendChild(locSpan);
+
+        // Footer status / controls
+        const footer = document.createElement('div');
+        footer.className = 'mt-auto p-3 border-t border-white/5 flex items-center justify-between bg-black/20';
+
+        const statusBadge = document.createElement('span');
+        statusBadge.className = 'px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border';
+        if (sub.status === 'approved') {
+          statusBadge.className += ' bg-[#00b064]/10 text-oppoEmerald border-[#00b064]/20';
+        } else if (sub.status === 'rejected') {
+          statusBadge.className += ' bg-red-600/10 text-red-400 border-red-600/20';
+        } else {
+          statusBadge.className += ' bg-orange-600/10 text-mmtOrange border border-[#ff5a00]/20';
+        }
+        statusBadge.textContent = sub.status;
+        footer.appendChild(statusBadge);
+
+        if (sub.status === 'pending') {
+          const actionGroup = document.createElement('div');
+          actionGroup.className = 'flex gap-1.5';
+
+          const appBtn = document.createElement('button');
+          appBtn.className = 'bg-oppoEmerald hover:bg-oppoEmerald/90 text-white font-extrabold p-1 rounded transition-colors text-[10px] w-6 h-6 flex items-center justify-center';
+          appBtn.title = 'Approve';
+          appBtn.innerHTML = '✔';
+          appBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            moderate(sub.id, 'approved');
+          });
+
+          const rejBtn = document.createElement('button');
+          rejBtn.className = 'bg-red-600 hover:bg-red-500 text-white font-extrabold p-1 rounded transition-colors text-[10px] w-6 h-6 flex items-center justify-center';
+          rejBtn.title = 'Reject';
+          rejBtn.innerHTML = '✖';
+          rejBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            moderate(sub.id, 'rejected');
+          });
+
+          actionGroup.appendChild(appBtn);
+          actionGroup.appendChild(rejBtn);
+          footer.appendChild(actionGroup);
+        } else {
+          const toggleBtn = document.createElement('button');
+          toggleBtn.className = 'text-slate-400 hover:text-white text-[10px] underline transition-colors';
+          toggleBtn.textContent = sub.status === 'approved' ? 'Reject' : 'Approve';
+          toggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const target = sub.status === 'approved' ? 'rejected' : 'approved';
+            moderate(sub.id, target);
+          });
+          footer.appendChild(toggleBtn);
+        }
+
+        card.appendChild(body);
+        card.appendChild(footer);
+        grid.appendChild(card);
+      });
+    }
+
+    function setGalStatusFilter(filterType) {
+      state.galFilterStatus = filterType;
+      const filters = [
+        { el: document.getElementById('galFilterAll'), key: 'all' },
+        { el: document.getElementById('galFilterPending'), key: 'pending' },
+        { el: document.getElementById('galFilterApproved'), key: 'approved' },
+        { el: document.getElementById('galFilterRejected'), key: 'rejected' }
+      ];
+
+      filters.forEach(item => {
+        if (item.el) {
+          if (item.key === filterType) {
+            item.el.className = 'bg-mmtBlue text-white font-bold py-1.5 px-3 rounded-lg transition-all shadow-md';
+          } else {
+            item.el.className = 'hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all';
+          }
+        }
+      });
+
+      renderGallery();
+    }
+
+    // Register Gallery events
+    document.getElementById('galFilterAll').addEventListener('click', () => setGalStatusFilter('all'));
+    document.getElementById('galFilterPending').addEventListener('click', () => setGalStatusFilter('pending'));
+    document.getElementById('galFilterApproved').addEventListener('click', () => setGalStatusFilter('approved'));
+    document.getElementById('galFilterRejected').addEventListener('click', () => setGalStatusFilter('rejected'));
+
+    document.getElementById('galDestSelect').addEventListener('change', renderGallery);
+    document.getElementById('galDeviceSelect').addEventListener('change', renderGallery);
 
     // Modal helpers
     function openImageModal(url) {
@@ -642,6 +960,7 @@
       elements.imageModal.classList.remove('hidden');
     }
 
+    // Prevents closing modal immediately due to click bubbling
     function closeImageModal() {
       elements.imageModal.classList.add('hidden');
       elements.modalImg.src = '';

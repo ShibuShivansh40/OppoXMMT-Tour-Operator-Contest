@@ -1,4 +1,4 @@
-const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const { S3Client, PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
@@ -69,7 +69,31 @@ function getMockUploadDetails(fileName, bucketName, objectKey) {
   };
 }
 
+async function getSignedDownloadUrl(mediaUrl) {
+  if (!s3Client || !mediaUrl || !mediaUrl.includes('amazonaws.com')) {
+    return mediaUrl;
+  }
+  try {
+    const urlObj = new URL(mediaUrl);
+    // Pathname starts with '/', so remove leading '/' to get key
+    const objectKey = decodeURIComponent(urlObj.pathname.substring(1));
+    const bucketName = process.env.S3_BUCKET_NAME || 'oppo-mmt-ugc-media-bucket';
+
+    const command = new GetObjectCommand({
+      Bucket: bucketName,
+      Key: objectKey,
+    });
+
+    // Valid for 15 minutes (900 seconds)
+    return await getSignedUrl(s3Client, command, { expiresIn: 900 });
+  } catch (err) {
+    console.error('[S3] Error generating pre-signed GET URL:', err.message);
+    return mediaUrl;
+  }
+}
+
 module.exports = {
   s3Client,
-  generatePresignedUploadUrl
+  generatePresignedUploadUrl,
+  getSignedDownloadUrl
 };
