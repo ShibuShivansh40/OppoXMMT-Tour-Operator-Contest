@@ -508,10 +508,17 @@
       resetBtn: document.getElementById('resetBtn'),
     };
 
-    // Load initial API endpoint configuration
-    state.apiBaseUrl = elements.apiEndpoint.value.trim();
+    // Initialize Server API configuration
+    if (window.location.origin && window.location.origin !== 'null') {
+      state.apiBaseUrl = window.location.origin;
+      elements.apiEndpoint.value = window.location.origin;
+    } else {
+      state.apiBaseUrl = elements.apiEndpoint.value.trim();
+    }
+
     elements.apiEndpoint.addEventListener('input', (e) => {
       state.apiBaseUrl = e.target.value.trim();
+      loadMetadata();
     });
 
     // Preset Date picker to today by default (use local date, NOT toISOString which is UTC)
