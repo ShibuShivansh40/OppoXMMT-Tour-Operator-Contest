@@ -99,30 +99,16 @@
     </div>
 
     <div class="flex items-center gap-2 md:gap-4 text-xs">
-      <!-- Configurable API Endpoint — desktop only inline, mobile behind gear -->
+      <!-- Refresh Gallery Button -->
       <div class="hidden md:flex bg-white/5 px-3 py-1.5 rounded-lg border border-white/10 gap-2 items-center">
-        <span class="text-slate-400 font-medium">Server API:</span>
-        <input type="text" id="apiEndpoint" value="http://localhost:5000"
-          class="bg-black/40 text-gray-200 border-none rounded px-2.5 py-0.5 w-36 focus:outline-none focus:ring-1 focus:ring-oppoEmerald text-xxs">
-        <button id="refreshBtn" class="hover:text-oppoMint transition-colors" title="Reload Gallery">🔄</button>
+        <button id="refreshBtn" class="hover:text-oppoMint transition-colors flex items-center gap-1.5" title="Reload Gallery">🔄 Reload</button>
       </div>
 
-      <!-- Mobile: gear toggle for API config -->
-      <div class="relative md:hidden">
-        <button id="mobileConfigBtn" class="bg-white/5 border border-white/10 p-2 rounded-lg text-slate-400 hover:text-white transition-colors" title="API Config">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
+      <!-- Mobile: refresh gallery button -->
+      <div class="md:hidden">
+        <button id="refreshBtnMobile" class="bg-white/5 border border-white/10 p-2 rounded-lg text-slate-400 hover:text-white transition-colors" title="Reload Gallery">
+          🔄
         </button>
-        <div id="mobileConfigPanel" class="hidden absolute right-0 top-full mt-2 w-64 bg-[#05120c] border border-white/15 rounded-xl p-3 shadow-2xl z-50">
-          <p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold mb-2">API Endpoint</p>
-          <div class="flex gap-2 items-center">
-            <input type="text" id="apiEndpointMobile" value="http://localhost:5000"
-              class="flex-1 bg-black/40 text-gray-200 border border-white/10 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-oppoEmerald">
-            <button id="refreshBtnMobile" class="text-slate-400 hover:text-oppoMint transition-colors p-1" title="Reload">🔄</button>
-          </div>
-        </div>
       </div>
 
       <div class="flex items-center gap-2">
@@ -293,12 +279,8 @@
 
     // DOM Elements
     const elements = {
-      apiEndpoint: document.getElementById('apiEndpoint'),
-      apiEndpointMobile: document.getElementById('apiEndpointMobile'),
       refreshBtn: document.getElementById('refreshBtn'),
       refreshBtnMobile: document.getElementById('refreshBtnMobile'),
-      mobileConfigBtn: document.getElementById('mobileConfigBtn'),
-      mobileConfigPanel: document.getElementById('mobileConfigPanel'),
       toast: document.getElementById('toast'),
       exportExcelBtn: document.getElementById('exportExcelBtn'),
       statApproved: document.getElementById('statApproved'),
@@ -324,24 +306,8 @@
     // Load initial config dynamically
     if (window.location.origin && window.location.origin !== 'null') {
       state.apiBaseUrl = window.location.origin;
-      elements.apiEndpoint.value = window.location.origin;
-      if (elements.apiEndpointMobile) elements.apiEndpointMobile.value = window.location.origin;
     } else {
-      state.apiBaseUrl = elements.apiEndpoint.value.trim();
-    }
-
-    elements.apiEndpoint.addEventListener('input', (e) => {
-      state.apiBaseUrl = e.target.value.trim();
-      if (elements.apiEndpointMobile) elements.apiEndpointMobile.value = e.target.value.trim();
-      loadAllData();
-    });
-
-    if (elements.apiEndpointMobile) {
-      elements.apiEndpointMobile.addEventListener('input', (e) => {
-        state.apiBaseUrl = e.target.value.trim();
-        elements.apiEndpoint.value = e.target.value.trim();
-        loadAllData();
-      });
+      state.apiBaseUrl = 'http://localhost:5000';
     }
 
     elements.refreshBtn.addEventListener('click', () => {
@@ -351,20 +317,6 @@
     if (elements.refreshBtnMobile) {
       elements.refreshBtnMobile.addEventListener('click', () => {
         loadAllData();
-        elements.mobileConfigPanel.classList.add('hidden');
-      });
-    }
-
-    // Mobile config gear toggle
-    if (elements.mobileConfigBtn && elements.mobileConfigPanel) {
-      elements.mobileConfigBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        elements.mobileConfigPanel.classList.toggle('hidden');
-      });
-      document.addEventListener('click', (e) => {
-        if (!elements.mobileConfigPanel.contains(e.target) && !elements.mobileConfigBtn.contains(e.target)) {
-          elements.mobileConfigPanel.classList.add('hidden');
-        }
       });
     }
 
