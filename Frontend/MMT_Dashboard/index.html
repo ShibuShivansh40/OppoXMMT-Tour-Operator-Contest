@@ -83,26 +83,45 @@
 <body class="text-slate-100 min-h-screen flex flex-col antialiased bg-gradient-to-br from-[#050c1a] via-[#091428] to-[#0c1f3d]">
 
   <!-- Main Top Bar -->
-  <header class="bg-[#0b162c]/90 border-b border-white/5 text-white py-4 px-6 flex items-center justify-between shadow-lg backdrop-blur-md z-10">
-    <div class="flex items-center gap-3">
+  <header class="bg-[#0b162c]/90 border-b border-white/5 text-white py-3 px-4 md:py-4 md:px-6 flex items-center justify-between shadow-lg backdrop-blur-md z-10 sticky top-0">
+    <div class="flex items-center gap-2 md:gap-3">
       <a href="https://www.makemytrip.com" target="_blank" rel="noopener noreferrer">
-        <img src="https://promos.makemytrip.com/images/mmtlogo.webp" alt="MakeMyTrip Logo" class="max-w-[130px]"
-          style="background-color: white; padding: 8px 12px; border-radius: 10px;">
+        <img src="https://promos.makemytrip.com/images/mmtlogo.webp" alt="MakeMyTrip Logo" class="max-w-[100px] md:max-w-[130px]"
+          style="background-color: white; padding: 6px 10px; border-radius: 8px;">
       </a>
-      <span class="text-white/20">|</span>
-      <p class="text-base md:text-lg uppercase tracking-wider text-oppoMint font-extrabold text-glow">Admin Dashboard</p>
+      <span class="text-white/20 hidden sm:inline">|</span>
+      <p class="text-sm md:text-lg uppercase tracking-wider text-oppoMint font-extrabold text-glow hidden sm:block">Admin Dashboard</p>
     </div>
 
-    <div class="flex items-center gap-4 text-xs">
-      <!-- Configurable API Endpoint -->
-      <div class="bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg flex gap-2 items-center">
+    <div class="flex items-center gap-2 md:gap-4 text-xs">
+      <!-- Configurable API Endpoint — desktop only inline, mobile behind gear -->
+      <div class="hidden md:flex bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg gap-2 items-center">
         <span class="text-slate-400 font-medium">Server API:</span>
         <input type="text" id="apiEndpoint" value="http://localhost:5000"
           class="bg-black/40 text-gray-200 border-none rounded px-2.5 py-0.5 w-36 focus:outline-none focus:ring-1 focus:ring-oppoEmerald text-xxs">
         <button id="refreshBtn" class="hover:text-oppoMint transition-colors" title="Reload Stats">🔄</button>
       </div>
+
+      <!-- Mobile: gear toggle for API config -->
+      <div class="relative md:hidden">
+        <button id="mobileConfigBtn" class="bg-white/5 border border-white/10 p-2 rounded-lg text-slate-400 hover:text-white transition-colors flex items-center gap-1" title="API Config">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </button>
+        <div id="mobileConfigPanel" class="hidden absolute right-0 top-full mt-2 w-64 bg-[#0b162c] border border-white/15 rounded-xl p-3 shadow-2xl z-50">
+          <p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold mb-2">API Endpoint</p>
+          <div class="flex gap-2 items-center">
+            <input type="text" id="apiEndpointMobile" value="http://localhost:5000"
+              class="flex-1 bg-black/40 text-gray-200 border border-white/10 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-oppoEmerald">
+            <button id="refreshBtnMobile" class="text-slate-400 hover:text-oppoMint transition-colors p-1" title="Reload">🔄</button>
+          </div>
+        </div>
+      </div>
+
       <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-[#0052e4] to-[#00b064] flex items-center justify-center font-bold text-white shadow-md border border-white/20">M
+        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-[#0052e4] to-[#00b064] flex items-center justify-center font-bold text-white shadow-md border border-white/20 text-xs">M
         </div>
         <span class="font-semibold hidden md:inline text-slate-200">MMT Moderator</span>
       </div>
@@ -112,13 +131,13 @@
   <!-- Container -->
   <div class="flex flex-1 flex-col md:flex-row min-h-screen">
 
-    <!-- Sidebar Navigation -->
-    <aside class="w-full md:w-64 bg-[#0b162c]/80 border-r border-white/5 p-6 flex flex-col gap-6 backdrop-blur-md">
+    <!-- Sidebar Navigation — hidden on mobile (replaced by bottom tab bar) -->
+    <aside class="hidden md:flex md:w-64 bg-[#0b162c]/80 border-r border-white/5 p-6 flex-col gap-6 backdrop-blur-md flex-shrink-0">
       <div class="text-xxs uppercase tracking-widest text-slate-500 font-bold">Workspace</div>
       <nav class="flex flex-col gap-2">
         <button id="navOverview"
           class="flex items-center gap-3 px-4 py-3 rounded-xl bg-mmtBlue text-white font-bold text-sm transition-all duration-300 text-left shadow-lg shadow-mmtBlue/20">
-          <span>📊</span> Overview & KPIs
+          <span>📊</span> Overview &amp; KPIs
         </button>
         <button id="navModeration"
           class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 hover:text-white text-slate-400 font-bold text-sm transition-all duration-300 text-left">
@@ -138,8 +157,28 @@
       </div>
     </aside>
 
+    <!-- Mobile Bottom Tab Bar -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-[#0b162c]/95 border-t border-white/10 backdrop-blur-md z-40 flex items-stretch">
+      <button id="navOverviewMobile"
+        class="flex-1 flex flex-col items-center justify-center gap-1 py-3 text-white bg-mmtBlue/20 border-t-2 border-mmtBlue transition-all">
+        <span class="text-lg">📊</span>
+        <span class="text-[10px] font-bold uppercase tracking-wide">Overview</span>
+      </button>
+      <button id="navModerationMobile"
+        class="flex-1 flex flex-col items-center justify-center gap-1 py-3 text-slate-400 border-t-2 border-transparent transition-all relative">
+        <span class="text-lg">🛡️</span>
+        <span class="text-[10px] font-bold uppercase tracking-wide">Moderation</span>
+        <span id="pendingBadgeMobile" class="absolute top-1.5 right-4 bg-mmtOrange text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full hidden">0</span>
+      </button>
+      <button id="navGalleryMobile"
+        class="flex-1 flex flex-col items-center justify-center gap-1 py-3 text-slate-400 border-t-2 border-transparent transition-all">
+        <span class="text-lg">🖼️</span>
+        <span class="text-[10px] font-bold uppercase tracking-wide">Gallery</span>
+      </button>
+    </nav>
+
     <!-- Main Content Panel -->
-    <main class="flex-1 p-6 md:p-10 flex flex-col gap-8">
+    <main class="flex-1 p-4 md:p-10 flex flex-col gap-6 md:gap-8 pb-24 md:pb-10">
 
       <!-- NOTIFICATION SYSTEM -->
       <div id="toast" class="hidden text-xs rounded-xl p-3.5 shadow-xl flex items-center gap-2.5 transition-all duration-300 z-40 border"></div>
@@ -193,16 +232,16 @@
         </div>
 
         <!-- Quick Info Panel -->
-        <div class="glass-card rounded-2xl p-6 flex flex-col md:flex-row items-center gap-6 justify-between border-l-4 border-l-oppoMint">
-          <div class="flex gap-4 items-center">
-            <div class="text-3xl">💡</div>
+        <div class="glass-card rounded-2xl p-5 md:p-6 flex flex-col gap-4 md:flex-row md:items-center md:gap-6 justify-between border-l-4 border-l-oppoMint">
+          <div class="flex gap-3 items-start md:items-center">
+            <div class="text-2xl md:text-3xl flex-shrink-0">💡</div>
             <div>
-              <h4 class="font-extrabold text-white">Pending entries are waiting for your approval!</h4>
+              <h4 class="font-extrabold text-white text-sm md:text-base">Pending entries are waiting for your approval!</h4>
               <p class="text-xs text-slate-400 mt-0.5">Approved submissions will instantly sync with the OPPO Client dashboard for winner selection.</p>
             </div>
           </div>
           <button id="goToQueueBtn"
-            class="bg-gradient-to-r from-oppoEmerald to-[#0052e4] hover:from-oppoMint hover:to-oppoEmerald text-white font-extrabold py-2.5 px-5 rounded-xl text-xs shadow-md transition-all duration-300 active:scale-95 whitespace-nowrap font-sans">Open Moderation Queue</button>
+            class="bg-gradient-to-r from-oppoEmerald to-[#0052e4] hover:from-oppoMint hover:to-oppoEmerald text-white font-extrabold py-2.5 px-5 rounded-xl text-xs shadow-md transition-all duration-300 active:scale-95 whitespace-nowrap font-sans w-full md:w-auto text-center flex-shrink-0">Open Moderation Queue</button>
         </div>
       </section>
 
@@ -240,16 +279,16 @@
           </div>
 
           <!-- Submissions Queue list -->
-          <div class="overflow-x-auto w-full custom-scrollbar">
-            <table id="queueTable" class="w-full text-left text-sm border-collapse hidden">
+          <div class="overflow-x-auto w-full custom-scrollbar -webkit-overflow-scrolling-touch">
+            <table id="queueTable" class="w-full text-left text-sm border-collapse hidden" style="min-width: 700px;">
               <thead>
                 <tr class="bg-white/5 text-slate-300 text-xxs font-extrabold uppercase tracking-widest border-b border-white/5">
-                  <th class="p-4 pl-6">ID</th>
-                  <th class="p-4">Submitter Profile</th>
-                  <th class="p-4">File Details</th>
-                  <th class="p-4">Destination Info</th>
-                  <th class="p-4">File Size / Date</th>
-                  <th class="p-4 text-right pr-6">Action Moderation</th>
+                  <th class="p-3 pl-5 whitespace-nowrap">ID</th>
+                  <th class="p-3 whitespace-nowrap">Submitter</th>
+                  <th class="p-3 whitespace-nowrap">File Details</th>
+                  <th class="p-3 whitespace-nowrap">Destination</th>
+                  <th class="p-3 whitespace-nowrap">Size / Date</th>
+                  <th class="p-3 text-right pr-5 whitespace-nowrap">Actions</th>
                 </tr>
               </thead>
               <tbody id="queueBody" class="divide-y divide-white/5 text-slate-200 font-medium">
@@ -345,12 +384,20 @@
     // DOM Elements
     const elements = {
       apiEndpoint: document.getElementById('apiEndpoint'),
+      apiEndpointMobile: document.getElementById('apiEndpointMobile'),
       refreshBtn: document.getElementById('refreshBtn'),
+      refreshBtnMobile: document.getElementById('refreshBtnMobile'),
+      mobileConfigBtn: document.getElementById('mobileConfigBtn'),
+      mobileConfigPanel: document.getElementById('mobileConfigPanel'),
       toast: document.getElementById('toast'),
       navOverview: document.getElementById('navOverview'),
       navModeration: document.getElementById('navModeration'),
       navGallery: document.getElementById('navGallery'),
+      navOverviewMobile: document.getElementById('navOverviewMobile'),
+      navModerationMobile: document.getElementById('navModerationMobile'),
+      navGalleryMobile: document.getElementById('navGalleryMobile'),
       pendingBadge: document.getElementById('pendingBadge'),
+      pendingBadgeMobile: document.getElementById('pendingBadgeMobile'),
       sectionOverview: document.getElementById('sectionOverview'),
       sectionModeration: document.getElementById('sectionModeration'),
       sectionGallery: document.getElementById('sectionGallery'),
@@ -375,18 +422,48 @@
     if (window.location.origin && window.location.origin !== 'null') {
       state.apiBaseUrl = window.location.origin;
       elements.apiEndpoint.value = window.location.origin;
+      if (elements.apiEndpointMobile) elements.apiEndpointMobile.value = window.location.origin;
     } else {
       state.apiBaseUrl = elements.apiEndpoint.value.trim();
     }
 
     elements.apiEndpoint.addEventListener('input', (e) => {
       state.apiBaseUrl = e.target.value.trim();
+      if (elements.apiEndpointMobile) elements.apiEndpointMobile.value = e.target.value.trim();
       loadAllData();
     });
+
+    if (elements.apiEndpointMobile) {
+      elements.apiEndpointMobile.addEventListener('input', (e) => {
+        state.apiBaseUrl = e.target.value.trim();
+        elements.apiEndpoint.value = e.target.value.trim();
+        loadAllData();
+      });
+    }
 
     elements.refreshBtn.addEventListener('click', () => {
       loadAllData();
     });
+
+    if (elements.refreshBtnMobile) {
+      elements.refreshBtnMobile.addEventListener('click', () => {
+        loadAllData();
+        elements.mobileConfigPanel.classList.add('hidden');
+      });
+    }
+
+    // Mobile config gear toggle
+    if (elements.mobileConfigBtn && elements.mobileConfigPanel) {
+      elements.mobileConfigBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        elements.mobileConfigPanel.classList.toggle('hidden');
+      });
+      document.addEventListener('click', (e) => {
+        if (!elements.mobileConfigPanel.contains(e.target) && !elements.mobileConfigBtn.contains(e.target)) {
+          elements.mobileConfigPanel.classList.add('hidden');
+        }
+      });
+    }
 
     // Helper functions
     function showToast(text, type = 'success') {
@@ -427,6 +504,24 @@
         }
       });
 
+      // Update mobile bottom tab bar active state
+      const mobileTabs = [
+        { el: elements.navOverviewMobile, name: 'overview' },
+        { el: elements.navModerationMobile, name: 'moderation' },
+        { el: elements.navGalleryMobile, name: 'gallery' }
+      ];
+      mobileTabs.forEach(item => {
+        if (item.el) {
+          if (item.name === tabName) {
+            item.el.classList.add('text-white', 'bg-mmtBlue/20', 'border-mmtBlue');
+            item.el.classList.remove('text-slate-400', 'border-transparent');
+          } else {
+            item.el.classList.remove('text-white', 'bg-mmtBlue/20', 'border-mmtBlue');
+            item.el.classList.add('text-slate-400', 'border-transparent');
+          }
+        }
+      });
+
       // Toggle page visibilities
       elements.sectionOverview.classList.toggle('hidden', tabName !== 'overview');
       elements.sectionModeration.classList.toggle('hidden', tabName !== 'moderation');
@@ -444,6 +539,11 @@
     elements.navModeration.addEventListener('click', () => setTab('moderation'));
     elements.navGallery.addEventListener('click', () => setTab('gallery'));
     elements.goToQueueBtn.addEventListener('click', () => setTab('moderation'));
+
+    // Mobile bottom tab bar
+    if (elements.navOverviewMobile) elements.navOverviewMobile.addEventListener('click', () => setTab('overview'));
+    if (elements.navModerationMobile) elements.navModerationMobile.addEventListener('click', () => setTab('moderation'));
+    if (elements.navGalleryMobile) elements.navGalleryMobile.addEventListener('click', () => setTab('gallery'));
 
     // Filter lists inside moderation queue
     function setFilter(filterType) {
@@ -499,8 +599,13 @@
           if (state.stats.pending > 0) {
             elements.pendingBadge.innerText = state.stats.pending;
             elements.pendingBadge.classList.remove('hidden');
+            if (elements.pendingBadgeMobile) {
+              elements.pendingBadgeMobile.innerText = state.stats.pending;
+              elements.pendingBadgeMobile.classList.remove('hidden');
+            }
           } else {
             elements.pendingBadge.classList.add('hidden');
+            if (elements.pendingBadgeMobile) elements.pendingBadgeMobile.classList.add('hidden');
           }
         }
       } catch (err) {

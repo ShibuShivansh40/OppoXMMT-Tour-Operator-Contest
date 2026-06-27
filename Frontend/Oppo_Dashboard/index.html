@@ -84,30 +84,49 @@
 <body class="text-slate-100 min-h-screen flex flex-col antialiased bg-gradient-to-br from-[#020a06] via-[#05120c] to-[#0a2215]">
 
   <!-- Main Top Bar -->
-  <header class="bg-[#05120c]/90 border-b border-white/5 text-white py-4 px-6 flex items-center justify-between shadow-lg sticky top-0 z-30 backdrop-blur-md">
-    <div class="flex items-center gap-3">
-      <div class="text-oppoEmerald font-black tracking-widest text-lg font-mono uppercase text-glow">
+  <header class="bg-[#05120c]/90 border-b border-white/5 text-white py-3 px-4 md:py-4 md:px-6 flex items-center justify-between shadow-lg sticky top-0 z-30 backdrop-blur-md">
+    <div class="flex items-center gap-2 md:gap-3">
+      <div class="text-oppoEmerald font-black tracking-widest text-base md:text-lg font-mono uppercase text-glow">
         OPPO
       </div>
-      <span class="text-white/20">×</span>
-      <a href="https://www.makemytrip.com" target="_blank" rel="noopener noreferrer">
-        <img src="https://promos.makemytrip.com/images/mmtlogo.webp" alt="MakeMyTrip Logo" class="max-w-[130px]"
-          style="background-color: white; padding: 8px 12px; border-radius: 10px;">
+      <span class="text-white/20 hidden sm:inline">×</span>
+      <a href="https://www.makemytrip.com" target="_blank" rel="noopener noreferrer" class="hidden sm:block">
+        <img src="https://promos.makemytrip.com/images/mmtlogo.webp" alt="MakeMyTrip Logo" class="max-w-[100px] md:max-w-[130px]"
+          style="background-color: white; padding: 6px 10px; border-radius: 8px;">
       </a>
-      <span class="text-white/20">|</span>
-      <p class="text-base md:text-lg uppercase tracking-wider text-oppoMint font-extrabold text-glow">Client Dashboard</p>
+      <span class="text-white/20 hidden sm:inline">|</span>
+      <p class="text-sm md:text-lg uppercase tracking-wider text-oppoMint font-extrabold text-glow hidden sm:block">Client Dashboard</p>
     </div>
 
-    <div class="flex items-center gap-4 text-xs">
-      <!-- Configurable API Endpoint -->
-      <div class="bg-white/5 px-3 py-1.5 rounded-lg border border-white/10 flex gap-2 items-center">
+    <div class="flex items-center gap-2 md:gap-4 text-xs">
+      <!-- Configurable API Endpoint — desktop only inline, mobile behind gear -->
+      <div class="hidden md:flex bg-white/5 px-3 py-1.5 rounded-lg border border-white/10 gap-2 items-center">
         <span class="text-slate-400 font-medium">Server API:</span>
         <input type="text" id="apiEndpoint" value="http://localhost:5000"
           class="bg-black/40 text-gray-200 border-none rounded px-2.5 py-0.5 w-36 focus:outline-none focus:ring-1 focus:ring-oppoEmerald text-xxs">
         <button id="refreshBtn" class="hover:text-oppoMint transition-colors" title="Reload Gallery">🔄</button>
       </div>
+
+      <!-- Mobile: gear toggle for API config -->
+      <div class="relative md:hidden">
+        <button id="mobileConfigBtn" class="bg-white/5 border border-white/10 p-2 rounded-lg text-slate-400 hover:text-white transition-colors" title="API Config">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </button>
+        <div id="mobileConfigPanel" class="hidden absolute right-0 top-full mt-2 w-64 bg-[#05120c] border border-white/15 rounded-xl p-3 shadow-2xl z-50">
+          <p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold mb-2">API Endpoint</p>
+          <div class="flex gap-2 items-center">
+            <input type="text" id="apiEndpointMobile" value="http://localhost:5000"
+              class="flex-1 bg-black/40 text-gray-200 border border-white/10 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-oppoEmerald">
+            <button id="refreshBtnMobile" class="text-slate-400 hover:text-oppoMint transition-colors p-1" title="Reload">🔄</button>
+          </div>
+        </div>
+      </div>
+
       <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-oppoGreen to-oppoEmerald flex items-center justify-center font-bold text-white shadow-md border border-white/20">O
+        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-oppoGreen to-oppoEmerald flex items-center justify-center font-bold text-white shadow-md border border-white/20 text-xs">O
         </div>
         <span class="font-semibold hidden md:inline text-slate-200">OPPO Admin</span>
       </div>
@@ -115,10 +134,10 @@
   </header>
 
   <!-- Container -->
-  <div class="flex flex-1 flex-col md:flex-row min-h-screen">
+  <div class="flex flex-1 flex-col md:flex-row">
 
-    <!-- Sidebar Navigation -->
-    <aside class="w-full md:w-64 bg-[#05120c]/85 border-r border-white/5 p-6 flex flex-col gap-6 backdrop-blur-md">
+    <!-- Sidebar Navigation — hidden on mobile (replaced by bottom tab bar) -->
+    <aside class="hidden md:flex md:w-64 bg-[#05120c]/85 border-r border-white/5 p-6 flex-col gap-6 backdrop-blur-md flex-shrink-0">
       <div class="text-xxs uppercase tracking-widest text-slate-500 font-bold">Workspace</div>
       <nav class="flex flex-col gap-2">
         <button id="tabShowcase"
@@ -139,8 +158,23 @@
       </div>
     </aside>
 
+    <!-- Mobile Bottom Tab Bar -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-[#05120c]/95 border-t border-white/10 backdrop-blur-md z-40 flex items-stretch">
+      <button id="tabShowcaseMobile"
+        class="flex-1 flex flex-col items-center justify-center gap-1 py-3 text-white bg-oppoGreen/20 border-t-2 border-oppoEmerald transition-all">
+        <span class="text-lg">🖼️</span>
+        <span class="text-[10px] font-bold uppercase tracking-wide">Showcase</span>
+      </button>
+      <button id="tabWinnersMobile"
+        class="flex-1 flex flex-col items-center justify-center gap-1 py-3 text-slate-400 border-t-2 border-transparent transition-all relative">
+        <span class="text-lg">🏆</span>
+        <span class="text-[10px] font-bold uppercase tracking-wide">Winners</span>
+        <span id="winnersBadgeMobile" class="absolute top-1.5 right-4 bg-oppoEmerald text-black text-[9px] font-extrabold px-1.5 py-0.5 rounded-full hidden">0</span>
+      </button>
+    </nav>
+
     <!-- Main Content Panel -->
-    <main class="flex-1 p-6 md:p-10 flex flex-col gap-8">
+    <main class="flex-1 p-4 md:p-10 flex flex-col gap-6 md:gap-8 pb-24 md:pb-10">
 
       <!-- Toast Notification -->
       <div id="toast"
@@ -156,7 +190,7 @@
 
         <!-- Export Report Button -->
         <button id="exportExcelBtn"
-          class="bg-gradient-to-r from-oppoEmerald to-oppoGreen hover:from-oppoMint hover:to-oppoEmerald text-white font-extrabold py-2.5 px-5 rounded-xl shadow-lg shadow-oppoEmerald/10 transition-all duration-300 text-xs tracking-wide flex items-center gap-2 active:scale-95 font-sans">
+          class="bg-gradient-to-r from-oppoEmerald to-oppoGreen hover:from-oppoMint hover:to-oppoEmerald text-white font-extrabold py-2.5 px-5 rounded-xl shadow-lg shadow-oppoEmerald/10 transition-all duration-300 text-xs tracking-wide flex items-center gap-2 active:scale-95 font-sans w-full md:w-auto justify-center flex-shrink-0">
           <span>📊</span> Generate Multi-Sheet Excel Report
         </button>
       </div>
@@ -187,11 +221,11 @@
       </div>
 
       <!-- Quick Info Card -->
-      <div class="glass-card rounded-2xl p-6 flex flex-col md:flex-row items-center gap-6 justify-between border-l-4 border-l-oppoMint">
-        <div class="flex gap-4 items-center">
-          <div class="text-3xl">💡</div>
+      <div class="glass-card rounded-2xl p-5 md:p-6 flex flex-col gap-4 md:flex-row md:items-center md:gap-6 justify-between border-l-4 border-l-oppoMint">
+        <div class="flex gap-3 items-start md:items-center">
+          <div class="text-2xl md:text-3xl flex-shrink-0">💡</div>
           <div>
-            <h4 class="font-extrabold text-white">Contest Audit Reports Ready!</h4>
+            <h4 class="font-extrabold text-white text-sm md:text-base">Contest Audit Reports Ready!</h4>
             <p class="text-xs text-slate-400 mt-0.5">Use the Generate Excel Report button to fetch all campaign data, approved media URLs, and winner contact details in one file.</p>
           </div>
         </div>
@@ -260,7 +294,11 @@
     // DOM Elements
     const elements = {
       apiEndpoint: document.getElementById('apiEndpoint'),
+      apiEndpointMobile: document.getElementById('apiEndpointMobile'),
       refreshBtn: document.getElementById('refreshBtn'),
+      refreshBtnMobile: document.getElementById('refreshBtnMobile'),
+      mobileConfigBtn: document.getElementById('mobileConfigBtn'),
+      mobileConfigPanel: document.getElementById('mobileConfigPanel'),
       toast: document.getElementById('toast'),
       exportExcelBtn: document.getElementById('exportExcelBtn'),
       statApproved: document.getElementById('statApproved'),
@@ -268,7 +306,10 @@
       statLocations: document.getElementById('statLocations'),
       tabShowcase: document.getElementById('tabShowcase'),
       tabWinners: document.getElementById('tabWinners'),
+      tabShowcaseMobile: document.getElementById('tabShowcaseMobile'),
+      tabWinnersMobile: document.getElementById('tabWinnersMobile'),
       winnersBadge: document.getElementById('winnersBadge'),
+      winnersBadgeMobile: document.getElementById('winnersBadgeMobile'),
       gallerySection: document.getElementById('gallerySection'),
       galleryLoading: document.getElementById('galleryLoading'),
       galleryEmpty: document.getElementById('galleryEmpty'),
@@ -284,18 +325,48 @@
     if (window.location.origin && window.location.origin !== 'null') {
       state.apiBaseUrl = window.location.origin;
       elements.apiEndpoint.value = window.location.origin;
+      if (elements.apiEndpointMobile) elements.apiEndpointMobile.value = window.location.origin;
     } else {
       state.apiBaseUrl = elements.apiEndpoint.value.trim();
     }
 
     elements.apiEndpoint.addEventListener('input', (e) => {
       state.apiBaseUrl = e.target.value.trim();
+      if (elements.apiEndpointMobile) elements.apiEndpointMobile.value = e.target.value.trim();
       loadAllData();
     });
+
+    if (elements.apiEndpointMobile) {
+      elements.apiEndpointMobile.addEventListener('input', (e) => {
+        state.apiBaseUrl = e.target.value.trim();
+        elements.apiEndpoint.value = e.target.value.trim();
+        loadAllData();
+      });
+    }
 
     elements.refreshBtn.addEventListener('click', () => {
       loadAllData();
     });
+
+    if (elements.refreshBtnMobile) {
+      elements.refreshBtnMobile.addEventListener('click', () => {
+        loadAllData();
+        elements.mobileConfigPanel.classList.add('hidden');
+      });
+    }
+
+    // Mobile config gear toggle
+    if (elements.mobileConfigBtn && elements.mobileConfigPanel) {
+      elements.mobileConfigBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        elements.mobileConfigPanel.classList.toggle('hidden');
+      });
+      document.addEventListener('click', (e) => {
+        if (!elements.mobileConfigPanel.contains(e.target) && !elements.mobileConfigBtn.contains(e.target)) {
+          elements.mobileConfigPanel.classList.add('hidden');
+        }
+      });
+    }
 
     // Toast helpers
     function showToast(text, type = 'success') {
@@ -327,6 +398,15 @@
         elements.winnersSection.classList.add('hidden');
         galleryTitle.innerText = "Showcase Gallery";
         galleryDesc.innerText = "Review MMT-approved entries, mark contest winners, and compile audit logs.";
+        // Update mobile tab bar
+        if (elements.tabShowcaseMobile) {
+          elements.tabShowcaseMobile.classList.add('text-white', 'bg-oppoGreen/20', 'border-oppoEmerald');
+          elements.tabShowcaseMobile.classList.remove('text-slate-400', 'border-transparent');
+        }
+        if (elements.tabWinnersMobile) {
+          elements.tabWinnersMobile.classList.remove('text-white', 'bg-oppoGreen/20', 'border-oppoEmerald');
+          elements.tabWinnersMobile.classList.add('text-slate-400', 'border-transparent');
+        }
       } else {
         elements.tabWinners.className = 'flex items-center gap-3 px-4 py-3 rounded-xl bg-oppoGreen text-white font-bold text-sm transition-all duration-300 text-left w-full shadow-lg shadow-oppoGreen/25';
         elements.tabShowcase.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full';
@@ -335,11 +415,24 @@
         galleryTitle.innerText = "Contest Winners";
         galleryDesc.innerText = "Browse list of selected contest winners and verify their campaign submissions.";
         renderWinnersList();
+        // Update mobile tab bar
+        if (elements.tabWinnersMobile) {
+          elements.tabWinnersMobile.classList.add('text-white', 'bg-oppoGreen/20', 'border-oppoEmerald');
+          elements.tabWinnersMobile.classList.remove('text-slate-400', 'border-transparent');
+        }
+        if (elements.tabShowcaseMobile) {
+          elements.tabShowcaseMobile.classList.remove('text-white', 'bg-oppoGreen/20', 'border-oppoEmerald');
+          elements.tabShowcaseMobile.classList.add('text-slate-400', 'border-transparent');
+        }
       }
     }
 
     elements.tabShowcase.addEventListener('click', () => setTab('showcase'));
     elements.tabWinners.addEventListener('click', () => setTab('winners'));
+
+    // Mobile bottom tab bar
+    if (elements.tabShowcaseMobile) elements.tabShowcaseMobile.addEventListener('click', () => setTab('showcase'));
+    if (elements.tabWinnersMobile) elements.tabWinnersMobile.addEventListener('click', () => setTab('winners'));
 
     // API fetches
     async function loadAllData() {
@@ -365,8 +458,13 @@
           if (state.winnersList.length > 0) {
             elements.winnersBadge.innerText = state.winnersList.length;
             elements.winnersBadge.classList.remove('hidden');
+            if (elements.winnersBadgeMobile) {
+              elements.winnersBadgeMobile.innerText = state.winnersList.length;
+              elements.winnersBadgeMobile.classList.remove('hidden');
+            }
           } else {
             elements.winnersBadge.classList.add('hidden');
+            if (elements.winnersBadgeMobile) elements.winnersBadgeMobile.classList.add('hidden');
           }
 
           renderGallery();
