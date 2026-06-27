@@ -93,19 +93,7 @@
       <p class="text-sm md:text-lg uppercase tracking-wider text-oppoMint font-extrabold text-glow hidden sm:block">Admin Dashboard</p>
     </div>
 
-    <div class="flex items-center gap-2 md:gap-4 text-xs">
-      <!-- Refresh Stats Button -->
-      <div class="hidden md:flex bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg gap-2 items-center">
-        <button id="refreshBtn" class="hover:text-oppoMint transition-colors flex items-center gap-1.5" title="Reload Stats">🔄 Reload</button>
-      </div>
 
-      <!-- Mobile: refresh stats button -->
-      <div class="md:hidden">
-        <button id="refreshBtnMobile" class="bg-white/5 border border-white/10 p-2 rounded-lg text-slate-400 hover:text-white transition-colors" title="Reload Stats">
-          🔄
-        </button>
-      </div>
-    </div>
   </header>
 
   <!-- Container -->
@@ -363,8 +351,6 @@
 
     // DOM Elements
     const elements = {
-      refreshBtn: document.getElementById('refreshBtn'),
-      refreshBtnMobile: document.getElementById('refreshBtnMobile'),
       toast: document.getElementById('toast'),
       navOverview: document.getElementById('navOverview'),
       navModeration: document.getElementById('navModeration'),
@@ -401,15 +387,7 @@
       state.apiBaseUrl = 'http://localhost:5000';
     }
 
-    elements.refreshBtn.addEventListener('click', () => {
-      loadAllData();
-    });
 
-    if (elements.refreshBtnMobile) {
-      elements.refreshBtnMobile.addEventListener('click', () => {
-        loadAllData();
-      });
-    }
 
     // Helper functions
     function showToast(text, type = 'success') {

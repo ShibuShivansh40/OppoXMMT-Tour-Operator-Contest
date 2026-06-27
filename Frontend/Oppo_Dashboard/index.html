@@ -98,24 +98,6 @@
       <p class="text-sm md:text-lg uppercase tracking-wider text-oppoMint font-extrabold text-glow hidden sm:block">Client Dashboard</p>
     </div>
 
-    <div class="flex items-center gap-2 md:gap-4 text-xs">
-      <!-- Refresh Gallery Button -->
-      <div class="hidden md:flex bg-white/5 px-3 py-1.5 rounded-lg border border-white/10 gap-2 items-center">
-        <button id="refreshBtn" class="hover:text-oppoMint transition-colors flex items-center gap-1.5" title="Reload Gallery">🔄 Reload</button>
-      </div>
-
-      <!-- Mobile: refresh gallery button -->
-      <div class="md:hidden">
-        <button id="refreshBtnMobile" class="bg-white/5 border border-white/10 p-2 rounded-lg text-slate-400 hover:text-white transition-colors" title="Reload Gallery">
-          🔄
-        </button>
-      </div>
-
-      <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-oppoGreen to-oppoEmerald flex items-center justify-center font-bold text-white shadow-md border border-white/20 text-xs">O
-        </div>
-        <span class="font-semibold hidden md:inline text-slate-200">OPPO Admin</span>
-      </div>
     </div>
   </header>
 
@@ -279,8 +261,6 @@
 
     // DOM Elements
     const elements = {
-      refreshBtn: document.getElementById('refreshBtn'),
-      refreshBtnMobile: document.getElementById('refreshBtnMobile'),
       toast: document.getElementById('toast'),
       exportExcelBtn: document.getElementById('exportExcelBtn'),
       statApproved: document.getElementById('statApproved'),
@@ -310,15 +290,7 @@
       state.apiBaseUrl = 'http://localhost:5000';
     }
 
-    elements.refreshBtn.addEventListener('click', () => {
-      loadAllData();
-    });
 
-    if (elements.refreshBtnMobile) {
-      elements.refreshBtnMobile.addEventListener('click', () => {
-        loadAllData();
-      });
-    }
 
     // Toast helpers
     function showToast(text, type = 'success') {
