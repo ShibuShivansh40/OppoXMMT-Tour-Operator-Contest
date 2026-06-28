@@ -821,99 +821,256 @@
         }
 
         const allData = result.data;
-        const totalCount = allData.length;
-        const approvedCount = allData.filter(d => d.status === 'approved').length;
-        const rejectedCount = allData.filter(d => d.status === 'rejected').length;
-        const pendingCount = allData.filter(d => d.status === 'pending').length;
-        const winnerCount = allData.filter(d => d.is_winner).length;
-        const uniqueLocations = [...new Set(allData.map(d => d.location))].length;
 
-        // SHEET 1: Campaign Overview
-        const summaryData = [
-          ['OPPO x MakeMyTrip UGC Campaign Report', ''],
-          ['Generated Date', new Date().toLocaleString()],
-          ['', ''],
-          ['Metric Description', 'Value'],
-          ['Total Campaign Submissions Logged', totalCount],
-          ['Approved Assets Queue', approvedCount],
-          ['Rejected Assets Queue', rejectedCount],
-          ['Pending Moderation Assets', pendingCount],
-          ['Selected Campaign Winners', winnerCount],
-          ['Unique Active Travel Destinations', uniqueLocations]
+        // Longest streak calculator helper
+        function getLongestStreak(dates) {
+          if (dates.length === 0) return 0;
+          const uniqueDates = [...new Set(dates)].sort();
+          let longest = 0;
+          let current = 0;
+          let prevDate = null;
+          
+          for (let dateStr of uniqueDates) {
+            const date = new Date(dateStr + 'T00:00:00');
+            if (prevDate === null) {
+              current = 1;
+            } else {
+              const diffTime = Math.abs(date - prevDate);
+              const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+              if (diffDays === 1) {
+                current++;
+              } else if (diffDays > 1) {
+                if (current > longest) longest = current;
+                current = 1;
+              }
+            }
+            prevDate = date;
+          }
+          if (current > longest) longest = current;
+          return longest;
+        }
+
+        // 1. Group / aggregate operator leaderboard data
+        const operatorsMap = {};
+        allData.filter(d => d.user_role === 'operator' && d.status === 'approved').forEach(item => {
+          const opId = item.user_identifier;
+          if (!operatorsMap[opId]) {
+            operatorsMap[opId] = {
+              id: opId,
+              name: item.full_name || item.tour_manager || opId,
+              photosCount: 0,
+              scoresSum: 0,
+              scoredPhotosCount: 0,
+              dates: []
+            };
+          }
+          operatorsMap[opId].photosCount++;
+          if (item.score_total !== null && item.score_total !== undefined) {
+            operatorsMap[opId].scoresSum += item.score_total;
+            operatorsMap[opId].scoredPhotosCount++;
+          }
+          if (item.travel_date) {
+            operatorsMap[opId].dates.push(item.travel_date.split('T')[0]);
+          }
+        });
+
+        const operatorsList = Object.values(operatorsMap).map(op => {
+          const avgQuality = op.scoredPhotosCount > 0 ? Math.round(op.scoresSum / op.scoredPhotosCount) : 0;
+          const streak = getLongestStreak(op.dates);
+          // Composite Score = Avg Quality Score + (Total Photos * 10) + (Streak * 10)
+          const compositeScore = avgQuality + (op.photosCount * 10) + (streak * 10);
+          return {
+            ...op,
+            avgQuality,
+            streak,
+            compositeScore
+          };
+        });
+
+        // Sort by composite score desc to rank them
+        operatorsList.sort((a, b) => b.compositeScore - a.compositeScore);
+
+        // Assign ranks and prize tiers
+        operatorsList.forEach((op, index) => {
+          op.rank = index + 1;
+          if (op.rank === 1) {
+            op.prizeTier = 'Grand Prize: Lens Leader';
+          } else if (op.rank >= 2 && op.rank <= 4) {
+            op.prizeTier = 'Monthly Category Winner';
+          } else if (op.rank >= 5 && op.rank <= 9) {
+            op.prizeTier = 'Monthly Honorable Mention';
+          } else {
+            op.prizeTier = 'Participant Runner-up';
+          }
+        });
+
+        // Create lookups for operator stats to populate Sheet 1 rows
+        const operatorPointsMap = {};
+        const operatorRankMap = {};
+        operatorsList.forEach(op => {
+          operatorPointsMap[op.id] = op.compositeScore;
+          operatorRankMap[op.id] = op.rank;
+        });
+
+        // ==================== SHEET 1: Operator Photos ====================
+        const sheet1Rows = [
+          ['S.No', 'Operator Name', 'Operator ID', 'Tour Location', 'Upload Date', 'No. of Photos', 'Photo Quality Score', 'Watermark Verified', 'Cloud Drive Link', 'Contest Points (MTD)', 'Contest Rank (MTD)']
         ];
 
-        // SHEET 2: Approved Entries
-        const approvedRows = [
-          ['Submission ID', 'Full Name', 'Submitter (Contact/OP)', 'Source Role', 'Instagram Handle', 'Device Used', 'Tour Operator/Manager', 'Travel Location', 'Travel Date', 'File Size (Bytes)', 'S3 Asset Address', 'Winner status', 'Composition Score (25)', 'Watermark Score (20)', 'Scenic Score (25)', 'Engagement Score (20)', 'Consistency Score (10)', 'Total Rubric Score (100)']
-        ];
-
-        allData.filter(d => d.status === 'approved').forEach(item => {
-          approvedRows.push([
-            item.id,
-            item.full_name || '',
+        let sNo1 = 1;
+        allData.filter(d => d.user_role === 'operator' && d.status === 'approved').forEach(item => {
+          const watermarkVerified = (item.score_watermark !== null && item.score_watermark > 0) ? 'Y' : 'N';
+          const pointsMTD = operatorPointsMap[item.user_identifier] || 0;
+          const rankMTD = operatorRankMap[item.user_identifier] || '';
+          
+          sheet1Rows.push([
+            sNo1++,
+            item.full_name || item.tour_manager || '',
             item.user_identifier,
-            item.user_role,
-            item.insta_handle || '',
-            item.device || '',
-            item.tour_manager || '',
             item.location,
-            item.travel_date.split('T')[0],
-            item.file_size,
+            item.travel_date ? item.travel_date.split('T')[0] : '',
+            1,
+            item.score_total !== null && item.score_total !== undefined ? item.score_total : '',
+            watermarkVerified,
             item.media_url,
-            item.is_winner ? 'WINNER' : '',
-            item.score_composition !== null && item.score_composition !== undefined ? item.score_composition : '',
-            item.score_watermark !== null && item.score_watermark !== undefined ? item.score_watermark : '',
-            item.score_location !== null && item.score_location !== undefined ? item.score_location : '',
-            item.score_engagement !== null && item.score_engagement !== undefined ? item.score_engagement : '',
-            item.score_consistency !== null && item.score_consistency !== undefined ? item.score_consistency : '',
-            item.score_total !== null && item.score_total !== undefined ? item.score_total : ''
+            pointsMTD,
+            rankMTD
           ]);
         });
 
-        // SHEET 3: Contest Winners
-        const winnerRows = [
-          ['Winner ID', 'Full Name', 'Contact/Code', 'Source Role', 'Instagram Handle', 'Device Used', 'Tour Operator/Manager', 'Winning Destination', 'Shoot Date', 'S3 URL Link', 'Winner Selection Date', 'Composition Score (25)', 'Watermark Score (20)', 'Scenic Score (25)', 'Engagement Score (20)', 'Consistency Score (10)', 'Total Rubric Score (100)']
+        // ==================== SHEET 2: Traveler Photos ====================
+        const sheet2Rows = [
+          ['S.No', 'Traveler Name', 'Contact Number', 'Tour Location', 'Upload Date', 'No. of Photos', 'Consent Status', 'UTM Source', 'Referring Operator ID', 'Cloud Drive Link']
         ];
 
-        allData.filter(d => d.is_winner).forEach(item => {
-          winnerRows.push([
-            item.id,
-            item.full_name || '',
+        let sNo2 = 1;
+        allData.filter(d => d.user_role === 'traveler' && d.status === 'approved').forEach(item => {
+          const locationSlug = item.location.toLowerCase().replace(/[^a-z0-9]+/g, '_');
+          const mockUtm = `utm_source=makemytrip&utm_medium=qr_code&utm_campaign=oppo_ugc_${locationSlug}`;
+          
+          sheet2Rows.push([
+            sNo2++,
+            item.full_name || 'Anonymous Submitter',
             item.user_identifier,
-            item.user_role,
-            item.insta_handle || '',
-            item.device || '',
-            item.tour_manager || '',
             item.location,
-            item.travel_date.split('T')[0],
-            item.media_url,
-            item.winner_selected_at ? item.winner_selected_at.split('T')[0] : '',
-            item.score_composition !== null && item.score_composition !== undefined ? item.score_composition : '',
-            item.score_watermark !== null && item.score_watermark !== undefined ? item.score_watermark : '',
-            item.score_location !== null && item.score_location !== undefined ? item.score_location : '',
-            item.score_engagement !== null && item.score_engagement !== undefined ? item.score_engagement : '',
-            item.score_consistency !== null && item.score_consistency !== undefined ? item.score_consistency : '',
-            item.score_total !== null && item.score_total !== undefined ? item.score_total : ''
+            item.travel_date ? item.travel_date.split('T')[0] : '',
+            1,
+            'Granted',
+            mockUtm,
+            item.tour_manager || '',
+            item.media_url
+          ]);
+        });
+
+        // ==================== SHEET 3: Location-Wise Summary Dashboard ====================
+        const sheet3Rows = [
+          ['Location', 'Total Operator Uploads', 'Total Traveler Uploads', 'Unique Operators Active', 'Unique Travelers', 'Avg. Quality Score', 'Consent Rate', 'Top Operator (Location)']
+        ];
+
+        const locationsMap = {};
+        allData.filter(d => d.status === 'approved').forEach(item => {
+          const loc = item.location;
+          if (!locationsMap[loc]) {
+            locationsMap[loc] = {
+              location: loc,
+              opUploads: 0,
+              trUploads: 0,
+              operatorsSet: new Set(),
+              travelersSet: new Set(),
+              opScoresSum: 0,
+              opScoredPhotosCount: 0,
+              opLocationPerformers: {}
+            };
+          }
+
+          if (item.user_role === 'operator') {
+            locationsMap[loc].opUploads++;
+            locationsMap[loc].operatorsSet.add(item.user_identifier);
+            if (item.score_total !== null && item.score_total !== undefined) {
+              locationsMap[loc].opScoresSum += item.score_total;
+              locationsMap[loc].opScoredPhotosCount++;
+              
+              const opId = item.user_identifier;
+              const opName = item.full_name || item.tour_manager || opId;
+              if (!locationsMap[loc].opLocationPerformers[opId]) {
+                locationsMap[loc].opLocationPerformers[opId] = {
+                  name: opName,
+                  scoreSum: 0,
+                  count: 0
+                };
+              }
+              locationsMap[loc].opLocationPerformers[opId].scoreSum += item.score_total;
+              locationsMap[loc].opLocationPerformers[opId].count++;
+            }
+          } else {
+            locationsMap[loc].trUploads++;
+            locationsMap[loc].travelersSet.add(item.user_identifier);
+          }
+        });
+
+        Object.values(locationsMap).forEach(locData => {
+          const avgQuality = locData.opScoredPhotosCount > 0 ? Math.round(locData.opScoresSum / locData.opScoredPhotosCount) : 0;
+          
+          let topOpNameId = 'N/A';
+          let highestAvgScore = -1;
+          Object.entries(locData.opLocationPerformers).forEach(([opId, perf]) => {
+            const avg = perf.scoreSum / perf.count;
+            if (avg > highestAvgScore) {
+              highestAvgScore = avg;
+              topOpNameId = `${perf.name} (${opId})`;
+            }
+          });
+
+          sheet3Rows.push([
+            locData.location,
+            locData.opUploads,
+            locData.trUploads,
+            locData.operatorsSet.size,
+            locData.travelersSet.size,
+            avgQuality,
+            '100%',
+            topOpNameId
+          ]);
+        });
+
+        // ==================== SHEET 4: Contest Leaderboard ====================
+        const sheet4Rows = [
+          ['Rank', 'Operator Name', 'Operator ID', 'Total Photos (MTD)', 'Quality Score (Avg.)', 'Consistency Streak', 'Composite Score', 'Prize Tier']
+        ];
+
+        operatorsList.forEach(op => {
+          sheet4Rows.push([
+            op.rank,
+            op.name,
+            op.id,
+            op.photosCount,
+            op.avgQuality,
+            op.streak,
+            op.compositeScore,
+            op.prizeTier
           ]);
         });
 
         // Build Excel Workbook via SheetJS
         const wb = XLSX.utils.book_new();
 
-        // Add Sheets
-        const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
-        XLSX.utils.book_append_sheet(wb, wsSummary, 'Campaign Overview');
+        // Convert lists to worksheets and append to Workbook
+        const wsOperatorPhotos = XLSX.utils.aoa_to_sheet(sheet1Rows);
+        XLSX.utils.book_append_sheet(wb, wsOperatorPhotos, 'Operator Photos');
 
-        const wsApproved = XLSX.utils.aoa_to_sheet(approvedRows);
-        XLSX.utils.book_append_sheet(wb, wsApproved, 'Approved Submissions');
+        const wsTravelerPhotos = XLSX.utils.aoa_to_sheet(sheet2Rows);
+        XLSX.utils.book_append_sheet(wb, wsTravelerPhotos, 'Traveler Photos');
 
-        const wsWinners = XLSX.utils.aoa_to_sheet(winnerRows);
-        XLSX.utils.book_append_sheet(wb, wsWinners, 'Selected Winners');
+        const wsLocationSummary = XLSX.utils.aoa_to_sheet(sheet3Rows);
+        XLSX.utils.book_append_sheet(wb, wsLocationSummary, 'Location-Wise Summary');
+
+        const wsLeaderboard = XLSX.utils.aoa_to_sheet(sheet4Rows);
+        XLSX.utils.book_append_sheet(wb, wsLeaderboard, 'Contest Leaderboard');
 
         // Write Workbook to browser trigger download
         XLSX.writeFile(wb, 'OPPO_UGC_Campaign_Report.xlsx');
 
-        showToast('Excel report generated and downloaded successfully! 📊', 'success');
+        showToast('Four-Sheet Campaign Report generated and downloaded successfully! 📊', 'success');
 
       } catch (err) {
         console.error(err);
