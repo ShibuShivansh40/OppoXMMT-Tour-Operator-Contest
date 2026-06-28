@@ -98,6 +98,10 @@
       <p class="text-sm md:text-lg uppercase tracking-wider text-oppoMint font-extrabold text-glow hidden sm:block">Client Dashboard</p>
     </div>
 
+    <div class="flex items-center gap-3">
+      <button id="logoutBtn" class="bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-white/10 text-xs font-semibold transition-all">
+        Logout
+      </button>
     </div>
   </header>
 
@@ -281,6 +285,7 @@
       winnersGrid: document.getElementById('winnersGrid'),
       imageModal: document.getElementById('imageModal'),
       modalImg: document.getElementById('modalImg'),
+      logoutBtn: document.getElementById('logoutBtn')
     };
 
     // Load initial config dynamically
@@ -353,6 +358,29 @@
 
     elements.tabShowcase.addEventListener('click', () => setTab('showcase'));
     elements.tabWinners.addEventListener('click', () => setTab('winners'));
+
+    // Logout action handler
+    if (elements.logoutBtn) {
+      elements.logoutBtn.addEventListener('click', async () => {
+        try {
+          const res = await fetch(`${state.apiBaseUrl}/api/auth/logout`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ dashboard: 'oppo' })
+          });
+          if (res.ok) {
+            window.location.reload();
+          } else {
+            showToast('Failed to logout cleanly.', 'error');
+          }
+        } catch (err) {
+          console.error(err);
+          showToast('Failed to connect to backend for logout.', 'error');
+        }
+      });
+    }
 
     // Mobile bottom tab bar
     if (elements.tabShowcaseMobile) elements.tabShowcaseMobile.addEventListener('click', () => setTab('showcase'));

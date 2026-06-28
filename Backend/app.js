@@ -12,8 +12,15 @@ app.use(cors()); // Allow CORS requests from frontend clients
 app.use(express.json()); // Support JSON body payloads
 app.use(express.urlencoded({ extended: true }));
 
+const { pageAuthMiddleware } = require('./middleware/auth');
+
+// Intercept dashboard requests to check authentication before serving static files
+app.use('/MMT_Dashboard', pageAuthMiddleware('mmt'));
+app.use('/Oppo_Dashboard', pageAuthMiddleware('oppo'));
+
 // Serve static frontend assets
 app.use(express.static(path.join(__dirname, '../Frontend')));
+
 
 // Healthcheck Route
 app.get('/', (req, res) => {
