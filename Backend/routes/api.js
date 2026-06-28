@@ -20,6 +20,7 @@ router.get('/submissions', apiAuthMiddleware(['mmt', 'oppo']), submissionControl
 router.get('/submissions/stats', apiAuthMiddleware(['mmt', 'oppo']), submissionController.getStats);
 router.put('/submissions/:id/moderate', apiAuthMiddleware('mmt'), submissionController.moderateSubmission);
 router.put('/submissions/:id/winner', apiAuthMiddleware('oppo'), submissionController.selectWinner);
+router.put('/submissions/:id/score', apiAuthMiddleware('oppo'), submissionController.saveSubmissionScore);
 
 // 3. Campaign Metadata Routing
 router.get('/metadata/locations', metadataController.getLocations);

@@ -300,10 +300,98 @@ async function getStats(req, res) {
   }
 }
 
+/**
+ * Save evaluation scores for a submission.
+ * PUT /api/submissions/:id/score
+ */
+async function saveSubmissionScore(req, res) {
+  try {
+    const { id } = req.params;
+    const { scoreComposition, scoreWatermark, scoreLocation, scoreEngagement, scoreConsistency } = req.body;
+
+    if (
+      scoreComposition === undefined ||
+      scoreWatermark === undefined ||
+      scoreLocation === undefined ||
+      scoreEngagement === undefined ||
+      scoreConsistency === undefined
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: 'All scoring fields are required.'
+      });
+    }
+
+    const comp = parseInt(scoreComposition);
+    const wat = parseInt(scoreWatermark);
+    const loc = parseInt(scoreLocation);
+    const eng = parseInt(scoreEngagement);
+    const con = parseInt(scoreConsistency);
+
+    // Rubric limit validation
+    if (
+      comp < 0 || comp > 25 ||
+      wat < 0 || wat > 20 ||
+      loc < 0 || loc > 25 ||
+      eng < 0 || eng > 20 ||
+      con < 0 || con > 10
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: 'One or more scores exceed their rubric limits.'
+      });
+    }
+
+    const total = comp + wat + loc + eng + con;
+
+    const queryText = `
+      UPDATE submissions
+      SET score_composition = $1, 
+          score_watermark = $2, 
+          score_location = $3, 
+          score_engagement = $4, 
+          score_consistency = $5, 
+          score_total = $6, 
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = $7
+      RETURNING *
+    `;
+    const params = [comp, wat, loc, eng, con, total, id];
+    const result = await db.query(queryText, params);
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Submission record not found.'
+      });
+    }
+
+    const signedUrl = await s3.getSignedDownloadUrl(result.rows[0].media_url);
+
+    return res.status(200).json({
+      success: true,
+      message: 'Scores successfully saved!',
+      data: {
+        ...result.rows[0],
+        media_url: signedUrl
+      }
+    });
+  } catch (error) {
+    console.error('[Submission Controller] Error saving score:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to save scores.',
+      error: error.message
+    });
+  }
+}
+
 module.exports = {
   createSubmission,
   getSubmissions,
   moderateSubmission,
   selectWinner,
-  getStats
+  getStats,
+  saveSubmissionScore
 };
+

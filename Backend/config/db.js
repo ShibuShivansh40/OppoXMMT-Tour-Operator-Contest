@@ -26,6 +26,21 @@ if (isDbConfigured) {
   pool.on('error', (err, client) => {
     console.error('[Database] Unexpected error on idle client:', err);
   });
+
+  // Dynamic schema migrations check
+  pool.query(`
+    ALTER TABLE submissions 
+    ADD COLUMN IF NOT EXISTS score_composition INTEGER DEFAULT NULL,
+    ADD COLUMN IF NOT EXISTS score_watermark INTEGER DEFAULT NULL,
+    ADD COLUMN IF NOT EXISTS score_location INTEGER DEFAULT NULL,
+    ADD COLUMN IF NOT EXISTS score_engagement INTEGER DEFAULT NULL,
+    ADD COLUMN IF NOT EXISTS score_consistency INTEGER DEFAULT NULL,
+    ADD COLUMN IF NOT EXISTS score_total INTEGER DEFAULT NULL;
+  `).then(() => {
+    console.log('[Database] Schema checked and scoring columns validated.');
+  }).catch(err => {
+    console.error('[Database] Dynamic schema alteration failed:', err);
+  });
 } else {
   console.warn('[Database] Database environment variables missing. Running in MEMORY MOCK MODE.');
 }
@@ -85,6 +100,12 @@ function runMockQuery(text, params) {
       status: 'pending',
       is_winner: false,
       winner_selected_at: null,
+      score_composition: null,
+      score_watermark: null,
+      score_location: null,
+      score_engagement: null,
+      score_consistency: null,
+      score_total: null,
       created_at: new Date(),
       updated_at: new Date()
     };
@@ -130,6 +151,23 @@ function runMockQuery(text, params) {
     if (record) {
       record.is_winner = is_winner;
       record.winner_selected_at = is_winner ? new Date() : null;
+      record.updated_at = new Date();
+      return { rows: [record], rowCount: 1 };
+    }
+    return { rows: [], rowCount: 0 };
+  }
+
+  // 4b. UPDATE scores
+  if (normalized.includes('update submissions') && normalized.includes('set score_composition')) {
+    const [score_composition, score_watermark, score_location, score_engagement, score_consistency, score_total, id] = params;
+    const record = mockDb.find(r => r.id === parseInt(id));
+    if (record) {
+      record.score_composition = score_composition !== null ? parseInt(score_composition) : null;
+      record.score_watermark = score_watermark !== null ? parseInt(score_watermark) : null;
+      record.score_location = score_location !== null ? parseInt(score_location) : null;
+      record.score_engagement = score_engagement !== null ? parseInt(score_engagement) : null;
+      record.score_consistency = score_consistency !== null ? parseInt(score_consistency) : null;
+      record.score_total = score_total !== null ? parseInt(score_total) : null;
       record.updated_at = new Date();
       return { rows: [record], rowCount: 1 };
     }

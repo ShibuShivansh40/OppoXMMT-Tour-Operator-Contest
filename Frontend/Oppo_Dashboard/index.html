@@ -244,12 +244,102 @@
     </main>
   </div>
 
-  <!-- Lightbox Modal -->
-  <div id="imageModal" class="hidden fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-6"
+  <!-- Lightbox/Scoring Modal -->
+  <div id="imageModal" class="hidden fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 md:p-6"
     onclick="closeImageModal()">
-    <button class="absolute top-4 right-4 text-white text-3xl font-bold hover:scale-115 transition-transform" onclick="closeImageModal()">×</button>
-    <div class="relative max-w-4xl max-h-full flex items-center justify-center animate-zoom-in" onclick="event.stopPropagation()">
-      <img id="modalImg" src="" class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl border border-white/10">
+    <button class="absolute top-4 right-4 text-white text-3xl font-bold hover:scale-115 transition-transform z-50" onclick="closeImageModal()">×</button>
+    
+    <div class="relative w-full max-w-5xl bg-[#05120c] border border-[#00b064]/20 rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row animate-zoom-in max-h-[90vh]" onclick="event.stopPropagation()">
+      
+      <!-- Left side: Image/Video Preview -->
+      <div class="flex-1 bg-black flex items-center justify-center p-4 relative min-h-[300px] md:min-h-0">
+        <img id="modalImg" src="" class="max-w-full max-h-[70vh] object-contain rounded-lg shadow-md hidden">
+        <video id="modalVideo" src="" controls class="max-w-full max-h-[70vh] rounded-lg shadow-md hidden"></video>
+      </div>
+      
+      <!-- Right side: Scoring Form -->
+      <div class="w-full md:w-96 p-6 flex flex-col gap-4 border-t md:border-t-0 md:border-l border-white/10 overflow-y-auto custom-scrollbar">
+        <div>
+          <h3 class="text-base font-extrabold text-white tracking-wide">🏆 Rubric Evaluation</h3>
+          <p id="scoringSubInfo" class="text-[10px] text-slate-400 mt-1">Submission #ID • Submitter Details</p>
+        </div>
+        
+        <form id="scoringForm" class="flex flex-col gap-4">
+          <!-- Category 1: Composition & Framing -->
+          <div class="flex flex-col gap-1">
+            <div class="flex justify-between text-xs font-semibold text-slate-300">
+              <span>📐 Composition & Framing</span>
+              <span class="text-oppoMint font-mono" id="valComposition">0/25</span>
+            </div>
+            <input type="range" id="scoreComposition" min="0" max="25" value="0" 
+              class="w-full h-1.5 bg-slate-900 rounded-lg appearance-none cursor-pointer accent-oppoEmerald">
+            <span class="text-[10px] text-slate-500">Rule of thirds, leading lines, clean backgrounds (25%)</span>
+          </div>
+
+          <!-- Category 2: Watermark Visibility -->
+          <div class="flex flex-col gap-1">
+            <div class="flex justify-between text-xs font-semibold text-slate-300">
+              <span>📷 OPPO Watermark Visibility</span>
+              <span class="text-oppoMint font-mono" id="valWatermark">0/20</span>
+            </div>
+            <input type="range" id="scoreWatermark" min="0" max="20" value="0" 
+              class="w-full h-1.5 bg-slate-900 rounded-lg appearance-none cursor-pointer accent-oppoEmerald">
+            <span class="text-[10px] text-slate-500">Clear, unobstructed watermark in photo (20%)</span>
+          </div>
+
+          <!-- Category 3: Location / Scenic Value -->
+          <div class="flex flex-col gap-1">
+            <div class="flex justify-between text-xs font-semibold text-slate-300">
+              <span>📍 Location / Scenic Value</span>
+              <span class="text-oppoMint font-mono" id="valLocation">0/25</span>
+            </div>
+            <input type="range" id="scoreLocation" min="0" max="25" value="0" 
+              class="w-full h-1.5 bg-slate-900 rounded-lg appearance-none cursor-pointer accent-oppoEmerald">
+            <span class="text-[10px] text-slate-500">Iconic landmarks, unique angles, appeal (25%)</span>
+          </div>
+
+          <!-- Category 4: Tourist Engagement -->
+          <div class="flex flex-col gap-1">
+            <div class="flex justify-between text-xs font-semibold text-slate-300">
+              <span>👥 Tourist Engagement</span>
+              <span class="text-oppoMint font-mono" id="valEngagement">0/20</span>
+            </div>
+            <input type="range" id="scoreEngagement" min="0" max="20" value="0" 
+              class="w-full h-1.5 bg-slate-900 rounded-lg appearance-none cursor-pointer accent-oppoEmerald">
+            <span class="text-[10px] text-slate-500">Natural group interactions, candid moments (20%)</span>
+          </div>
+
+          <!-- Category 5: Upload Consistency -->
+          <div class="flex flex-col gap-1">
+            <div class="flex justify-between text-xs font-semibold text-slate-300">
+              <span>📅 Upload Consistency</span>
+              <span class="text-oppoMint font-mono" id="valConsistency">0/10</span>
+            </div>
+            <input type="range" id="scoreConsistency" min="0" max="10" value="0" 
+              class="w-full h-1.5 bg-slate-900 rounded-lg appearance-none cursor-pointer accent-oppoEmerald">
+            <span class="text-[10px] text-slate-500">Regular daily/weekly cadence vs. bulk dumps (10%)</span>
+          </div>
+
+          <!-- Total Score Summary Card -->
+          <div class="bg-slate-950/60 border border-white/5 rounded-xl p-3.5 flex items-center justify-between mt-1">
+            <div>
+              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Rubric Score</p>
+              <p class="text-[9px] text-slate-500 mt-0.5">Sum of weighted points (out of 100)</p>
+            </div>
+            <div class="text-right">
+              <span class="text-2xl font-black text-oppoMint font-mono text-glow" id="valTotalScore">0</span>
+              <span class="text-xs text-slate-500 font-semibold">/100</span>
+            </div>
+          </div>
+
+          <!-- Submit Action -->
+          <button type="submit" id="saveScoreBtn"
+            class="w-full bg-gradient-to-r from-oppoEmerald to-oppoGreen hover:from-oppoMint hover:to-oppoEmerald text-white font-extrabold text-xs uppercase tracking-wider py-3 rounded-xl shadow-lg transition-all active:scale-95 duration-300 mt-2">
+            Save Evaluation Scores
+          </button>
+        </form>
+      </div>
+
     </div>
   </div>
 
@@ -260,7 +350,8 @@
       apiBaseUrl: 'http://localhost:5000',
       activeTab: 'showcase', // 'showcase' or 'winners'
       approvedEntries: [],
-      winnersList: []
+      winnersList: [],
+      currentScoringEntryId: null
     };
 
     // DOM Elements
@@ -483,6 +574,10 @@
         ? '<span class="bg-blue-500/10 text-[#00e5ff] border border-blue-500/20 px-2 py-0.5 rounded text-[10px] font-bold">Traveler</span>'
         : '<span class="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2 py-0.5 rounded text-[10px] font-bold">Operator</span>';
 
+      const scoreBadge = entry.score_total !== null && entry.score_total !== undefined
+        ? `<span class="bg-emerald-500/15 text-oppoMint border border-oppoEmerald/20 px-2 py-0.5 rounded text-[10px] font-bold">⭐ ${entry.score_total}/100</span>`
+        : '';
+
       const nameEl = entry.full_name
         ? `<h3 class="text-sm font-bold text-white tracking-wide mt-1">${entry.full_name}</h3>`
         : '<h3 class="text-sm font-bold text-slate-500 tracking-wide mt-1 italic">Anonymous Submitter</h3>';
@@ -517,6 +612,7 @@
           <div class="absolute top-3 left-3 flex gap-2">
             ${roleBadge}
             <span class="bg-black/60 text-white font-mono text-[9px] px-1.5 py-0.5 rounded">#${entry.id}</span>
+            ${scoreBadge}
           </div>
 
           <!-- Selection Badge -->
@@ -552,11 +648,7 @@
       const imgContainer = div.querySelector(`#img-container-${entry.id}`);
       if (imgContainer) {
         imgContainer.addEventListener('click', () => {
-          if (isVideo) {
-            window.open(entry.media_url, '_blank');
-          } else {
-            openImageModal(entry.media_url);
-          }
+          openImageModal(entry);
         });
       }
 
@@ -587,17 +679,127 @@
       }
     }
 
+    // Calculate total score from ranges
+    function calculateTotalScore() {
+      const composition = parseInt(document.getElementById('scoreComposition').value) || 0;
+      const watermark = parseInt(document.getElementById('scoreWatermark').value) || 0;
+      const location = parseInt(document.getElementById('scoreLocation').value) || 0;
+      const engagement = parseInt(document.getElementById('scoreEngagement').value) || 0;
+      const consistency = parseInt(document.getElementById('scoreConsistency').value) || 0;
+
+      const total = composition + watermark + location + engagement + consistency;
+
+      document.getElementById('valComposition').innerText = `${composition}/25`;
+      document.getElementById('valWatermark').innerText = `${watermark}/20`;
+      document.getElementById('valLocation').innerText = `${location}/25`;
+      document.getElementById('valEngagement').innerText = `${engagement}/20`;
+      document.getElementById('valConsistency').innerText = `${consistency}/10`;
+      document.getElementById('valTotalScore').innerText = total;
+    }
+
     // Modal view
-    function openImageModal(url) {
-      elements.modalImg.src = url;
+    function openImageModal(entry) {
+      state.currentScoringEntryId = entry.id;
+      
+      const isVideo = entry.file_name && /\.(mp4|mov|avi|mkv|webm)$/i.test(entry.file_name);
+      const img = document.getElementById('modalImg');
+      const video = document.getElementById('modalVideo');
+      
+      if (isVideo) {
+        img.classList.add('hidden');
+        img.src = '';
+        video.src = entry.media_url;
+        video.classList.remove('hidden');
+      } else {
+        video.classList.add('hidden');
+        video.src = '';
+        img.src = entry.media_url;
+        img.classList.remove('hidden');
+      }
+
+      // Prefill scores
+      document.getElementById('scoreComposition').value = entry.score_composition !== null && entry.score_composition !== undefined ? entry.score_composition : 0;
+      document.getElementById('scoreWatermark').value = entry.score_watermark !== null && entry.score_watermark !== undefined ? entry.score_watermark : 0;
+      document.getElementById('scoreLocation').value = entry.score_location !== null && entry.score_location !== undefined ? entry.score_location : 0;
+      document.getElementById('scoreEngagement').value = entry.score_engagement !== null && entry.score_engagement !== undefined ? entry.score_engagement : 0;
+      document.getElementById('scoreConsistency').value = entry.score_consistency !== null && entry.score_consistency !== undefined ? entry.score_consistency : 0;
+
+      // Update info text
+      document.getElementById('scoringSubInfo').innerText = `Submission #${entry.id} • ${entry.full_name || 'Anonymous Submitter'} (${entry.user_role})`;
+
+      calculateTotalScore();
       elements.imageModal.classList.remove('hidden');
     }
 
     // Close Modal
     function closeImageModal() {
       elements.imageModal.classList.add('hidden');
-      elements.modalImg.src = '';
+      document.getElementById('modalImg').src = '';
+      const video = document.getElementById('modalVideo');
+      video.pause();
+      video.src = '';
+      state.currentScoringEntryId = null;
     }
+
+    // Attach real-time updates for sliders after page load or DOM setup
+    setTimeout(() => {
+      ['scoreComposition', 'scoreWatermark', 'scoreLocation', 'scoreEngagement', 'scoreConsistency'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', calculateTotalScore);
+      });
+
+      const scoringForm = document.getElementById('scoringForm');
+      if (scoringForm) {
+        scoringForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          
+          const id = state.currentScoringEntryId;
+          if (!id) return;
+          
+          const scoreComposition = parseInt(document.getElementById('scoreComposition').value);
+          const scoreWatermark = parseInt(document.getElementById('scoreWatermark').value);
+          const scoreLocation = parseInt(document.getElementById('scoreLocation').value);
+          const scoreEngagement = parseInt(document.getElementById('scoreEngagement').value);
+          const scoreConsistency = parseInt(document.getElementById('scoreConsistency').value);
+          
+          const saveBtn = document.getElementById('saveScoreBtn');
+          saveBtn.disabled = true;
+          saveBtn.innerText = 'Saving scores...';
+          
+          try {
+            const res = await fetch(`${state.apiBaseUrl}/api/submissions/${id}/score`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                scoreComposition,
+                scoreWatermark,
+                scoreLocation,
+                scoreEngagement,
+                scoreConsistency
+              })
+            });
+            
+            const result = await res.json();
+            
+            if (res.ok && result.success) {
+              showToast('Evaluation scores saved successfully! ⭐', 'success');
+              closeImageModal();
+              await loadAllData(); // Reload stats and cards
+            } else {
+              showToast(result.message || 'Failed to save scores.', 'error');
+            }
+          } catch (err) {
+            console.error(err);
+            showToast('Connection to backend API failed.', 'error');
+          } finally {
+            saveBtn.disabled = false;
+            saveBtn.innerText = 'Save Evaluation Scores';
+          }
+        });
+      }
+    }, 0);
 
     // Explicitly bind to window to resolve inline HTML onclick reference errors
     window.openImageModal = openImageModal;
@@ -642,7 +844,7 @@
 
         // SHEET 2: Approved Entries
         const approvedRows = [
-          ['Submission ID', 'Full Name', 'Submitter (Contact/OP)', 'Source Role', 'Instagram Handle', 'Device Used', 'Tour Operator/Manager', 'Travel Location', 'Travel Date', 'File Size (Bytes)', 'S3 Asset Address', 'Winner status']
+          ['Submission ID', 'Full Name', 'Submitter (Contact/OP)', 'Source Role', 'Instagram Handle', 'Device Used', 'Tour Operator/Manager', 'Travel Location', 'Travel Date', 'File Size (Bytes)', 'S3 Asset Address', 'Winner status', 'Composition Score (25)', 'Watermark Score (20)', 'Scenic Score (25)', 'Engagement Score (20)', 'Consistency Score (10)', 'Total Rubric Score (100)']
         ];
 
         allData.filter(d => d.status === 'approved').forEach(item => {
@@ -658,13 +860,19 @@
             item.travel_date.split('T')[0],
             item.file_size,
             item.media_url,
-            item.is_winner ? 'WINNER' : ''
+            item.is_winner ? 'WINNER' : '',
+            item.score_composition !== null && item.score_composition !== undefined ? item.score_composition : '',
+            item.score_watermark !== null && item.score_watermark !== undefined ? item.score_watermark : '',
+            item.score_location !== null && item.score_location !== undefined ? item.score_location : '',
+            item.score_engagement !== null && item.score_engagement !== undefined ? item.score_engagement : '',
+            item.score_consistency !== null && item.score_consistency !== undefined ? item.score_consistency : '',
+            item.score_total !== null && item.score_total !== undefined ? item.score_total : ''
           ]);
         });
 
         // SHEET 3: Contest Winners
         const winnerRows = [
-          ['Winner ID', 'Full Name', 'Contact/Code', 'Source Role', 'Instagram Handle', 'Device Used', 'Tour Operator/Manager', 'Winning Destination', 'Shoot Date', 'S3 URL Link', 'Winner Selection Date']
+          ['Winner ID', 'Full Name', 'Contact/Code', 'Source Role', 'Instagram Handle', 'Device Used', 'Tour Operator/Manager', 'Winning Destination', 'Shoot Date', 'S3 URL Link', 'Winner Selection Date', 'Composition Score (25)', 'Watermark Score (20)', 'Scenic Score (25)', 'Engagement Score (20)', 'Consistency Score (10)', 'Total Rubric Score (100)']
         ];
 
         allData.filter(d => d.is_winner).forEach(item => {
@@ -679,7 +887,13 @@
             item.location,
             item.travel_date.split('T')[0],
             item.media_url,
-            item.winner_selected_at ? item.winner_selected_at.split('T')[0] : ''
+            item.winner_selected_at ? item.winner_selected_at.split('T')[0] : '',
+            item.score_composition !== null && item.score_composition !== undefined ? item.score_composition : '',
+            item.score_watermark !== null && item.score_watermark !== undefined ? item.score_watermark : '',
+            item.score_location !== null && item.score_location !== undefined ? item.score_location : '',
+            item.score_engagement !== null && item.score_engagement !== undefined ? item.score_engagement : '',
+            item.score_consistency !== null && item.score_consistency !== undefined ? item.score_consistency : '',
+            item.score_total !== null && item.score_total !== undefined ? item.score_total : ''
           ]);
         });
 

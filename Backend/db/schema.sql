@@ -20,6 +20,12 @@ CREATE TABLE IF NOT EXISTS submissions (
     status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
     is_winner BOOLEAN DEFAULT FALSE,                -- Selected as winner by OPPO client
     winner_selected_at TIMESTAMP WITH TIME ZONE,     -- When winner status was set
+    score_composition INTEGER DEFAULT NULL,
+    score_watermark INTEGER DEFAULT NULL,
+    score_location INTEGER DEFAULT NULL,
+    score_engagement INTEGER DEFAULT NULL,
+    score_consistency INTEGER DEFAULT NULL,
+    score_total INTEGER DEFAULT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
