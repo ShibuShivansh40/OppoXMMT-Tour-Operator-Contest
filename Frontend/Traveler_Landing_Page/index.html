@@ -62,6 +62,10 @@
       -webkit-text-fill-color: transparent;
     }
 
+    .custom-bg-gradient {
+      background: linear-gradient(90deg, #89939A 0%, #DCA589 27%, #FA9A4A 65%, #FFCB7E 100%);
+    }
+
     .text-glow {
       text-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
     }
@@ -161,65 +165,68 @@
   <!-- Hero Header Picture Band -->
   <header class="w-full relative overflow-hidden">
     <picture>
-      <source media="(max-width: 767px)" srcset="https://promos.makemytrip.com/images/OPPOTopBandMobileNew-130126.webp">
-      <img src="https://promos.makemytrip.com/images/Top-Band-OPPO_07-01-2026.webp" alt="OPPO Reno15 Header Banner"
-        class="w-full h-auto object-cover min-h-[140px] md:min-h-auto">
+      <source media="(max-width: 767px)"
+        srcset="https://oppo-mmt-ugc-media-bucket.s3.us-east-1.amazonaws.com/assets/OPPOxMakeMyTripTopBandTopBandMobile.webp">
+      <img src="https://oppo-mmt-ugc-media-bucket.s3.us-east-1.amazonaws.com/assets/OPPOxMakeMyTripTopBandDesktop.webp"
+        alt="OPPO Reno15 Header Banner" class="w-full h-auto object-cover min-h-[140px] md:min-h-auto">
     </picture>
 
   </header>
 
-  <!-- Dark Navy Blue Wrapper for Intro & Steps -->
-  <div class="w-full bg-[#1e3459] text-white py-10 px-4">
+  <!-- Gradient Wrapper for Intro & Steps -->
+  <div class="w-full custom-bg-gradient text-[#1e3459] py-10 px-4">
     <div class="max-w-4xl mx-auto text-center flex flex-col items-center">
       <!-- Paragraph -->
-      <p class="text-gray-300 text-sm md:text-base leading-relaxed font-light max-w-2xl px-2">
+      <p class="text-[#334e68] text-sm md:text-base leading-relaxed font-semibold max-w-2xl px-2">
         From hidden streets and iconic landmarks to unforgettable sunsets and spontaneous adventures - share the shots
         that defines your journey.
       </p>
 
       <!-- Dotted Line Divider -->
-      <div class="w-32 border-t-2 border-dotted border-gray-500 my-6"></div>
+      <div class="w-32 border-t-2 border-dotted border-slate-400 my-6"></div>
 
       <!-- Title -->
-      <h2 class="text-xl md:text-2xl font-bold tracking-wide mb-8">How to Participate?</h2>
+      <h2 class="text-xl md:text-2xl font-bold tracking-wide mb-8 text-[#1e3459]">How to Participate?</h2>
 
       <!-- 3-Column Card -->
       <div
-        class="bg-white rounded-xl shadow-xl border border-gray-200 flex flex-col md:flex-row w-full text-slate-800 py-8 px-6 md:px-0">
+        class="bg-[#eef4ff] rounded-xl shadow-xl border border-blue-200 flex flex-col md:flex-row w-full text-slate-800 py-8 px-6 md:px-0">
 
         <!-- Step 1 -->
         <div class="flex-1 flex flex-col items-center text-center px-6 py-4 md:py-2">
-          <!-- SVG Camera -->
           <!-- PNG Camera -->
-          <img src="camera.png" alt="Camera" class="w-12 h-12 mb-4 object-contain">
+          <img src="https://oppo-mmt-ugc-media-bucket.s3.us-east-1.amazonaws.com/assets/CameraIcon.png" alt="Camera"
+            class="w-16 h-16 mb-4 object-contain">
           <p class="text-sm font-semibold text-[#1e3459] max-w-[200px] leading-snug">
             Capture your best travel moment on your smartphone.
           </p>
         </div>
 
         <!-- Divider -->
-        <div class="hidden md:block w-px border-r border-dotted border-gray-300 py-8"></div>
+        <div class="hidden md:block w-px border-r border-dotted border-blue-200 py-8"></div>
 
         <!-- Step 2 -->
         <div
           class="flex-1 flex flex-col items-center text-center px-6 py-4 md:py-2 border-t border-dotted border-gray-200 md:border-t-0">
           <!-- SVG Upload -->
           <!-- PNG Upload -->
-          <img src="upload.png" alt="Upload" class="w-12 h-12 mb-4 object-contain">
+          <img src="https://oppo-mmt-ugc-media-bucket.s3.us-east-1.amazonaws.com/assets/UploadIcon.png" alt="Upload"
+            class="w-16 h-16 mb-4 object-contain">
           <p class="text-sm font-semibold text-[#1e3459] max-w-[220px] leading-snug">
             Upload your entry on the MakeMyTrip contest page.
           </p>
         </div>
 
         <!-- Divider -->
-        <div class="hidden md:block w-px border-r border-dotted border-gray-300 py-8"></div>
+        <div class="hidden md:block w-px border-r border-dotted border-blue-200 py-8"></div>
 
         <!-- Step 3 -->
         <div
           class="flex-1 flex flex-col items-center text-center px-6 py-4 md:py-2 border-t border-dotted border-gray-200 md:border-t-0">
           <!-- SVG Trophy -->
           <!-- PNG Trophy -->
-          <img src="trophy.png" alt="Trophy" class="w-12 h-12 mb-4 object-contain">
+          <img src="https://oppo-mmt-ugc-media-bucket.s3.us-east-1.amazonaws.com/assets/IconWin.png" alt="Trophy"
+            class="w-16 h-16 mb-4 object-contain">
           <p class="text-sm font-semibold text-[#1e3459] max-w-[200px] leading-snug">
             Win rewards.
           </p>
@@ -256,14 +263,15 @@
                   <!-- Monthly Winners -->
                   <div class="bg-white rounded-xl p-4 border border-gray-150 shadow-sm flex items-start gap-4">
                     <div class="w-10 h-10 rounded-full bg-[#eef4ff] flex items-center justify-center flex-shrink-0">
-                      <img src="gift.png" alt="Gift" class="w-5 h-5 object-contain">
+                      <img src="https://oppo-mmt-ugc-media-bucket.s3.us-east-1.amazonaws.com/assets/MonthlyWinIcon.png"
+                        alt="Gift" class="w-10 h-10 object-contain">
                     </div>
                     <div>
                       <span class="text-[#1e3459] font-bold block mb-1.5 text-sm uppercase">Monthly Winners</span>
                       <ul class="list-disc pl-4 space-y-1 text-xs text-[#486581]">
-                        <li>MakeMyTrip Travel Vouchers</li>
-                        <li>OPPO Gift Hampers</li>
-                        <li>Featured on OPPO & MakeMyTrip channels</li>
+                        <li>One winner will be selected every two months to receive a MakeMyTrip Travel Voucher Worth
+                          ₹25,000</li>
+                        <li>One winner will be selected every two months to receive a brand-new OPPO mobile phone.</li>
                       </ul>
                     </div>
                   </div>
@@ -271,7 +279,8 @@
                   <!-- Grand Winners -->
                   <div class="bg-white rounded-xl p-4 border border-gray-150 shadow-sm flex items-start gap-4">
                     <div class="w-10 h-10 rounded-full bg-[#eef4ff] flex items-center justify-center flex-shrink-0">
-                      <img src="trophy_small.png" alt="Trophy" class="w-5 h-5 object-contain">
+                      <img src="https://oppo-mmt-ugc-media-bucket.s3.us-east-1.amazonaws.com/assets/GrandRewardIcon.png"
+                        alt="Trophy" class="w-10 h-10 object-contain">
                     </div>
                     <div>
                       <span class="text-[#1e3459] font-bold block mb-1.5 text-sm uppercase">Grand Winners</span>
@@ -386,7 +395,7 @@
 
         <!-- Main Form Container Card -->
         <div
-          class="bg-[#1e3459] text-white rounded-2xl shadow-2xl p-6 md:p-8 flex flex-col gap-6 relative overflow-hidden transition-all duration-300">
+          class="custom-bg-gradient text-white rounded-2xl shadow-2xl p-6 md:p-8 flex flex-col gap-6 relative overflow-hidden transition-all duration-300">
 
           <!-- Global Notifications -->
           <div id="notification" class="hidden text-xs rounded-xl p-3 flex items-center gap-2 transition-all"></div>
@@ -398,7 +407,7 @@
               <!-- Full Name -->
               <div>
                 <label for="fullName"
-                  class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1.5">Full Name</label>
+                  class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Full Name</label>
                 <input type="text" id="fullName" placeholder="Enter Your Full Name" required
                   class="w-full bg-white border border-gray-300 rounded-lg py-2.5 px-4 text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-sm">
               </div>
@@ -406,7 +415,7 @@
               <!-- Mobile Number -->
               <div>
                 <label for="phoneNumber"
-                  class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1.5">Mobile
+                  class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Mobile
                   Number</label>
                 <div class="relative flex items-center">
                   <span class="absolute left-3 text-slate-400 text-sm font-semibold pointer-events-none">+91</span>
@@ -419,7 +428,7 @@
             <!-- Location Picker -->
             <div class="relative">
               <label for="locationInput"
-                class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1.5">Location</label>
+                class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Location</label>
               <input type="text" id="locationInput" placeholder="Start typing your Destination" autocomplete="off"
                 required
                 class="w-full bg-white border border-gray-300 rounded-lg py-2.5 px-4 text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-sm">
@@ -433,7 +442,7 @@
               <!-- Tour Manager -->
               <div class="relative">
                 <label for="tourManager"
-                  class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1.5">Tour Manager</label>
+                  class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Tour Manager</label>
                 <input type="text" id="tourManager" placeholder="Start typing your manager's name" autocomplete="off"
                   required
                   class="w-full bg-white border border-gray-300 rounded-lg py-2.5 px-4 text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-sm">
@@ -446,7 +455,7 @@
               <!-- Start Date of Trip -->
               <div>
                 <label for="travelDate"
-                  class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1.5">Start Date of
+                  class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Start Date of
                   Trip</label>
                 <input type="date" id="travelDate" required
                   class="w-full bg-white border border-gray-300 rounded-lg py-2 px-4 text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-sm">
@@ -457,7 +466,7 @@
               <!-- Device Dropdown Selector -->
               <div class="relative">
                 <label for="deviceInput"
-                  class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1.5">Device Name</label>
+                  class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Device Name</label>
                 <input type="text" id="deviceInput" placeholder="Start typing your device's name" autocomplete="off"
                   required
                   class="w-full bg-white border border-gray-300 rounded-lg py-2.5 px-4 text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-sm">
@@ -470,7 +479,7 @@
               <!-- Instagram Handle -->
               <div>
                 <label for="instaHandle"
-                  class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1.5">Instagram
+                  class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Instagram
                   Handle</label>
                 <div class="relative flex items-center">
                   <span class="absolute left-3 text-slate-400 text-sm font-semibold pointer-events-none">@</span>
@@ -482,8 +491,8 @@
 
             <!-- Media Upload Section -->
             <div>
-              <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">
-                UPLOAD YOUR ENTRY <span class="text-xs text-gray-400 font-semibold">(Images can be of Format : jpeg,
+              <label class="block text-xs font-bold text-white uppercase tracking-wider mb-2">
+                UPLOAD YOUR ENTRY <span class="text-xs text-gray-200 font-semibold">(Images can be of Format : jpeg,
                   jpg, png)</span>
               </label>
 
@@ -492,16 +501,16 @@
                 class="border-2 border-dashed border-gray-400 hover:border-[#0052e4] rounded-xl p-6 text-center cursor-pointer transition-all bg-[#eef4ff] flex flex-col items-center justify-center relative overflow-hidden group">
                 <input type="file" id="mediaFile" accept="image/*,video/*" multiple
                   class="absolute inset-0 opacity-0 cursor-pointer">
-                <img src="upload.png" alt="Upload"
-                  class="w-10 h-10 mb-2 group-hover:scale-105 transition-transform object-contain">
+                <img src="https://oppo-mmt-ugc-media-bucket.s3.us-east-1.amazonaws.com/assets/UploadIcon.png"
+                  alt="Upload" class="w-10 h-10 mb-2 group-hover:scale-105 transition-transform object-contain">
                 <span class="text-sm text-slate-800 font-bold mb-1" id="dropLabel">Upload Your Photo</span>
-                <span class="text-[10px] text-slate-500 font-semibold" id="dropHelper">Share 1 to 9 images or videos
-                  from your trip. Keep original files</span>
+                <span class="text-[10px] text-slate-500 font-semibold" id="dropHelper">Share 1 to 9 images from your
+                  trip. Keep original files</span>
               </div>
 
               <!-- Selected Files Thumbnail Preview List -->
               <div id="fileListContainer" class="hidden mt-4 flex flex-col gap-2.5">
-                <h5 class="text-xs font-bold text-gray-300 uppercase tracking-wider">Selected Entries (<span
+                <h5 class="text-xs font-bold text-white uppercase tracking-wider">Selected Entries (<span
                     id="fileCountDisplay">0</span> of 9)</h5>
                 <div id="previewGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   <!-- Dynamically populated thumbnails -->
@@ -512,7 +521,7 @@
             <!-- Total S3 Upload progress bar -->
             <div id="uploadProgressContainer" class="hidden flex flex-col gap-1 text-xs">
               <div class="flex justify-between font-semibold">
-                <span id="progressLabel" class="text-gray-300">Uploading to AWS S3...</span>
+                <span id="progressLabel" class="text-white">Uploading to AWS S3...</span>
                 <span id="progressPercent" class="text-[#0052e4]">0%</span>
               </div>
               <div class="w-full bg-gray-800 rounded-full h-1.5 overflow-hidden">
@@ -563,13 +572,13 @@
   </div>
 
   <!-- Footer -->
-  <footer class="w-full bg-[#0b1c3a] border-t border-white/5 py-6 px-6 md:px-12 text-[#8fa0b5] text-xs mt-0">
+  <footer class="w-full custom-bg-gradient border-t border-white/5 py-6 px-6 md:px-12 text-[#1e3459] text-xs mt-0">
     <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-      <div class="font-semibold text-center md:text-left">
-        Travel. Capture. Inspire. <span class="text-white font-bold">#SuperEveryJourney</span> <span
-          class="text-[#00e5ff] font-bold">#ShotOnOPPO</span>
+      <div class="font-bold text-center md:text-left">
+        Travel. Capture. Inspire. <span class="text-[#1e3459] font-black">#SuperEveryJourney</span> <span
+          class="text-[#1e3459] font-black">#ShotOnOPPO</span>
       </div>
-      <div class="font-medium text-center md:text-right">
+      <div class="font-black text-center md:text-right">
         A MakeMyTrip x OPPO Initiative
       </div>
     </div>
