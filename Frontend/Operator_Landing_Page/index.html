@@ -201,39 +201,20 @@
 
               <div>
                 <h4 class="text-[#0052e4] font-extrabold uppercase tracking-wider mb-4 text-xs">WHAT CAN YOU WIN?</h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid gap-6">
 
-                  <!-- Monthly Winners -->
                   <div class="bg-white rounded-xl p-4 border border-gray-150 shadow-sm flex items-start gap-4">
                     <div class="w-10 h-10 rounded-full bg-[#eef4ff] flex items-center justify-center flex-shrink-0">
                       <img src="https://oppo-mmt-ugc-media-bucket.s3.us-east-1.amazonaws.com/assets/MonthlyWinIcon.png"
-                        alt="Gift" class="w-10 h-10 object-contain">
+                        alt="Gift" class="w-30 h-30 object-contain">
                     </div>
                     <div>
-                      <span class="text-[#1e3459] font-bold block mb-1.5 text-sm uppercase">Monthly Winners</span>
+                      <span class="text-[#1e3459] font-bold block mb-1.5 text-sm uppercase">Prizes</span>
                       <ul class="list-disc pl-4 space-y-1 text-xs text-[#486581]">
-                        <li>MakeMyTrip Travel Vouchers Worth 25k</li>
                         <li>One winner will be selected every two months to receive a brand-new OPPO mobile phone.</li>
                       </ul>
                     </div>
                   </div>
-
-                  <!-- Grand Winners -->
-                  <div class="bg-white rounded-xl p-4 border border-gray-150 shadow-sm flex items-start gap-4">
-                    <div class="w-10 h-10 rounded-full bg-[#eef4ff] flex items-center justify-center flex-shrink-0">
-                      <img src="https://oppo-mmt-ugc-media-bucket.s3.us-east-1.amazonaws.com/assets/GrandRewardIcon.png"
-                        alt="Trophy" class="w-10 h-10 object-contain">
-                    </div>
-                    <div>
-                      <span class="text-[#1e3459] font-bold block mb-1.5 text-sm uppercase">Grand Winners</span>
-                      <ul class="list-disc pl-4 space-y-1 text-xs text-[#486581]">
-                        <li>OPPO Find X9s</li>
-                        <li>Premium Travel Voucher</li>
-                        <li>Featured as the face of Super Every Journey</li>
-                      </ul>
-                    </div>
-                  </div>
-
                 </div>
               </div>
 
@@ -293,30 +274,20 @@
             <div class="p-6 border-t border-gray-200 bg-[#fbfdff] flex flex-col gap-6 text-sm text-[#334e68]">
 
               <div>
-                <h4 class="text-[#0052e4] font-extrabold uppercase tracking-wider mb-2.5 text-xs">ENTRY THEMES</h4>
-                <p class="text-xs text-[#627d98] mb-3">Your entry can fall under any of these themes - judges will
-                  assign the category, just shoot what moves you...</p>
-                <ul class="space-y-2 text-xs text-[#486581]">
-                  <li>📸 <strong>Personal Memories:</strong> Self-portraits, personal travel memories, and emotional
-                    connections to places.</li>
-                  <li>✨ <strong>Unexpected Encounters:</strong> Spontaneous candid captures, unplanned interactions, and
-                    sudden moments of wonder.</li>
-                  <li>⛰️ <strong>Grand Landscapes:</strong> Architecture, epic natural wonders, iconic landmarks, and
-                    vistas.</li>
-                  <li>🏃‍♂️ <strong>Life in Motion:</strong> Cultural festivals, action, streets, local movement, and
-                    immersive lifestyle.</li>
-                </ul>
-              </div>
-
-              <div class="border-t border-gray-200 pt-5">
                 <h4 class="text-[#0052e4] font-extrabold uppercase tracking-wider mb-3 text-xs">ELIGIBILITY</h4>
                 <ul class="list-disc pl-5 space-y-1.5 text-xs text-[#486581]">
-                  <li>Open to all smartphone users aged <strong>18 and above</strong>.</li>
-                  <li>Only <strong>JPG/JPEG format images</strong> are eligible for upload.</li>
-                  <li>Must be a MakeMyTrip user (domestic and international travelers welcome).</li>
+                  <li>Images must feature wide-angle, horizontal compositions capturing natural environments,
+                    architectural vistas, or cityscapes with high-resolution clarity.</li>
+                  <li>Submissions should capture candid or posed group moments within a travel or tour setting, ensuring
+                    all individuals are clearly visible and the setting is identifiable.</li>
+                  <li>Open to operators aged <strong>18 and above</strong>.</li>
+                  <li>Only <strong>PNG/JPG/JPEG format images</strong> are eligible for upload.</li>
+                  <li>All submissions must be captured on an OPPO device using a native OPPO filter and must
+                    feature either a landscape vista or a group tour setting.</li>
                   <li>Not eligible in: Germany, United States, Sudan, North Korea, Syria, Iran, Cuba, or the Crimea
                     region.</li>
-                  <li>Employees of OPPO, OnePlus, realme, and MakeMyTrip are not eligible to win.</li>
+                  <li>Participation is exclusively restricted to official Tour Managers currently affiliated with
+                    MakeMyTrip or Flamingo.</li>
                 </ul>
               </div>
             </div>
@@ -341,32 +312,26 @@
         <!-- Form: Upload & Location -->
         <form id="campaignForm" class="flex flex-col gap-5 text-left">
 
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <!-- Partner Operator Code -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Tour Manager Full Name -->
             <div>
-              <label for="operatorCode"
-                class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Partner Operator
-                Code</label>
-              <input type="text" id="operatorCode" placeholder="MMT-OP-12345" required
-                class="w-full bg-white border border-gray-300 rounded-lg py-2.5 px-4 text-slate-800 placeholder-gray-400 uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-xs">
-            </div>
-
-            <!-- Traveler Full Name -->
-            <div>
-              <label for="travelerName"
-                class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Traveler Full
+              <label for="tourManagerName"
+                class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Tour Manager Full
                 Name</label>
-              <input type="text" id="travelerName" placeholder="Enter traveler's name" required
+              <input type="text" id="tourManagerName" placeholder="Enter tour manager's name" required
                 class="w-full bg-white border border-gray-300 rounded-lg py-2.5 px-4 text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-xs">
             </div>
 
-            <!-- Traveler Mobile Number -->
+            <!-- Tour Manager Phone number -->
             <div>
-              <label for="travelerMobile"
-                class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Traveler Mobile
-                Number</label>
-              <input type="tel" id="travelerMobile" placeholder="10-digit mobile number" maxlength="10" required
-                class="w-full bg-white border border-gray-300 rounded-lg py-2.5 px-4 text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-xs">
+              <label for="tourManagerPhone"
+                class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Tour Manager Phone
+                number</label>
+              <div class="relative flex items-center">
+                <span class="absolute left-3 text-slate-400 text-sm font-semibold pointer-events-none">+91</span>
+                <input type="tel" id="tourManagerPhone" placeholder="10-digit mobile number" maxlength="10" required
+                  class="w-full bg-white border border-gray-300 rounded-lg py-2.5 pl-12 pr-4 text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-xs">
+              </div>
             </div>
           </div>
 
@@ -374,7 +339,7 @@
             <!-- Predictive Destination Autocomplete -->
             <div class="relative">
               <label for="destinationSearch"
-                class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Destination</label>
+                class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Tour Destination</label>
               <div class="relative flex items-center">
                 <span class="absolute left-3 text-slate-400 text-sm pointer-events-none">✈️</span>
                 <input type="text" id="destinationSearch" placeholder="Search destination (e.g. Munnar)"
@@ -390,45 +355,17 @@
             <!-- Date Selection -->
             <div>
               <label for="travelDate"
-                class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Itinerary Date</label>
+                class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Tour Start Date</label>
               <input type="date" id="travelDate" required
                 class="w-full bg-white border border-gray-300 rounded-lg py-2 px-4 text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-xs">
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Camera Device Used dropdown -->
-            <div class="relative">
-              <label for="deviceInput"
-                class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Camera Device
-                Used</label>
-              <input type="text" id="deviceInput" placeholder="Start typing traveler's device" autocomplete="off"
-                required
-                class="w-full bg-white border border-gray-300 rounded-lg py-2.5 px-4 text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-xs">
-              <ul id="deviceDropdown"
-                class="hidden absolute left-0 right-0 mt-1 max-h-48 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-xl z-20 divide-y divide-gray-100 custom-scrollbar text-slate-800">
-                <!-- Populated by script -->
-              </ul>
-            </div>
-
-            <!-- Traveler Instagram Handle -->
-            <div>
-              <label for="travelerInsta"
-                class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Traveler Insta
-                Handle</label>
-              <div class="relative flex items-center">
-                <span class="absolute left-3 text-slate-400 text-sm font-semibold pointer-events-none">@</span>
-                <input type="text" id="travelerInsta" placeholder="instagram_handle"
-                  class="w-full bg-white border border-gray-300 rounded-lg py-2.5 pl-8 pr-4 text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-xs">
-              </div>
             </div>
           </div>
 
           <!-- Media Upload Drag/Drop Section -->
           <div>
             <label class="block text-xs font-bold text-white uppercase tracking-wider mb-2">
-              Upload Entry Photos / Videos
-              <span class="text-gray-200 font-semibold lowercase">(1 to 9 files, max 15MB each for operators)</span>
+              Upload Tour Photos / Videos
+              <span class="text-gray-200 font-semibold lowercase">(1 to 25 files, max 15MB each for tour manager)</span>
             </label>
             <div id="dropZone"
               class="border-2 border-dashed border-gray-400 hover:border-[#0052e4] rounded-xl p-6 text-center cursor-pointer transition-all bg-[#eef4ff] flex flex-col items-center justify-center relative overflow-hidden group">
@@ -437,14 +374,14 @@
               <img src="https://oppo-mmt-ugc-media-bucket.s3.us-east-1.amazonaws.com/assets/UploadIcon.png" alt="Upload"
                 class="w-10 h-10 mb-2 group-hover:scale-105 transition-transform object-contain">
               <span class="text-sm text-slate-800 font-bold mb-1" id="dropLabel">Upload Your Photo</span>
-              <span class="text-[10px] text-slate-500 font-semibold" id="dropHelper">Share 1 to 9 images from your trip.
-                Keep original files</span>
+              <span class="text-[10px] text-slate-500 font-semibold" id="dropHelper">Share 1 to 25 images from your
+                tour. Keep original files</span>
             </div>
 
             <!-- Selected Files Thumbnail Preview List -->
             <div id="fileListContainer" class="hidden mt-4 flex flex-col gap-2.5">
               <h5 class="text-xs font-bold text-white uppercase tracking-wider">Selected Entries (<span
-                  id="fileCountDisplay">0</span> of 9)</h5>
+                  id="fileCountDisplay">0</span> of 25)</h5>
               <div id="previewGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 <!-- Dynamically populated -->
               </div>
@@ -472,9 +409,9 @@
         <div id="successCard"
           class="hidden absolute inset-0 bg-[#1e3459]/95 flex flex-col items-center justify-center p-6 text-center z-30 transition-all">
           <div class="text-5xl mb-4 animate-bounce">✅</div>
-          <h3 class="text-2xl font-extrabold text-white font-sans">Operator Upload Logged!</h3>
+          <h3 class="text-2xl font-extrabold text-white font-sans">Tour Manager Upload Logged!</h3>
           <p class="text-gray-300 text-xs mt-3 max-w-xs leading-relaxed">
-            The campaign media has been successfully uploaded to the S3 bucket. Metadata is logged under your operator
+            The campaign media has been successfully uploaded to the S3 bucket. Metadata is logged under your manager
             profile: <span id="operatorDisplay" class="font-bold text-[#00e5ff]"></span>.
           </p>
           <button type="button" id="resetBtn"
@@ -504,26 +441,21 @@
     // State management
     let state = {
       isLoggedIn: false,
-      operatorCode: '',
+      tourManagerPhone: '',
       selectedFiles: [], // array of File objects
       apiBaseUrl: window.location.origin,
-      destinations: [],
-      devices: []
+      destinations: []
     };
 
     // DOM Elements
     const elements = {
       notification: document.getElementById('notification'),
-      operatorCode: document.getElementById('operatorCode'),
       campaignForm: document.getElementById('campaignForm'),
-      travelerName: document.getElementById('travelerName'),
-      travelerMobile: document.getElementById('travelerMobile'),
+      tourManagerName: document.getElementById('tourManagerName'),
+      tourManagerPhone: document.getElementById('tourManagerPhone'),
       destinationSearch: document.getElementById('destinationSearch'),
       destinationDropdown: document.getElementById('destinationDropdown'),
       travelDate: document.getElementById('travelDate'),
-      deviceInput: document.getElementById('deviceInput'),
-      deviceDropdown: document.getElementById('deviceDropdown'),
-      travelerInsta: document.getElementById('travelerInsta'),
       dropZone: document.getElementById('dropZone'),
       mediaFile: document.getElementById('mediaFile'),
       fileListContainer: document.getElementById('fileListContainer'),
@@ -555,17 +487,12 @@
 
     // Populated Device dropdown logic removed since it is now populated dynamically via API
 
-    // Fetch destinations list and devices from API endpoint on boot
+    // Fetch destinations list from API endpoint on boot
     async function loadMetadata() {
       try {
-        const [locRes, devRes] = await Promise.all([
-          fetch(`${state.apiBaseUrl}/api/metadata/locations`),
-          fetch(`${state.apiBaseUrl}/api/metadata/devices`)
-        ]);
+        const locRes = await fetch(`${state.apiBaseUrl}/api/metadata/locations`);
         const locData = await locRes.json();
-        const devData = await devRes.json();
         if (locData.success) state.destinations = locData.data;
-        if (devData.success) state.devices = devData.data;
       } catch (err) {
         console.error('Failed to load metadata:', err);
       }
@@ -637,43 +564,10 @@
       elements.destinationDropdown.classList.remove('hidden');
     });
 
-    // --- Autocomplete Dropdown Logic: Device Name ---
-    elements.deviceInput.addEventListener('input', (e) => {
-      const query = e.target.value.toLowerCase().trim();
-      if (!query) {
-        elements.deviceDropdown.classList.add('hidden');
-        return;
-      }
-
-      const filtered = state.devices.filter(dev => dev.toLowerCase().includes(query));
-
-      if (filtered.length === 0) {
-        elements.deviceDropdown.classList.add('hidden');
-        return;
-      }
-
-      elements.deviceDropdown.innerHTML = '';
-      filtered.forEach(dev => {
-        const li = document.createElement('li');
-        li.className = 'px-4 py-2 text-xs text-slate-800 hover:bg-blue-50 hover:text-[#0052e4] cursor-pointer transition-colors';
-        li.innerText = dev;
-        li.addEventListener('click', () => {
-          elements.deviceInput.value = dev;
-          elements.deviceDropdown.classList.add('hidden');
-        });
-        elements.deviceDropdown.appendChild(li);
-      });
-
-      elements.deviceDropdown.classList.remove('hidden');
-    });
-
     // Hide dropdown when clicking outside
     document.addEventListener('click', (e) => {
       if (!elements.destinationSearch.contains(e.target) && !elements.destinationDropdown.contains(e.target)) {
         elements.destinationDropdown.classList.add('hidden');
-      }
-      if (!elements.deviceInput.contains(e.target) && !elements.deviceDropdown.contains(e.target)) {
-        elements.deviceDropdown.classList.add('hidden');
       }
     });
 
@@ -703,8 +597,8 @@
       if (!fileList || fileList.length === 0) return;
 
       const currentCount = state.selectedFiles.length;
-      if (currentCount + fileList.length > 9) {
-        showNotification('Maximum 9 campaign files can be uploaded per submission.', 'error');
+      if (currentCount + fileList.length > 25) {
+        showNotification('Maximum 25 campaign files can be uploaded per submission.', 'error');
         return;
       }
 
@@ -753,7 +647,7 @@
 
       elements.fileListContainer.classList.remove('hidden');
       elements.previewGrid.innerHTML = '';
-      elements.dropLabel.innerText = `Add More Files (${files.length} of 9 selected)`;
+      elements.dropLabel.innerText = `Add More Files (${files.length} of 25 selected)`;
 
       files.forEach((file, index) => {
         const card = document.createElement('div');
@@ -823,37 +717,27 @@
     elements.campaignForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      const operatorCode = elements.operatorCode.value.trim().toUpperCase();
-      const travelerName = elements.travelerName.value.trim();
-      const travelerMobile = elements.travelerMobile.value.trim();
+      const tourManagerName = elements.tourManagerName.value.trim();
+      const tourManagerPhoneInput = elements.tourManagerPhone.value.trim();
       const location = elements.destinationSearch.value.trim();
       const date = elements.travelDate.value;
-      const device = elements.deviceInput.value.trim();
-      const travelerInsta = elements.travelerInsta.value.trim();
 
-      if (!operatorCode) {
-        showNotification('Please enter your Partner Operator Code.', 'error');
-        return;
-      }
-      if (!/^MMT-OP-\d{5}$/.test(operatorCode)) {
-        showNotification('Invalid Operator Code format. Must match: MMT-OP-XXXXX (e.g. MMT-OP-12345).', 'error');
-        return;
-      }
-      state.operatorCode = operatorCode;
-      elements.operatorDisplay.innerText = operatorCode;
-
-      if (!travelerName || !travelerMobile || !location || !date || !device) {
+      if (!tourManagerName || !tourManagerPhoneInput || !location || !date) {
         showNotification('Please fill in all required fields.', 'error');
         return;
       }
 
-      if (!/^\d{10}$/.test(travelerMobile)) {
-        showNotification('Traveler mobile number must be exactly 10 digits.', 'error');
+      if (!/^\d{10}$/.test(tourManagerPhoneInput)) {
+        showNotification('Tour Manager Phone number must be exactly 10 digits.', 'error');
         return;
       }
 
+      const tourManagerPhone = '+91' + tourManagerPhoneInput;
+      state.tourManagerPhone = tourManagerPhone;
+      elements.operatorDisplay.innerText = tourManagerName;
+
       if (state.selectedFiles.length === 0) {
-        showNotification('Please select 1 to 9 media files to upload.', 'error');
+        showNotification('Please select 1 to 25 media files to upload.', 'error');
         return;
       }
 
@@ -892,7 +776,7 @@
               fileType: fileType,
               fileSize: file.size,
               userRole: 'operator',
-              userIdentifier: state.operatorCode
+              userIdentifier: tourManagerPhone
             })
           });
 
@@ -943,17 +827,17 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              userIdentifier: state.operatorCode,
+              userIdentifier: tourManagerPhone,
               userRole: 'operator',
               mediaUrl: mediaUrl,
               fileName: file.name,
               fileSize: file.size,
               location: location,
               travelDate: date,
-              fullName: travelerName,
-              tourManager: state.operatorCode,
-              device: device,
-              instaHandle: travelerInsta || null
+              fullName: tourManagerName,
+              tourManager: tourManagerName,
+              device: 'OPPO Device',
+              instaHandle: null
             })
           });
 

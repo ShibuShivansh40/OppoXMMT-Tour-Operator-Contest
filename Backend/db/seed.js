@@ -114,7 +114,49 @@ function postSubmission(data) {
   });
 }
 
-function moderateSubmission(id, status) {
+function loginMMT() {
+  return new Promise((resolve, reject) => {
+    const postData = JSON.stringify({
+      dashboard: 'mmt',
+      password: 'mmt-admin-2026'
+    });
+    const req = http.request(
+      {
+        hostname: 'localhost',
+        port: 5000,
+        path: '/api/auth/login',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(postData)
+        }
+      },
+      (res) => {
+        let body = '';
+        res.on('data', chunk => body += chunk);
+        res.on('end', () => {
+          if (res.statusCode === 200) {
+            const setCookie = res.headers['set-cookie'];
+            if (setCookie && setCookie.length > 0) {
+              const cookie = setCookie[0].split(';')[0];
+              resolve(cookie);
+            } else {
+              reject(new Error('Set-Cookie header missing in login response'));
+            }
+          } else {
+            reject(new Error(`Login failed with status ${res.statusCode}: ${body}`));
+          }
+        });
+      }
+    );
+
+    req.on('error', (e) => reject(e));
+    req.write(postData);
+    req.end();
+  });
+}
+
+function moderateSubmission(id, status, cookie) {
   return new Promise((resolve, reject) => {
     const postData = JSON.stringify({ status });
     const req = http.request(
@@ -125,7 +167,8 @@ function moderateSubmission(id, status) {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Content-Length': Buffer.byteLength(postData)
+          'Content-Length': Buffer.byteLength(postData),
+          'Cookie': cookie
         }
       },
       (res) => {
@@ -160,19 +203,28 @@ async function run() {
     }
   }
 
+  let cookie = '';
+  try {
+    cookie = await loginMMT();
+    console.log('Successfully logged in to MMT Admin to perform moderation...');
+  } catch (err) {
+    console.error('Failed to log in to MMT Admin for seeding:', err.message);
+  }
+
   console.log('Moderating some submissions to approved/rejected status for testing...');
-  // Approve the first 3 submissions, reject the 4th, leave others pending
+  // Approve first 3 traveler submissions and 2 operator submissions
   const moderateActions = [
     { id: seededIds[0], status: 'approved' },
     { id: seededIds[1], status: 'approved' },
     { id: seededIds[2], status: 'approved' },
-    { id: seededIds[3], status: 'rejected' }
+    { id: seededIds[3], status: 'approved' },
+    { id: seededIds[4], status: 'approved' }
   ];
 
   for (const action of moderateActions) {
     if (action.id) {
       try {
-        await moderateSubmission(action.id, action.status);
+        await moderateSubmission(action.id, action.status, cookie);
         console.log(`Successfully moderated submission ID ${action.id} to '${action.status}'`);
       } catch (err) {
         console.error(`Failed to moderate ID ${action.id}: ${err.message}`);

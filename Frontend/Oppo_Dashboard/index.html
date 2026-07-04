@@ -35,7 +35,9 @@
   <!-- SheetJS Library for multi-sheet Excel report generation -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
-  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
   <style>
     body {
       font-family: 'Lato', sans-serif;
@@ -81,25 +83,30 @@
   </style>
 </head>
 
-<body class="text-slate-100 min-h-screen flex flex-col antialiased bg-gradient-to-br from-[#020a06] via-[#05120c] to-[#0a2215]">
+<body
+  class="text-slate-100 min-h-screen flex flex-col antialiased bg-gradient-to-br from-[#020a06] via-[#05120c] to-[#0a2215]">
 
   <!-- Main Top Bar -->
-  <header class="bg-[#05120c]/90 border-b border-white/5 text-white py-3 px-4 md:py-4 md:px-6 flex items-center justify-between shadow-lg sticky top-0 z-30 backdrop-blur-md">
+  <header
+    class="bg-[#05120c]/90 border-b border-white/5 text-white py-3 px-4 md:py-4 md:px-6 flex items-center justify-between shadow-lg sticky top-0 z-30 backdrop-blur-md">
     <div class="flex items-center gap-2 md:gap-3">
       <div class="text-oppoEmerald font-black tracking-widest text-base md:text-lg font-mono uppercase text-glow">
         OPPO
       </div>
       <span class="text-white/20 hidden sm:inline">×</span>
       <a href="https://www.makemytrip.com" target="_blank" rel="noopener noreferrer" class="hidden sm:block">
-        <img src="https://promos.makemytrip.com/images/mmtlogo.webp" alt="MakeMyTrip Logo" class="max-w-[100px] md:max-w-[130px]"
+        <img src="https://promos.makemytrip.com/images/mmtlogo.webp" alt="MakeMyTrip Logo"
+          class="max-w-[100px] md:max-w-[130px]"
           style="background-color: white; padding: 6px 10px; border-radius: 8px;">
       </a>
       <span class="text-white/20 hidden sm:inline">|</span>
-      <p class="text-sm md:text-lg uppercase tracking-wider text-oppoMint font-extrabold text-glow hidden sm:block">Client Dashboard</p>
+      <p class="text-sm md:text-lg uppercase tracking-wider text-oppoMint font-extrabold text-glow hidden sm:block">
+        Client Dashboard</p>
     </div>
 
     <div class="flex items-center gap-3">
-      <button id="logoutBtn" class="bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-white/10 text-xs font-semibold transition-all">
+      <button id="logoutBtn"
+        class="bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-white/10 text-xs font-semibold transition-all">
         Logout
       </button>
     </div>
@@ -109,7 +116,8 @@
   <div class="flex flex-1 flex-col md:flex-row">
 
     <!-- Sidebar Navigation — hidden on mobile (replaced by bottom tab bar) -->
-    <aside class="hidden md:flex md:w-64 bg-[#05120c]/85 border-r border-white/5 p-6 flex-col gap-6 backdrop-blur-md flex-shrink-0">
+    <aside
+      class="hidden md:flex md:w-64 bg-[#05120c]/85 border-r border-white/5 p-6 flex-col gap-6 backdrop-blur-md flex-shrink-0">
       <div class="text-xxs uppercase tracking-widest text-slate-500 font-bold">Workspace</div>
       <nav class="flex flex-col gap-2">
         <button id="tabShowcase"
@@ -131,7 +139,8 @@
     </aside>
 
     <!-- Mobile Bottom Tab Bar -->
-    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-[#05120c]/95 border-t border-white/10 backdrop-blur-md z-40 flex items-stretch">
+    <nav
+      class="md:hidden fixed bottom-0 left-0 right-0 bg-[#05120c]/95 border-t border-white/10 backdrop-blur-md z-40 flex items-stretch">
       <button id="tabShowcaseMobile"
         class="flex-1 flex flex-col items-center justify-center gap-1 py-3 text-white bg-oppoGreen/20 border-t-2 border-oppoEmerald transition-all">
         <span class="text-lg">🖼️</span>
@@ -141,7 +150,8 @@
         class="flex-1 flex flex-col items-center justify-center gap-1 py-3 text-slate-400 border-t-2 border-transparent transition-all relative">
         <span class="text-lg">🏆</span>
         <span class="text-[10px] font-bold uppercase tracking-wide">Winners</span>
-        <span id="winnersBadgeMobile" class="absolute top-1.5 right-4 bg-oppoEmerald text-black text-[9px] font-extrabold px-1.5 py-0.5 rounded-full hidden">0</span>
+        <span id="winnersBadgeMobile"
+          class="absolute top-1.5 right-4 bg-oppoEmerald text-black text-[9px] font-extrabold px-1.5 py-0.5 rounded-full hidden">0</span>
       </button>
     </nav>
 
@@ -156,8 +166,10 @@
       <!-- Title & Action Bar -->
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
         <div>
-          <h2 class="text-2xl md:text-3xl font-black tracking-tight text-white uppercase" id="galleryTitle">Showcase Gallery</h2>
-          <p class="text-sm text-slate-400 mt-1" id="galleryDesc">Review MMT-approved entries, mark contest winners, and compile audit logs.</p>
+          <h2 class="text-2xl md:text-3xl font-black tracking-tight text-white uppercase" id="galleryTitle">Showcase
+            Gallery</h2>
+          <p class="text-sm text-slate-400 mt-1" id="galleryDesc">Review MMT-approved entries, mark contest winners, and
+            compile audit logs.</p>
         </div>
 
         <!-- Export Report Button -->
@@ -169,37 +181,63 @@
 
       <!-- Stats Summary Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <div class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-[#00b064]/20">
+        <div
+          class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-[#00b064]/20">
           <div>
             <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Approved Submissions</p>
             <h3 id="statApproved" class="text-3xl font-extrabold text-white mt-1">0</h3>
           </div>
-          <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-oppoEmerald flex items-center justify-center text-xl">🖼️</div>
+          <div
+            class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-oppoEmerald flex items-center justify-center text-xl">
+            🖼️</div>
         </div>
-        <div class="glass-card rounded-2xl p-6 flex items-center justify-between border-[#00b064]/25 bg-oppoGreen/10 transition-all duration-300 hover:scale-[1.03] hover:border-[#00e5ff]/20">
+        <div
+          class="glass-card rounded-2xl p-6 flex items-center justify-between border-[#00b064]/25 bg-oppoGreen/10 transition-all duration-300 hover:scale-[1.03] hover:border-[#00e5ff]/20">
           <div>
             <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Selected Winners</p>
             <h3 id="statWinners" class="text-3xl font-extrabold text-oppoMint mt-1 text-glow">0</h3>
           </div>
-          <div class="w-12 h-12 rounded-2xl bg-[#00b064]/20 border border-[#00b064]/30 text-oppoMint flex items-center justify-center text-xl text-glow">🏆</div>
+          <div
+            class="w-12 h-12 rounded-2xl bg-[#00b064]/20 border border-[#00b064]/30 text-oppoMint flex items-center justify-center text-xl text-glow">
+            🏆</div>
         </div>
-        <div class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-[#00b064]/20">
+        <div
+          class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-[#00b064]/20">
           <div>
             <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Active Locations</p>
             <h3 id="statLocations" class="text-3xl font-extrabold text-white mt-1">0</h3>
           </div>
-          <div class="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-[#00e5ff] flex items-center justify-center text-xl">📍</div>
+          <div
+            class="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-[#00e5ff] flex items-center justify-center text-xl">
+            📍</div>
         </div>
       </div>
 
       <!-- Quick Info Card -->
-      <div class="glass-card rounded-2xl p-5 md:p-6 flex flex-col gap-4 md:flex-row md:items-center md:gap-6 justify-between border-l-4 border-l-oppoMint">
+      <div
+        class="glass-card rounded-2xl p-5 md:p-6 flex flex-col gap-4 md:flex-row md:items-center md:gap-6 justify-between border-l-4 border-l-oppoMint">
         <div class="flex gap-3 items-start md:items-center">
           <div class="text-2xl md:text-3xl flex-shrink-0">💡</div>
           <div>
             <h4 class="font-extrabold text-white text-sm md:text-base">Contest Audit Reports Ready!</h4>
-            <p class="text-xs text-slate-400 mt-0.5">Use the Generate Excel Report button to fetch all campaign data, approved media URLs, and winner contact details in one file.</p>
+            <p class="text-xs text-slate-400 mt-0.5">Use the Generate Excel Report button to fetch all campaign data,
+              approved media URLs, and winner contact details in one file.</p>
           </div>
+        </div>
+      </div>
+
+      <!-- Gallery Filter Bar -->
+      <div id="galleryFilterBar" class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 glass-card p-4 rounded-2xl">
+        <div class="flex flex-wrap items-center gap-2 text-xs font-sans">
+          <span class="text-slate-400 font-bold mr-2">Filter Role:</span>
+          <button id="btnRoleAll" class="bg-oppoGreen text-white font-bold py-1.5 px-4 rounded-xl shadow-md transition-all active:scale-95 duration-200 border border-oppoEmerald/20">All Submissions</button>
+          <button id="btnRoleTraveler" class="bg-white/5 text-slate-300 hover:text-white font-bold py-1.5 px-4 rounded-xl transition-all active:scale-95 duration-200 border border-white/10">Travelers</button>
+          <button id="btnRoleOperator" class="bg-white/5 text-slate-300 hover:text-white font-bold py-1.5 px-4 rounded-xl transition-all active:scale-95 duration-200 border border-white/10">Operators</button>
+        </div>
+        
+        <!-- Search bar -->
+        <div class="relative flex-grow sm:flex-grow-0 sm:w-64">
+          <input type="text" id="searchLocation" placeholder="🔍 Search by Location..." class="w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-oppoEmerald transition-colors placeholder-slate-500">
         </div>
       </div>
 
@@ -208,7 +246,7 @@
         <!-- Loading indicator -->
         <div id="galleryLoading" class="py-20 text-center flex flex-col items-center gap-3">
           <span class="text-3xl animate-spin text-oppoMint text-glow">⏳</span>
-          <p class="text-xs font-semibold text-slate-400">Loading approved traveler images...</p>
+          <p class="text-xs font-semibold text-slate-400">Loading approved traveler and operator images...</p>
         </div>
 
         <!-- Empty state -->
@@ -232,7 +270,8 @@
           class="hidden py-20 text-center flex flex-col items-center gap-3 glass-card rounded-2xl shadow-lg">
           <span class="text-4xl">🏆</span>
           <p class="text-sm font-bold text-white">No winners selected yet</p>
-          <p class="text-xs text-slate-500">Go to the Showcase tab and click "Mark Winner" on your favorite submissions.</p>
+          <p class="text-xs text-slate-500">Go to the Showcase tab and click "Mark Winner" on your favorite submissions.
+          </p>
         </div>
 
         <!-- Winners Grid -->
@@ -247,23 +286,32 @@
   <!-- Lightbox/Scoring Modal -->
   <div id="imageModal" class="hidden fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 md:p-6"
     onclick="closeImageModal()">
-    <button class="absolute top-4 right-4 text-white text-3xl font-bold hover:scale-115 transition-transform z-50" onclick="closeImageModal()">×</button>
-    
-    <div class="relative w-full max-w-5xl bg-[#05120c] border border-[#00b064]/20 rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row animate-zoom-in max-h-[90vh]" onclick="event.stopPropagation()">
-      
+    <button class="absolute top-4 right-4 text-white text-3xl font-bold hover:scale-115 transition-transform z-50"
+      onclick="closeImageModal()">×</button>
+
+    <div
+      class="relative w-full max-w-5xl bg-[#05120c] border border-[#00b064]/20 rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row animate-zoom-in max-h-[90vh]"
+      onclick="event.stopPropagation()">
+
       <!-- Left side: Image/Video Preview -->
       <div class="flex-1 bg-black flex items-center justify-center p-4 relative min-h-[300px] md:min-h-0">
         <img id="modalImg" src="" class="max-w-full max-h-[70vh] object-contain rounded-lg shadow-md hidden">
         <video id="modalVideo" src="" controls class="max-w-full max-h-[70vh] rounded-lg shadow-md hidden"></video>
       </div>
-      
+
       <!-- Right side: Scoring Form -->
-      <div class="w-full md:w-96 p-6 flex flex-col gap-4 border-t md:border-t-0 md:border-l border-white/10 overflow-y-auto custom-scrollbar">
-        <div>
-          <h3 class="text-base font-extrabold text-white tracking-wide">🏆 Rubric Evaluation</h3>
-          <p id="scoringSubInfo" class="text-[10px] text-slate-400 mt-1">Submission #ID • Submitter Details</p>
+      <div
+        class="w-full md:w-96 p-6 flex flex-col gap-4 border-t md:border-t-0 md:border-l border-white/10 overflow-y-auto custom-scrollbar">
+        <div class="flex justify-between items-start gap-2">
+          <div>
+            <h3 class="text-base font-extrabold text-white tracking-wide">🏆 Rubric Evaluation</h3>
+            <p id="scoringSubInfo" class="text-[10px] text-slate-400 mt-1">Submission #ID • Submitter Details</p>
+          </div>
+          <button id="modalDownloadBtn" type="button" class="bg-white/5 border border-white/10 hover:border-oppoMint hover:text-oppoMint text-slate-300 px-3 py-1.5 rounded-lg text-[10px] font-bold flex items-center gap-1.5 transition-all duration-300">
+            <span>📥</span> Download
+          </button>
         </div>
-        
+
         <form id="scoringForm" class="flex flex-col gap-4">
           <!-- Category 1: Composition & Framing -->
           <div class="flex flex-col gap-1">
@@ -271,7 +319,7 @@
               <span>📐 Composition & Framing</span>
               <span class="text-oppoMint font-mono" id="valComposition">0/25</span>
             </div>
-            <input type="range" id="scoreComposition" min="0" max="25" value="0" 
+            <input type="range" id="scoreComposition" min="0" max="25" value="0"
               class="w-full h-1.5 bg-slate-900 rounded-lg appearance-none cursor-pointer accent-oppoEmerald">
             <span class="text-[10px] text-slate-500">Rule of thirds, leading lines, clean backgrounds (25%)</span>
           </div>
@@ -282,7 +330,7 @@
               <span>📷 OPPO Watermark Visibility</span>
               <span class="text-oppoMint font-mono" id="valWatermark">0/20</span>
             </div>
-            <input type="range" id="scoreWatermark" min="0" max="20" value="0" 
+            <input type="range" id="scoreWatermark" min="0" max="20" value="0"
               class="w-full h-1.5 bg-slate-900 rounded-lg appearance-none cursor-pointer accent-oppoEmerald">
             <span class="text-[10px] text-slate-500">Clear, unobstructed watermark in photo (20%)</span>
           </div>
@@ -293,7 +341,7 @@
               <span>📍 Location / Scenic Value</span>
               <span class="text-oppoMint font-mono" id="valLocation">0/25</span>
             </div>
-            <input type="range" id="scoreLocation" min="0" max="25" value="0" 
+            <input type="range" id="scoreLocation" min="0" max="25" value="0"
               class="w-full h-1.5 bg-slate-900 rounded-lg appearance-none cursor-pointer accent-oppoEmerald">
             <span class="text-[10px] text-slate-500">Iconic landmarks, unique angles, appeal (25%)</span>
           </div>
@@ -304,7 +352,7 @@
               <span>👥 Tourist Engagement</span>
               <span class="text-oppoMint font-mono" id="valEngagement">0/20</span>
             </div>
-            <input type="range" id="scoreEngagement" min="0" max="20" value="0" 
+            <input type="range" id="scoreEngagement" min="0" max="20" value="0"
               class="w-full h-1.5 bg-slate-900 rounded-lg appearance-none cursor-pointer accent-oppoEmerald">
             <span class="text-[10px] text-slate-500">Natural group interactions, candid moments (20%)</span>
           </div>
@@ -315,7 +363,7 @@
               <span>📅 Upload Consistency</span>
               <span class="text-oppoMint font-mono" id="valConsistency">0/10</span>
             </div>
-            <input type="range" id="scoreConsistency" min="0" max="10" value="0" 
+            <input type="range" id="scoreConsistency" min="0" max="10" value="0"
               class="w-full h-1.5 bg-slate-900 rounded-lg appearance-none cursor-pointer accent-oppoEmerald">
             <span class="text-[10px] text-slate-500">Regular daily/weekly cadence vs. bulk dumps (10%)</span>
           </div>
@@ -351,7 +399,10 @@
       activeTab: 'showcase', // 'showcase' or 'winners'
       approvedEntries: [],
       winnersList: [],
-      currentScoringEntryId: null
+      currentScoringEntryId: null,
+      currentScoringEntry: null,
+      filterRole: 'all', // 'all', 'traveler', 'operator'
+      searchQuery: ''
     };
 
     // DOM Elements
@@ -528,14 +579,24 @@
     // Render approved entries showcase
     function renderGallery() {
       elements.galleryGrid.innerHTML = '';
-      if (state.approvedEntries.length === 0) {
+      
+      const filtered = state.approvedEntries.filter(entry => {
+        const matchesRole = state.filterRole === 'all' || entry.user_role === state.filterRole;
+        const matchesSearch = !state.searchQuery || 
+          (entry.location && entry.location.toLowerCase().includes(state.searchQuery.toLowerCase())) ||
+          (entry.full_name && entry.full_name.toLowerCase().includes(state.searchQuery.toLowerCase()));
+        return matchesRole && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
         elements.galleryEmpty.classList.remove('hidden');
+        elements.galleryGrid.classList.add('hidden');
         return;
       }
 
       elements.galleryEmpty.classList.add('hidden');
       elements.galleryGrid.classList.remove('hidden');
-      state.approvedEntries.forEach(entry => {
+      filtered.forEach(entry => {
         const card = createEntryCard(entry);
         elements.galleryGrid.appendChild(card);
       });
@@ -547,13 +608,21 @@
       elements.winnersEmpty.classList.add('hidden');
       elements.winnersGrid.classList.add('hidden');
 
-      if (state.winnersList.length === 0) {
+      const filtered = state.winnersList.filter(entry => {
+        const matchesRole = state.filterRole === 'all' || entry.user_role === state.filterRole;
+        const matchesSearch = !state.searchQuery || 
+          (entry.location && entry.location.toLowerCase().includes(state.searchQuery.toLowerCase())) ||
+          (entry.full_name && entry.full_name.toLowerCase().includes(state.searchQuery.toLowerCase()));
+        return matchesRole && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
         elements.winnersEmpty.classList.remove('hidden');
         return;
       }
 
       elements.winnersGrid.classList.remove('hidden');
-      state.winnersList.forEach(entry => {
+      filtered.forEach(entry => {
         const card = createEntryCard(entry);
         elements.winnersGrid.appendChild(card);
       });
@@ -637,10 +706,16 @@
             ${tagsRow}
           </div>
 
-          <button onclick="toggleWinner(${entry.id}, ${winnerStatus})"
-            class="w-full border py-2 px-3 rounded-lg text-xxs font-bold transition-all active:scale-95 flex items-center justify-center gap-1.5 ${winnerBtnClass}">
-            <span>🏆</span> ${winnerStatus ? 'Revoke Winner Status' : 'Mark as Winner'}
-          </button>
+          <div class="flex gap-2">
+            <button onclick="toggleWinner(${entry.id}, ${winnerStatus})"
+              class="flex-1 border py-2 px-3 rounded-lg text-xxs font-bold transition-all active:scale-95 flex items-center justify-center gap-1.5 ${winnerBtnClass}">
+              <span>🏆</span> ${winnerStatus ? 'Revoke' : 'Mark Winner'}
+            </button>
+            <button id="download-btn-${entry.id}"
+              class="border border-white/10 bg-white/5 text-slate-300 hover:text-oppoMint hover:border-oppoMint py-2 px-3 rounded-lg text-xxs font-bold transition-all active:scale-95 flex items-center justify-center gap-1.5">
+              <span>📥</span> Download
+            </button>
+          </div>
         </div>
       `;
 
@@ -652,8 +727,37 @@
         });
       }
 
+      const downloadBtn = div.querySelector(`#download-btn-${entry.id}`);
+      if (downloadBtn) {
+        downloadBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          downloadMedia(entry.media_url, entry.file_name);
+        });
+      }
+
       return div;
     }
+
+    // Expose downloadMedia helper function
+    async function downloadMedia(url, filename) {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Failed to fetch media');
+        const blob = await response.blob();
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = filename || 'ugc_asset';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(blobUrl);
+      } catch (err) {
+        console.error('Direct download failed. Fallback: opening in new tab.', err);
+        window.open(url, '_blank');
+      }
+    }
+    window.downloadMedia = downloadMedia;
 
     // Toggle Contest Winner status
     async function toggleWinner(id, currentStatus) {
@@ -700,11 +804,12 @@
     // Modal view
     function openImageModal(entry) {
       state.currentScoringEntryId = entry.id;
-      
+      state.currentScoringEntry = entry;
+
       const isVideo = entry.file_name && /\.(mp4|mov|avi|mkv|webm)$/i.test(entry.file_name);
       const img = document.getElementById('modalImg');
       const video = document.getElementById('modalVideo');
-      
+
       if (isVideo) {
         img.classList.add('hidden');
         img.src = '';
@@ -739,6 +844,7 @@
       video.pause();
       video.src = '';
       state.currentScoringEntryId = null;
+      state.currentScoringEntry = null;
     }
 
     // Attach real-time updates for sliders after page load or DOM setup
@@ -752,20 +858,20 @@
       if (scoringForm) {
         scoringForm.addEventListener('submit', async (e) => {
           e.preventDefault();
-          
+
           const id = state.currentScoringEntryId;
           if (!id) return;
-          
+
           const scoreComposition = parseInt(document.getElementById('scoreComposition').value);
           const scoreWatermark = parseInt(document.getElementById('scoreWatermark').value);
           const scoreLocation = parseInt(document.getElementById('scoreLocation').value);
           const scoreEngagement = parseInt(document.getElementById('scoreEngagement').value);
           const scoreConsistency = parseInt(document.getElementById('scoreConsistency').value);
-          
+
           const saveBtn = document.getElementById('saveScoreBtn');
           saveBtn.disabled = true;
           saveBtn.innerText = 'Saving scores...';
-          
+
           try {
             const res = await fetch(`${state.apiBaseUrl}/api/submissions/${id}/score`, {
               method: 'PUT',
@@ -780,9 +886,9 @@
                 scoreConsistency
               })
             });
-            
+
             const result = await res.json();
-            
+
             if (res.ok && result.success) {
               showToast('Evaluation scores saved successfully! ⭐', 'success');
               closeImageModal();
@@ -796,6 +902,65 @@
           } finally {
             saveBtn.disabled = false;
             saveBtn.innerText = 'Save Evaluation Scores';
+          }
+        });
+      }
+
+      // Role Filter Buttons
+      const btnAll = document.getElementById('btnRoleAll');
+      const btnTraveler = document.getElementById('btnRoleTraveler');
+      const btnOperator = document.getElementById('btnRoleOperator');
+      const searchInput = document.getElementById('searchLocation');
+      const modalDownloadBtn = document.getElementById('modalDownloadBtn');
+
+      function updateActiveFilterButton(activeBtn) {
+        [btnAll, btnTraveler, btnOperator].forEach(btn => {
+          if (btn) {
+            if (btn === activeBtn) {
+              btn.className = 'bg-oppoGreen text-white font-bold py-1.5 px-4 rounded-xl shadow-md transition-all active:scale-95 duration-200 border border-oppoEmerald/20';
+            } else {
+              btn.className = 'bg-white/5 text-slate-300 hover:text-white font-bold py-1.5 px-4 rounded-xl transition-all active:scale-95 duration-200 border border-white/10';
+            }
+          }
+        });
+      }
+
+      if (btnAll) {
+        btnAll.addEventListener('click', () => {
+          state.filterRole = 'all';
+          updateActiveFilterButton(btnAll);
+          renderGallery();
+          if (state.activeTab === 'winners') renderWinnersList();
+        });
+      }
+      if (btnTraveler) {
+        btnTraveler.addEventListener('click', () => {
+          state.filterRole = 'traveler';
+          updateActiveFilterButton(btnTraveler);
+          renderGallery();
+          if (state.activeTab === 'winners') renderWinnersList();
+        });
+      }
+      if (btnOperator) {
+        btnOperator.addEventListener('click', () => {
+          state.filterRole = 'operator';
+          updateActiveFilterButton(btnOperator);
+          renderGallery();
+          if (state.activeTab === 'winners') renderWinnersList();
+        });
+      }
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          state.searchQuery = e.target.value;
+          renderGallery();
+          if (state.activeTab === 'winners') renderWinnersList();
+        });
+      }
+      if (modalDownloadBtn) {
+        modalDownloadBtn.addEventListener('click', () => {
+          const entry = state.currentScoringEntry;
+          if (entry) {
+            downloadMedia(entry.media_url, entry.file_name);
           }
         });
       }
@@ -829,7 +994,7 @@
           let longest = 0;
           let current = 0;
           let prevDate = null;
-          
+
           for (let dateStr of uniqueDates) {
             const date = new Date(dateStr + 'T00:00:00');
             if (prevDate === null) {
@@ -922,7 +1087,7 @@
           const watermarkVerified = (item.score_watermark !== null && item.score_watermark > 0) ? 'Y' : 'N';
           const pointsMTD = operatorPointsMap[item.user_identifier] || 0;
           const rankMTD = operatorRankMap[item.user_identifier] || '';
-          
+
           sheet1Rows.push([
             sNo1++,
             item.full_name || item.tour_manager || '',
@@ -947,7 +1112,7 @@
         allData.filter(d => d.user_role === 'traveler' && d.status === 'approved').forEach(item => {
           const locationSlug = item.location.toLowerCase().replace(/[^a-z0-9]+/g, '_');
           const mockUtm = `utm_source=makemytrip&utm_medium=qr_code&utm_campaign=oppo_ugc_${locationSlug}`;
-          
+
           sheet2Rows.push([
             sNo2++,
             item.full_name || 'Anonymous Submitter',
@@ -989,7 +1154,7 @@
             if (item.score_total !== null && item.score_total !== undefined) {
               locationsMap[loc].opScoresSum += item.score_total;
               locationsMap[loc].opScoredPhotosCount++;
-              
+
               const opId = item.user_identifier;
               const opName = item.full_name || item.tour_manager || opId;
               if (!locationsMap[loc].opLocationPerformers[opId]) {
@@ -1010,7 +1175,7 @@
 
         Object.values(locationsMap).forEach(locData => {
           const avgQuality = locData.opScoredPhotosCount > 0 ? Math.round(locData.opScoresSum / locData.opScoredPhotosCount) : 0;
-          
+
           let topOpNameId = 'N/A';
           let highestAvgScore = -1;
           Object.entries(locData.opLocationPerformers).forEach(([opId, perf]) => {
