@@ -87,7 +87,7 @@ function postSubmission(data) {
     const req = http.request(
       {
         hostname: 'localhost',
-        port: 5000,
+        port: process.env.PORT ? parseInt(process.env.PORT) : 8080,
         path: '/api/submissions',
         method: 'POST',
         headers: {
@@ -123,7 +123,7 @@ function loginMMT() {
     const req = http.request(
       {
         hostname: 'localhost',
-        port: 5000,
+        port: process.env.PORT ? parseInt(process.env.PORT) : 8080,
         path: '/api/auth/login',
         method: 'POST',
         headers: {
@@ -162,7 +162,7 @@ function moderateSubmission(id, status, cookie) {
     const req = http.request(
       {
         hostname: 'localhost',
-        port: 5000,
+        port: process.env.PORT ? parseInt(process.env.PORT) : 8080,
         path: `/api/submissions/${id}/moderate`,
         method: 'PUT',
         headers: {

@@ -10,10 +10,10 @@ let s3Client = null;
 if (isS3Configured) {
   console.log('[S3] AWS S3 Configuration detected. Initializing S3 Client...');
   s3Client = new S3Client({
-    region: process.env.AWS_REGION || 'ap-south-1',
+    region: (process.env.AWS_REGION && process.env.AWS_REGION.trim()) || 'ap-south-1',
     credentials: {
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID.trim(),
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY.trim(),
     },
   });
 } else {
@@ -25,7 +25,7 @@ if (isS3Configured) {
  * Falls back to generating a mock upload endpoint if S3 credentials are not set.
  */
 async function generatePresignedUploadUrl(fileName, fileType, customObjectKey) {
-  const bucketName = process.env.S3_BUCKET_NAME || 'oppo-mmt-ugc-media-bucket';
+  const bucketName = (process.env.S3_BUCKET_NAME && process.env.S3_BUCKET_NAME.trim()) || 'oppo-mmt-ugc-media-bucket';
   const objectKey = customObjectKey || `ugc-campaign/${Date.now()}-${fileName}`;
 
   if (s3Client) {
@@ -34,11 +34,13 @@ async function generatePresignedUploadUrl(fileName, fileType, customObjectKey) {
         Bucket: bucketName,
         Key: objectKey,
         ContentType: fileType,
+        ACL: 'public-read',
       });
 
       // URL valid for 15 minutes (900 seconds)
       const presignedUrl = await getSignedUrl(s3Client, command, { expiresIn: 900 });
-      const mediaUrl = `https://${bucketName}.s3.${process.env.AWS_REGION || 'ap-south-1'}.amazonaws.com/${objectKey}`;
+      const region = (process.env.AWS_REGION && process.env.AWS_REGION.trim()) || 'ap-south-1';
+      const mediaUrl = `https://${bucketName}.s3.${region}.amazonaws.com/${objectKey}`;
 
       return {
         isMock: false,
@@ -59,7 +61,7 @@ async function generatePresignedUploadUrl(fileName, fileType, customObjectKey) {
  * Returns mock upload credentials and URLs for offline testing.
  */
 function getMockUploadDetails(fileName, bucketName, objectKey) {
-  const localPort = process.env.PORT || 5000;
+  const localPort = process.env.PORT || 8080;
   // If no S3, we point to a mock endpoint on the local server that simulates the PUT request
   return {
     isMock: true,

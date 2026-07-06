@@ -46,7 +46,7 @@ app.use((err, req, res, next) => {
 
 // Start listener only when running directly (not via AWS Lambda serverless wrapper)
 if (require.main === module) {
-  const PORT = process.env.PORT || 5000;
+  const PORT = process.env.PORT || 8080;
   app.listen(PORT, () => {
     console.log(`================================================================`);
     console.log(`  OPPO x MakeMyTrip UGC Campaign Server listening on port ${PORT}`);

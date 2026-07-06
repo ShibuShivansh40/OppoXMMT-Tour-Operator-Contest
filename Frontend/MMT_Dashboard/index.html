@@ -345,7 +345,7 @@
   <script>
     // State management
     let state = {
-      apiBaseUrl: 'http://localhost:5000',
+      apiBaseUrl: 'http://localhost:8080',
       activeTab: 'overview', // 'overview' or 'moderation' or 'gallery'
       currentFilter: 'pending', // 'all', 'pending', 'approved', 'rejected'
       galFilterStatus: 'all',
@@ -389,7 +389,7 @@
     if (window.location.origin && window.location.origin !== 'null') {
       state.apiBaseUrl = window.location.origin;
     } else {
-      state.apiBaseUrl = 'http://localhost:5000';
+      state.apiBaseUrl = 'http://localhost:8080';
     }
 
 

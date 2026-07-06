@@ -395,7 +395,7 @@
   <script>
     // State management
     let state = {
-      apiBaseUrl: 'http://localhost:5000',
+      apiBaseUrl: 'http://localhost:8080',
       activeTab: 'showcase', // 'showcase' or 'winners'
       approvedEntries: [],
       winnersList: [],
@@ -434,7 +434,7 @@
     if (window.location.origin && window.location.origin !== 'null') {
       state.apiBaseUrl = window.location.origin;
     } else {
-      state.apiBaseUrl = 'http://localhost:5000';
+      state.apiBaseUrl = 'http://localhost:8080';
     }
 
 
