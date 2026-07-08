@@ -96,6 +96,12 @@
       max-height: 1000px;
       transition: max-height 0.5s cubic-bezier(1, 0, 1, 0);
     }
+
+    .required-star {
+      color: #ff3b30;
+      font-weight: bold;
+      margin-left: 0.125rem;
+    }
   </style>
 </head>
 
@@ -317,7 +323,7 @@
             <div>
               <label for="tourManagerName"
                 class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Tour Manager Full
-                Name</label>
+                Name <span class="required-star">*</span></label>
               <input type="text" id="tourManagerName" placeholder="Enter tour manager's name" required
                 class="w-full bg-white border border-gray-300 rounded-lg py-2.5 px-4 text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-xs">
             </div>
@@ -326,7 +332,7 @@
             <div>
               <label for="tourManagerPhone"
                 class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Tour Manager Phone
-                number</label>
+                number <span class="required-star">*</span></label>
               <div class="relative flex items-center">
                 <span class="absolute left-3 text-slate-400 text-sm font-semibold pointer-events-none">+91</span>
                 <input type="tel" id="tourManagerPhone" placeholder="10-digit mobile number" maxlength="10" required
@@ -339,7 +345,7 @@
             <!-- Predictive Destination Autocomplete -->
             <div class="relative">
               <label for="destinationSearch"
-                class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Tour Destination</label>
+                class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Tour Destination <span class="required-star">*</span></label>
               <div class="relative flex items-center">
                 <span class="absolute left-3 text-slate-400 text-sm pointer-events-none">✈️</span>
                 <input type="text" id="destinationSearch" placeholder="Search destination (e.g. Munnar)"
@@ -355,7 +361,7 @@
             <!-- Date Selection -->
             <div>
               <label for="travelDate"
-                class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Tour Start Date</label>
+                class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Tour Start Date <span class="required-star">*</span></label>
               <input type="date" id="travelDate" required
                 class="w-full bg-white border border-gray-300 rounded-lg py-2 px-4 text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-xs">
             </div>
@@ -364,7 +370,7 @@
           <!-- Media Upload Drag/Drop Section -->
           <div>
             <label class="block text-xs font-bold text-white uppercase tracking-wider mb-2">
-              Upload Tour Photos / Videos
+              Upload Tour Photos / Videos <span class="required-star">*</span>
               <span class="text-gray-200 font-semibold lowercase">(1 to 25 files, max 15MB each for tour manager)</span>
             </label>
             <div id="dropZone"
@@ -399,6 +405,15 @@
             </div>
           </div>
 
+          <!-- User Consent Checkbox -->
+          <div class="flex items-start gap-2.5 mt-2">
+            <input type="checkbox" id="userConsent" required
+              class="w-4 h-4 rounded text-[#0052e4] focus:ring-[#0052e4] border-gray-300 mt-0.5 cursor-pointer">
+            <label for="userConsent" class="text-xs text-gray-200 cursor-pointer select-none leading-relaxed">
+              I consent to OPPO and MakeMyTrip using my uploaded photos/videos for promotional and marketing purposes. <span class="required-star">*</span>
+            </label>
+          </div>
+
           <button type="submit" id="submitBtn"
             class="w-full bg-[#eef4ff] hover:bg-[#e0ecff] text-[#1e3459] font-extrabold py-3.5 px-4 rounded-xl shadow-lg active:scale-95 transition-all text-sm tracking-wide mt-2 border border-gray-200">
             Submit Campaign Entries
@@ -420,6 +435,32 @@
         </div>
 
       </div>
+
+      <!-- Accordions Section: Terms & Conditions -->
+      <section class="w-full">
+        <!-- Accordion 3: Terms & Conditions -->
+        <div class="bg-white rounded-xl border border-gray-200 shadow-md overflow-hidden transition-all duration-300">
+          <button type="button"
+            class="accordion-toggle w-full px-6 py-4 flex items-center justify-between text-left focus:outline-none bg-[#eef4ff] hover:bg-[#e0ecff] transition-colors"
+            data-target="accordion3">
+            <span class="text-base font-bold text-[#1e3459] tracking-wide">Terms and Conditions</span>
+            <span class="text-[#1e3459] text-xl font-bold transition-transform duration-300"
+              id="icon-accordion3">＋</span>
+          </button>
+
+          <div id="accordion3" class="accordion-content">
+            <div class="p-6 border-t border-gray-200 bg-[#fbfdff] flex flex-col gap-4 text-sm text-[#334e68]">
+              <ul class="list-disc pl-5 space-y-1.5 text-xs text-[#486581]">
+                <li>By participating, you grant OPPO and MakeMyTrip a non-exclusive, royalty-free, perpetual, and worldwide license to use, reproduce, and display your submitted photos and videos for marketing, advertising, and promotional activities.</li>
+                <li>All submissions must be the original work of the participant and must not infringe upon the copyrights, trademarks, or intellectual property rights of any third party.</li>
+                <li>OPPO and MakeMyTrip reserve the right to verify the eligibility of all participants and entries, and disqualify any entry that violates the rules or is deemed inappropriate.</li>
+                <li>The decision of the judging panel is final and binding in all aspects of the campaign.</li>
+                <li>OPPO and MakeMyTrip reserve the right to modify, suspend, or cancel the campaign or these Terms and Conditions at any time without prior notice.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   </div>
 
@@ -471,6 +512,7 @@
       imageModal: document.getElementById('imageModal'),
       modalImg: document.getElementById('modalImg'),
       resetBtn: document.getElementById('resetBtn'),
+      userConsent: document.getElementById('userConsent'),
     };
 
     // Initialize Server API configuration
@@ -724,6 +766,11 @@
 
       if (!tourManagerName || !tourManagerPhoneInput || !location || !date) {
         showNotification('Please fill in all required fields.', 'error');
+        return;
+      }
+
+      if (!elements.userConsent.checked) {
+        showNotification('Please accept the consent terms to proceed.', 'error');
         return;
       }
 

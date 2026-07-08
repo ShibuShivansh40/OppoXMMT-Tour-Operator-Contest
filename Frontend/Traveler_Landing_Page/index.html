@@ -148,6 +148,12 @@
       max-height: 1000px;
       transition: max-height 0.5s cubic-bezier(1, 0, 1, 0);
     }
+
+    .required-star {
+      color: #ff3b30;
+      font-weight: bold;
+      margin-left: 0.125rem;
+    }
   </style>
 </head>
 
@@ -373,7 +379,8 @@
               <!-- Full Name -->
               <div>
                 <label for="fullName"
-                  class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Full Name</label>
+                  class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Full Name <span
+                    class="required-star">*</span></label>
                 <input type="text" id="fullName" placeholder="Enter Your Full Name" required
                   class="w-full bg-white border border-gray-300 rounded-lg py-2.5 px-4 text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-sm">
               </div>
@@ -382,7 +389,7 @@
               <div>
                 <label for="phoneNumber"
                   class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Mobile
-                  Number</label>
+                  Number <span class="required-star">*</span></label>
                 <div class="relative flex items-center">
                   <span class="absolute left-3 text-slate-400 text-sm font-semibold pointer-events-none">+91</span>
                   <input type="tel" id="phoneNumber" placeholder="9876543210" maxlength="10" required
@@ -394,7 +401,8 @@
             <!-- Location Picker -->
             <div class="relative">
               <label for="locationInput"
-                class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Location</label>
+                class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Location <span
+                  class="required-star">*</span></label>
               <input type="text" id="locationInput" placeholder="Start typing your Destination" autocomplete="off"
                 required
                 class="w-full bg-white border border-gray-300 rounded-lg py-2.5 px-4 text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-sm">
@@ -408,7 +416,8 @@
               <!-- Tour Manager -->
               <div class="relative">
                 <label for="tourManager"
-                  class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Tour Manager</label>
+                  class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Tour Manager <span
+                    class="required-star">*</span></label>
                 <input type="text" id="tourManager" placeholder="Start typing your manager's name" autocomplete="off"
                   required
                   class="w-full bg-white border border-gray-300 rounded-lg py-2.5 px-4 text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-sm">
@@ -422,7 +431,7 @@
               <div>
                 <label for="travelDate"
                   class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Start Date of
-                  Trip</label>
+                  Trip <span class="required-star">*</span></label>
                 <input type="date" id="travelDate" required
                   class="w-full bg-white border border-gray-300 rounded-lg py-2 px-4 text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-sm">
               </div>
@@ -432,7 +441,8 @@
               <!-- Device Dropdown Selector -->
               <div class="relative">
                 <label for="deviceInput"
-                  class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Device Name</label>
+                  class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Device Name <span
+                    class="required-star">*</span></label>
                 <input type="text" id="deviceInput" placeholder="Start typing your device's name" autocomplete="off"
                   required
                   class="w-full bg-white border border-gray-300 rounded-lg py-2.5 px-4 text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-sm">
@@ -446,7 +456,7 @@
               <div>
                 <label for="instaHandle"
                   class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5">Instagram
-                  Handle</label>
+                  Handle <span class="text-gray-300 font-medium">(optional)</span></label>
                 <div class="relative flex items-center">
                   <span class="absolute left-3 text-slate-400 text-sm font-semibold pointer-events-none">@</span>
                   <input type="text" id="instaHandle" placeholder="instagram_handle"
@@ -458,7 +468,8 @@
             <!-- Media Upload Section -->
             <div>
               <label class="block text-xs font-bold text-white uppercase tracking-wider mb-2">
-                UPLOAD YOUR ENTRY <span class="text-xs text-gray-200 font-semibold">(Images can be of Format : jpeg,
+                UPLOAD YOUR ENTRY <span class="required-star">*</span> <span
+                  class="text-xs text-gray-200 font-semibold">(Images can be of Format : jpeg,
                   jpg, png)</span>
               </label>
 
@@ -493,6 +504,16 @@
               <div class="w-full bg-gray-800 rounded-full h-1.5 overflow-hidden">
                 <div id="progressBar" class="bg-[#0052e4] h-full w-0 transition-all duration-250"></div>
               </div>
+            </div>
+
+            <!-- User Consent Checkbox -->
+            <div class="flex items-start gap-2.5 mt-2">
+              <input type="checkbox" id="userConsent" required
+                class="w-4 h-4 rounded text-[#0052e4] focus:ring-[#0052e4] border-gray-300 mt-0.5 cursor-pointer">
+              <label for="userConsent" class="text-xs text-gray-200 cursor-pointer select-none leading-relaxed">
+                I consent to OPPO and MakeMyTrip using my uploaded photos/videos for promotional and marketing purposes.
+                <span class="required-star">*</span>
+              </label>
             </div>
 
             <button type="submit" id="submitBtn"
@@ -531,6 +552,37 @@
               another trip entry</button>
           </div>
 
+        </div>
+      </section>
+
+      <!-- Accordions Section: Terms & Conditions -->
+      <section class="w-full">
+        <!-- Accordion 3: Terms & Conditions -->
+        <div class="bg-white rounded-xl border border-gray-200 shadow-md overflow-hidden transition-all duration-300">
+          <button type="button"
+            class="accordion-toggle w-full px-6 py-4 flex items-center justify-between text-left focus:outline-none bg-[#eef4ff] hover:bg-[#e0ecff] transition-colors"
+            data-target="accordion3">
+            <span class="text-base font-bold text-[#1e3459] tracking-wide">Terms and Conditions</span>
+            <span class="text-[#1e3459] text-xl font-bold transition-transform duration-300"
+              id="icon-accordion3">＋</span>
+          </button>
+
+          <div id="accordion3" class="accordion-content">
+            <div class="p-6 border-t border-gray-200 bg-[#fbfdff] flex flex-col gap-4 text-sm text-[#334e68]">
+              <ul class="list-disc pl-5 space-y-1.5 text-xs text-[#486581]">
+                <li>By participating, you grant OPPO and MakeMyTrip a non-exclusive, royalty-free, perpetual, and
+                  worldwide license to use, reproduce, and display your submitted photos and videos for marketing,
+                  advertising, and promotional activities.</li>
+                <li>All submissions must be the original work of the participant and must not infringe upon the
+                  copyrights, trademarks, or intellectual property rights of any third party.</li>
+                <li>OPPO and MakeMyTrip reserve the right to verify the eligibility of all participants and entries, and
+                  disqualify any entry that violates the rules or is deemed inappropriate.</li>
+                <li>The decision of the judging panel is final and binding in all aspects of the campaign.</li>
+                <li>OPPO and MakeMyTrip reserve the right to modify, suspend, or cancel the campaign or these Terms and
+                  Conditions at any time without prior notice.</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -592,7 +644,8 @@
       couponCode: document.getElementById('couponCode'),
       couponClipboardMsg: document.getElementById('couponClipboardMsg'),
       imageModal: document.getElementById('imageModal'),
-      modalImg: document.getElementById('modalImg')
+      modalImg: document.getElementById('modalImg'),
+      userConsent: document.getElementById('userConsent')
     };
 
     // Initialize Server API configuration
@@ -936,6 +989,10 @@
 
       if (!fullName) {
         showNotification('Please enter your full name.', 'error');
+        return;
+      }
+      if (!elements.userConsent.checked) {
+        showNotification('Please accept the consent terms to proceed.', 'error');
         return;
       }
       if (!/^\d{10}$/.test(phoneVal)) {
