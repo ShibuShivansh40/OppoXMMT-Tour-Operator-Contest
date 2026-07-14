@@ -44,33 +44,28 @@ async function createSubmission(req, res) {
       });
     }
 
-    // 2. Insert into Database
-    const queryText = `
-      INSERT INTO submissions (user_identifier, user_role, media_url, file_name, file_size, location, travel_date, full_name, tour_manager, device, insta_handle)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
-      RETURNING *
-    `;
-    const params = [
+    // 2. Insert into Database using MongoDB helper
+    const cleanRecord = await db.insertSubmission({
       userIdentifier, 
       userRole, 
       mediaUrl, 
       fileName, 
-      parseInt(fileSize), 
+      fileSize, 
       location, 
       travelDate,
-      fullName || null,
-      tourManager || null,
-      device || null,
-      instaHandle || null
-    ];
-    const result = await db.query(queryText, params);
-    const signedUrl = await s3.getSignedDownloadUrl(result.rows[0].media_url);
+      fullName,
+      tourManager,
+      device,
+      instaHandle
+    });
+
+    const signedUrl = await s3.getSignedDownloadUrl(cleanRecord.media_url);
 
     return res.status(201).json({
       success: true,
       message: 'Submission successfully recorded.',
       data: {
-        ...result.rows[0],
+        ...cleanRecord,
         media_url: signedUrl
       }
     });
@@ -85,48 +80,22 @@ async function createSubmission(req, res) {
 }
 
 /**
- * Retrieve submissions with optional filters (status, role, is_winner).
+ * Retrieve submissions with optional filters (status, role, isWinner).
  * GET /api/submissions
  */
 async function getSubmissions(req, res) {
   try {
     const { status, role, isWinner } = req.query;
+    const records = await db.getSubmissions({ status, role, isWinner });
 
-    let queryText = 'SELECT * FROM submissions';
-    const params = [];
-    const conditions = [];
-
-    if (status) {
-      params.push(status);
-      conditions.push(`status = $${params.length}`);
-    }
-
-    if (role) {
-      params.push(role);
-      conditions.push(`user_role = $${params.length}`);
-    }
-
-    if (isWinner !== undefined) {
-      const boolVal = isWinner === 'true';
-      params.push(boolVal);
-      conditions.push(`is_winner = $${params.length}`);
-    }
-
-    if (conditions.length > 0) {
-      queryText += ' WHERE ' + conditions.join(' AND ');
-    }
-
-    queryText += ' ORDER BY id DESC';
-
-    const result = await db.query(queryText, params);
-    const signedRows = await Promise.all(result.rows.map(async (row) => {
+    const signedRows = await Promise.all(records.map(async (row) => {
       const signedUrl = await s3.getSignedDownloadUrl(row.media_url);
       return { ...row, media_url: signedUrl };
     }));
 
     return res.status(200).json({
       success: true,
-      count: result.rowCount,
+      count: signedRows.length,
       data: signedRows
     });
   } catch (error) {
@@ -155,28 +124,22 @@ async function moderateSubmission(req, res) {
       });
     }
 
-    const queryText = `
-      UPDATE submissions
-      SET status = $1, updated_at = CURRENT_TIMESTAMP
-      WHERE id = $2
-      RETURNING *
-    `;
-    const result = await db.query(queryText, [status, id]);
+    const updatedRecord = await db.updateSubmission(id, { status });
 
-    if (result.rowCount === 0) {
+    if (!updatedRecord) {
       return res.status(404).json({
         success: false,
         message: 'Submission record not found.'
       });
     }
 
-    const signedUrl = await s3.getSignedDownloadUrl(result.rows[0].media_url);
+    const signedUrl = await s3.getSignedDownloadUrl(updatedRecord.media_url);
 
     return res.status(200).json({
       success: true,
       message: `Submission successfully marked as ${status}.`,
       data: {
-        ...result.rows[0],
+        ...updatedRecord,
         media_url: signedUrl
       }
     });
@@ -207,30 +170,25 @@ async function selectWinner(req, res) {
     }
 
     const val = !!isWinner;
-    const winnerTime = val ? 'CURRENT_TIMESTAMP' : 'NULL';
+    const updatedRecord = await db.updateSubmission(id, {
+      is_winner: val,
+      winner_selected_at: val ? new Date() : null
+    });
 
-    const queryText = `
-      UPDATE submissions
-      SET is_winner = $1, winner_selected_at = ${winnerTime}, updated_at = CURRENT_TIMESTAMP
-      WHERE id = $2
-      RETURNING *
-    `;
-    const result = await db.query(queryText, [val, id]);
-
-    if (result.rowCount === 0) {
+    if (!updatedRecord) {
       return res.status(404).json({
         success: false,
         message: 'Submission record not found.'
       });
     }
 
-    const signedUrl = await s3.getSignedDownloadUrl(result.rows[0].media_url);
+    const signedUrl = await s3.getSignedDownloadUrl(updatedRecord.media_url);
 
     return res.status(200).json({
       success: true,
       message: val ? 'Winner successfully selected!' : 'Winner status revoked.',
       data: {
-        ...result.rows[0],
+        ...updatedRecord,
         media_url: signedUrl
       }
     });
@@ -250,44 +208,15 @@ async function selectWinner(req, res) {
  */
 async function getStats(req, res) {
   try {
-    const totalQuery = 'SELECT COUNT(*)::int as total FROM submissions';
-    const approvedQuery = "SELECT COUNT(*)::int as approved FROM submissions WHERE status = 'approved'";
-    const pendingQuery = "SELECT COUNT(*)::int as pending FROM submissions WHERE status = 'pending'";
-    const uniqueLocationsQuery = 'SELECT COUNT(DISTINCT location)::int as locations FROM submissions';
-
-    // We can run query aggregation depending on mode
-    // The query utility automatically handles aggregation queries in mockDb fallback
-    const statsResult = await db.query('SELECT stats FROM submissions LIMIT 1'); // trigger mock or DB handler query
-
-    if (statsResult.rows && statsResult.rows[0] && statsResult.rows[0].total_submissions !== undefined) {
-      // Mock db response
-      const stats = statsResult.rows[0];
-      return res.status(200).json({
-        success: true,
-        data: {
-          total: stats.total_submissions,
-          approved: stats.approved_submissions,
-          pending: stats.pending_submissions,
-          uniqueLocations: stats.unique_locations
-        }
-      });
-    }
-
-    // Real PostgreSQL queries
-    const [totRes, appRes, penRes, locRes] = await Promise.all([
-      db.query(totalQuery),
-      db.query(approvedQuery),
-      db.query(pendingQuery),
-      db.query(uniqueLocationsQuery)
-    ]);
+    const stats = await db.getStats();
 
     return res.status(200).json({
       success: true,
       data: {
-        total: totRes.rows[0].total,
-        approved: appRes.rows[0].approved,
-        pending: penRes.rows[0].pending,
-        uniqueLocations: locRes.rows[0].locations
+        total: stats.total,
+        approved: stats.approved,
+        pending: stats.pending,
+        uniqueLocations: stats.uniqueLocations
       }
     });
   } catch (error) {
@@ -344,35 +273,29 @@ async function saveSubmissionScore(req, res) {
 
     const total = comp + wat + loc + eng + con;
 
-    const queryText = `
-      UPDATE submissions
-      SET score_composition = $1, 
-          score_watermark = $2, 
-          score_location = $3, 
-          score_engagement = $4, 
-          score_consistency = $5, 
-          score_total = $6, 
-          updated_at = CURRENT_TIMESTAMP
-      WHERE id = $7
-      RETURNING *
-    `;
-    const params = [comp, wat, loc, eng, con, total, id];
-    const result = await db.query(queryText, params);
+    const updatedRecord = await db.updateSubmission(id, {
+      score_composition: comp,
+      score_watermark: wat,
+      score_location: loc,
+      score_engagement: eng,
+      score_consistency: con,
+      score_total: total
+    });
 
-    if (result.rowCount === 0) {
+    if (!updatedRecord) {
       return res.status(404).json({
         success: false,
         message: 'Submission record not found.'
       });
     }
 
-    const signedUrl = await s3.getSignedDownloadUrl(result.rows[0].media_url);
+    const signedUrl = await s3.getSignedDownloadUrl(updatedRecord.media_url);
 
     return res.status(200).json({
       success: true,
       message: 'Scores successfully saved!',
       data: {
-        ...result.rows[0],
+        ...updatedRecord,
         media_url: signedUrl
       }
     });
@@ -394,4 +317,3 @@ module.exports = {
   getStats,
   saveSubmissionScore
 };
-

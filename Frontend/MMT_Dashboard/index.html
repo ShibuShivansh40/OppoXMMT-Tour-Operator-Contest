@@ -80,21 +80,26 @@
   </style>
 </head>
 
-<body class="text-slate-100 min-h-screen flex flex-col antialiased bg-gradient-to-br from-[#050c1a] via-[#091428] to-[#0c1f3d]">
+<body
+  class="text-slate-100 min-h-screen flex flex-col antialiased bg-gradient-to-br from-[#050c1a] via-[#091428] to-[#0c1f3d]">
 
   <!-- Main Top Bar -->
-  <header class="bg-[#0b162c]/90 border-b border-white/5 text-white py-3 px-4 md:py-4 md:px-6 flex items-center justify-between shadow-lg backdrop-blur-md z-10 sticky top-0">
+  <header
+    class="bg-[#0b162c]/90 border-b border-white/5 text-white py-3 px-4 md:py-4 md:px-6 flex items-center justify-between shadow-lg backdrop-blur-md z-10 sticky top-0">
     <div class="flex items-center gap-2 md:gap-3">
       <a href="https://www.makemytrip.com" target="_blank" rel="noopener noreferrer">
-        <img src="https://promos.makemytrip.com/images/mmtlogo.webp" alt="MakeMyTrip Logo" class="max-w-[100px] md:max-w-[130px]"
+        <img src="https://promos.makemytrip.com/images/mmtlogo.webp" alt="MakeMyTrip Logo"
+          class="max-w-[100px] md:max-w-[130px]"
           style="background-color: white; padding: 6px 10px; border-radius: 8px;">
       </a>
       <span class="text-white/20 hidden sm:inline">|</span>
-      <p class="text-sm md:text-lg uppercase tracking-wider text-oppoMint font-extrabold text-glow hidden sm:block">Admin Dashboard</p>
+      <p class="text-sm md:text-lg uppercase tracking-wider text-oppoMint font-extrabold text-glow hidden sm:block">
+        Admin Dashboard</p>
     </div>
 
     <div class="flex items-center gap-3">
-      <button id="logoutBtn" class="bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-white/10 text-xs font-semibold transition-all">
+      <button id="logoutBtn"
+        class="bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-white/10 text-xs font-semibold transition-all">
         Logout
       </button>
     </div>
@@ -104,7 +109,8 @@
   <div class="flex flex-1 flex-col md:flex-row min-h-screen">
 
     <!-- Sidebar Navigation — hidden on mobile (replaced by bottom tab bar) -->
-    <aside class="hidden md:flex md:w-64 bg-[#0b162c]/80 border-r border-white/5 p-6 flex-col gap-6 backdrop-blur-md flex-shrink-0">
+    <aside
+      class="hidden md:flex md:w-64 bg-[#0b162c]/80 border-r border-white/5 p-6 flex-col gap-6 backdrop-blur-md flex-shrink-0">
       <div class="text-xxs uppercase tracking-widest text-slate-500 font-bold">Workspace</div>
       <nav class="flex flex-col gap-2">
         <button id="navOverview"
@@ -130,7 +136,8 @@
     </aside>
 
     <!-- Mobile Bottom Tab Bar -->
-    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-[#0b162c]/95 border-t border-white/10 backdrop-blur-md z-40 flex items-stretch">
+    <nav
+      class="md:hidden fixed bottom-0 left-0 right-0 bg-[#0b162c]/95 border-t border-white/10 backdrop-blur-md z-40 flex items-stretch">
       <button id="navOverviewMobile"
         class="flex-1 flex flex-col items-center justify-center gap-1 py-3 text-white bg-mmtBlue/20 border-t-2 border-mmtBlue transition-all">
         <span class="text-lg">📊</span>
@@ -140,7 +147,8 @@
         class="flex-1 flex flex-col items-center justify-center gap-1 py-3 text-slate-400 border-t-2 border-transparent transition-all relative">
         <span class="text-lg">🛡️</span>
         <span class="text-[10px] font-bold uppercase tracking-wide">Moderation</span>
-        <span id="pendingBadgeMobile" class="absolute top-1.5 right-4 bg-mmtOrange text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full hidden">0</span>
+        <span id="pendingBadgeMobile"
+          class="absolute top-1.5 right-4 bg-mmtOrange text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full hidden">0</span>
       </button>
       <button id="navGalleryMobile"
         class="flex-1 flex flex-col items-center justify-center gap-1 py-3 text-slate-400 border-t-2 border-transparent transition-all">
@@ -153,67 +161,87 @@
     <main class="flex-1 p-4 md:p-10 flex flex-col gap-6 md:gap-8 pb-24 md:pb-10">
 
       <!-- NOTIFICATION SYSTEM -->
-      <div id="toast" class="hidden text-xs rounded-xl p-3.5 shadow-xl flex items-center gap-2.5 transition-all duration-300 z-40 border"></div>
+      <div id="toast"
+        class="hidden text-xs rounded-xl p-3.5 shadow-xl flex items-center gap-2.5 transition-all duration-300 z-40 border">
+      </div>
 
       <!-- PAGE 1: OVERVIEW & KPIS -->
       <section id="sectionOverview" class="flex flex-col gap-6">
         <div>
-          <h2 class="text-2xl md:text-3xl font-black tracking-tight text-white uppercase">Campaign <span class="custom-gradient-text text-glow">Overview</span></h2>
-          <p class="text-sm text-slate-400 mt-1">Real-time counts, key metrics, and activity analysis for OPPO UGC entries.</p>
+          <h2 class="text-2xl md:text-3xl font-black tracking-tight text-white uppercase">Campaign <span
+              class="custom-gradient-text text-glow">Overview</span></h2>
+          <p class="text-sm text-slate-400 mt-1">Real-time counts, key metrics, and activity analysis for OPPO UGC
+            entries.</p>
         </div>
 
         <!-- KPI Tracker Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
           <!-- Card 1 -->
-          <div class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-white/15">
+          <div
+            class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-white/15">
             <div>
               <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Total Submissions</p>
               <h3 id="kpiTotal" class="text-3xl font-extrabold text-white mt-1">0</h3>
             </div>
-            <div class="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-[#00e5ff] flex items-center justify-center text-xl">📁</div>
+            <div
+              class="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-[#00e5ff] flex items-center justify-center text-xl">
+              📁</div>
           </div>
 
           <!-- Card 2 -->
-          <div class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-white/15">
+          <div
+            class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-white/15">
             <div>
               <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Approved Media</p>
               <h3 id="kpiApproved" class="text-3xl font-extrabold text-oppoEmerald mt-1">0</h3>
             </div>
-            <div class="w-12 h-12 rounded-2xl bg-[#00b064]/10 border border-[#00b064]/20 text-[#00b064] flex items-center justify-center text-xl">✅</div>
+            <div
+              class="w-12 h-12 rounded-2xl bg-[#00b064]/10 border border-[#00b064]/20 text-[#00b064] flex items-center justify-center text-xl">
+              ✅</div>
           </div>
 
           <!-- Card 3 -->
-          <div class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-white/15">
+          <div
+            class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-white/15">
             <div>
               <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Pending Moderation</p>
               <h3 id="kpiPending" class="text-3xl font-extrabold text-mmtOrange mt-1">0</h3>
             </div>
-            <div class="w-12 h-12 rounded-2xl bg-[#ff5a00]/10 border border-[#ff5a00]/20 text-[#ff5a00] flex items-center justify-center text-xl">⏳</div>
+            <div
+              class="w-12 h-12 rounded-2xl bg-[#ff5a00]/10 border border-[#ff5a00]/20 text-[#ff5a00] flex items-center justify-center text-xl">
+              ⏳</div>
           </div>
 
           <!-- Card 4 -->
-          <div class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-white/15">
+          <div
+            class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-white/15">
             <div>
               <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Unique Locations</p>
               <h3 id="kpiLocations" class="text-3xl font-extrabold text-[#00e5ff] mt-1">0</h3>
             </div>
-            <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-[#00e5ff] flex items-center justify-center text-xl">📍</div>
+            <div
+              class="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-[#00e5ff] flex items-center justify-center text-xl">
+              📍</div>
           </div>
 
         </div>
 
         <!-- Quick Info Panel -->
-        <div class="glass-card rounded-2xl p-5 md:p-6 flex flex-col gap-4 md:flex-row md:items-center md:gap-6 justify-between border-l-4 border-l-oppoMint">
+        <div
+          class="glass-card rounded-2xl p-5 md:p-6 flex flex-col gap-4 md:flex-row md:items-center md:gap-6 justify-between border-l-4 border-l-oppoMint">
           <div class="flex gap-3 items-start md:items-center">
             <div class="text-2xl md:text-3xl flex-shrink-0">💡</div>
             <div>
-              <h4 class="font-extrabold text-white text-sm md:text-base">Pending entries are waiting for your approval!</h4>
-              <p class="text-xs text-slate-400 mt-0.5">Approved submissions will instantly sync with the OPPO Client dashboard for winner selection.</p>
+              <h4 class="font-extrabold text-white text-sm md:text-base">Pending entries are waiting for your approval!
+              </h4>
+              <p class="text-xs text-slate-400 mt-0.5">Approved submissions will instantly sync with the OPPO Client
+                dashboard for winner selection.</p>
             </div>
           </div>
           <button id="goToQueueBtn"
-            class="bg-gradient-to-r from-oppoEmerald to-[#0052e4] hover:from-oppoMint hover:to-oppoEmerald text-white font-extrabold py-2.5 px-5 rounded-xl text-xs shadow-md transition-all duration-300 active:scale-95 whitespace-nowrap font-sans w-full md:w-auto text-center flex-shrink-0">Open Moderation Queue</button>
+            class="bg-gradient-to-r from-oppoEmerald to-[#0052e4] hover:from-oppoMint hover:to-oppoEmerald text-white font-extrabold py-2.5 px-5 rounded-xl text-xs shadow-md transition-all duration-300 active:scale-95 whitespace-nowrap font-sans w-full md:w-auto text-center flex-shrink-0">Open
+            Moderation Queue</button>
         </div>
       </section>
 
@@ -221,16 +249,28 @@
       <section id="sectionModeration" class="hidden flex flex-col gap-6">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h2 class="text-2xl font-black tracking-tight text-white uppercase">Moderation <span class="custom-gradient-text text-glow">Queue</span></h2>
-            <p class="text-sm text-slate-400 mt-1">Inspect uploaded travel assets, verify files, and approve them for client viewing.</p>
+            <h2 class="text-2xl font-black tracking-tight text-white uppercase">Moderation <span
+                class="custom-gradient-text text-glow">Queue</span></h2>
+            <p class="text-sm text-slate-400 mt-1">Inspect uploaded travel assets, verify files, and approve them for
+              client viewing.</p>
           </div>
 
-          <!-- Filters -->
-          <div class="flex items-center gap-1 text-xs bg-[#0b162c] p-1 border border-white/10 rounded-xl flex-wrap font-sans">
-            <button id="filterAll" class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200">All Entries</button>
-            <button id="filterPending" class="bg-mmtBlue text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200 shadow-md">Pending</button>
-            <button id="filterApproved" class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200">Approved</button>
-            <button id="filterRejected" class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200">Rejected</button>
+          <!-- Filters Container -->
+          <div class="flex flex-wrap items-center gap-3">
+            <!-- Status Filters -->
+            <div class="flex items-center gap-1 text-xs bg-[#0b162c] p-1 border border-white/10 rounded-xl flex-wrap font-sans">
+              <button id="filterAll" class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200">All Entries</button>
+              <button id="filterPending" class="bg-mmtBlue text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200 shadow-md">Pending</button>
+              <button id="filterApproved" class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200">Approved</button>
+              <button id="filterRejected" class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200">Rejected</button>
+            </div>
+
+            <!-- Role Filters -->
+            <div class="flex items-center gap-1 text-xs bg-[#0b162c] p-1 border border-white/10 rounded-xl flex-wrap font-sans">
+              <button id="filterRoleAll" class="bg-mmtBlue text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200 shadow-md">All Roles</button>
+              <button id="filterRoleTraveler" class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200">Travelers</button>
+              <button id="filterRoleOperator" class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200">Tour Managers</button>
+            </div>
           </div>
         </div>
 
@@ -254,7 +294,8 @@
           <div class="overflow-x-auto w-full custom-scrollbar -webkit-overflow-scrolling-touch">
             <table id="queueTable" class="w-full text-left text-sm border-collapse hidden" style="min-width: 700px;">
               <thead>
-                <tr class="bg-white/5 text-slate-300 text-xxs font-extrabold uppercase tracking-widest border-b border-white/5">
+                <tr
+                  class="bg-white/5 text-slate-300 text-xxs font-extrabold uppercase tracking-widest border-b border-white/5">
                   <th class="p-3 pl-5 whitespace-nowrap">ID</th>
                   <th class="p-3 whitespace-nowrap">Submitter</th>
                   <th class="p-3 whitespace-nowrap">File Details</th>
@@ -276,30 +317,38 @@
       <section id="sectionGallery" class="hidden flex flex-col gap-6">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h2 class="text-2xl font-black tracking-tight text-white uppercase">UGC <span class="custom-gradient-text text-glow">Gallery</span></h2>
-            <p class="text-sm text-slate-400 mt-1">Explore all traveler photos stored in the campaign bucket, grouped and filtered.</p>
+            <h2 class="text-2xl font-black tracking-tight text-white uppercase">UGC <span
+                class="custom-gradient-text text-glow">Gallery</span></h2>
+            <p class="text-sm text-slate-400 mt-1">Explore all traveler photos stored in the campaign bucket, grouped
+              and filtered.</p>
           </div>
 
           <!-- Dynamic Gallery Filters -->
           <div class="flex flex-wrap items-center gap-3 text-xs font-sans">
             <!-- Status Category -->
             <div class="flex items-center gap-1 bg-[#0b162c] p-1 border border-white/10 rounded-xl">
-              <button id="galFilterAll" class="bg-mmtBlue text-white font-bold py-1.5 px-3 rounded-lg transition-all">All</button>
-              <button id="galFilterPending" class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all">Pending</button>
-              <button id="galFilterApproved" class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all">Approved</button>
-              <button id="galFilterRejected" class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all">Rejected</button>
+              <button id="galFilterAll"
+                class="bg-mmtBlue text-white font-bold py-1.5 px-3 rounded-lg transition-all">All</button>
+              <button id="galFilterPending"
+                class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all">Pending</button>
+              <button id="galFilterApproved"
+                class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all">Approved</button>
+              <button id="galFilterRejected"
+                class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all">Rejected</button>
             </div>
 
             <!-- Destination Dropdown Filter -->
             <div class="relative">
-              <select id="galDestSelect" class="bg-[#0b162c] text-slate-200 border border-white/10 rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-oppoEmerald transition-colors cursor-pointer">
+              <select id="galDestSelect"
+                class="bg-[#0b162c] text-slate-200 border border-white/10 rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-oppoEmerald transition-colors cursor-pointer">
                 <option value="all">📍 All Destinations</option>
               </select>
             </div>
 
             <!-- Device Dropdown Filter -->
             <div class="relative">
-              <select id="galDeviceSelect" class="bg-[#0b162c] text-slate-200 border border-white/10 rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-oppoEmerald transition-colors cursor-pointer">
+              <select id="galDeviceSelect"
+                class="bg-[#0b162c] text-slate-200 border border-white/10 rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-oppoEmerald transition-colors cursor-pointer">
                 <option value="all">📷 All Devices</option>
               </select>
             </div>
@@ -334,10 +383,13 @@
   <!-- Image Lightbox Modal Overlay -->
   <div id="imageModal" class="hidden fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-6"
     onclick="closeImageModal()">
-    <button class="absolute top-4 right-4 text-white text-3xl font-bold hover:scale-115 transition-transform" onclick="closeImageModal()">×</button>
+    <button class="absolute top-4 right-4 text-white text-3xl font-bold hover:scale-115 transition-transform"
+      onclick="closeImageModal()">×</button>
     <!-- Prevent click inside image or content from closing modal -->
-    <div class="relative max-w-4xl max-h-full flex items-center justify-center animate-zoom-in" onclick="event.stopPropagation()">
-      <img id="modalImg" src="" class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl border border-white/10">
+    <div class="relative max-w-4xl max-h-full flex items-center justify-center animate-zoom-in"
+      onclick="event.stopPropagation()">
+      <img id="modalImg" src=""
+        class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl border border-white/10">
     </div>
   </div>
 
@@ -348,6 +400,7 @@
       apiBaseUrl: 'http://localhost:8080',
       activeTab: 'overview', // 'overview' or 'moderation' or 'gallery'
       currentFilter: 'pending', // 'all', 'pending', 'approved', 'rejected'
+      currentRoleFilter: 'all', // 'all', 'traveler', 'operator'
       galFilterStatus: 'all',
       submissions: [],
       stats: { total: 0, approved: 0, pending: 0, uniqueLocations: 0 }
@@ -372,6 +425,9 @@
       filterPending: document.getElementById('filterPending'),
       filterApproved: document.getElementById('filterApproved'),
       filterRejected: document.getElementById('filterRejected'),
+      filterRoleAll: document.getElementById('filterRoleAll'),
+      filterRoleTraveler: document.getElementById('filterRoleTraveler'),
+      filterRoleOperator: document.getElementById('filterRoleOperator'),
       queueLoading: document.getElementById('queueLoading'),
       queueEmpty: document.getElementById('queueEmpty'),
       queueTable: document.getElementById('queueTable'),
@@ -522,10 +578,38 @@
       fetchSubmissions();
     }
 
+    // Filter lists inside moderation queue by role
+    function setRoleFilter(roleType) {
+      state.currentRoleFilter = roleType;
+      const filters = [
+        { el: elements.filterRoleAll, key: 'all' },
+        { el: elements.filterRoleTraveler, key: 'traveler' },
+        { el: elements.filterRoleOperator, key: 'operator' }
+      ];
+
+      filters.forEach(item => {
+        if (item.el) {
+          if (item.key === roleType) {
+            item.el.classList.add('bg-mmtBlue', 'text-white', 'shadow-md');
+            item.el.classList.remove('hover:bg-white/5', 'text-slate-400');
+          } else {
+            item.el.classList.remove('bg-mmtBlue', 'text-white', 'shadow-md');
+            item.el.classList.add('hover:bg-white/5', 'text-slate-400');
+          }
+        }
+      });
+
+      fetchSubmissions();
+    }
+
     elements.filterAll.addEventListener('click', () => setFilter('all'));
     elements.filterPending.addEventListener('click', () => setFilter('pending'));
     elements.filterApproved.addEventListener('click', () => setFilter('approved'));
     elements.filterRejected.addEventListener('click', () => setFilter('rejected'));
+
+    elements.filterRoleAll.addEventListener('click', () => setRoleFilter('all'));
+    elements.filterRoleTraveler.addEventListener('click', () => setRoleFilter('traveler'));
+    elements.filterRoleOperator.addEventListener('click', () => setRoleFilter('operator'));
 
     // API fetches
     async function loadAllData() {
@@ -572,9 +656,17 @@
       elements.queueTable.classList.add('hidden');
 
       try {
-        const url = state.currentFilter === 'all'
-          ? `${state.apiBaseUrl}/api/submissions`
-          : `${state.apiBaseUrl}/api/submissions?status=${state.currentFilter}`;
+        let url = `${state.apiBaseUrl}/api/submissions`;
+        const params = [];
+        if (state.currentFilter !== 'all') {
+          params.push(`status=${state.currentFilter}`);
+        }
+        if (state.currentRoleFilter !== 'all') {
+          params.push(`role=${state.currentRoleFilter}`);
+        }
+        if (params.length > 0) {
+          url += `?${params.join('&')}`;
+        }
 
         const res = await fetch(url);
         const result = await res.json();
@@ -620,7 +712,7 @@
         roleBadgeEl.className = sub.user_role === 'traveler'
           ? 'bg-blue-500/10 text-[#00e5ff] px-2 py-0.5 rounded text-[10px] font-bold border border-blue-500/20'
           : 'bg-[#00b064]/10 text-oppoEmerald px-2 py-0.5 rounded text-[10px] font-bold border border-[#00b064]/20';
-        roleBadgeEl.textContent = sub.user_role === 'traveler' ? 'Traveler' : 'Operator';
+        roleBadgeEl.textContent = sub.user_role === 'traveler' ? 'Traveler' : 'Tour Manager';
         const identifierP = document.createElement('p');
         identifierP.className = 'font-bold text-slate-200 text-xs';
         identifierP.textContent = sub.user_identifier;

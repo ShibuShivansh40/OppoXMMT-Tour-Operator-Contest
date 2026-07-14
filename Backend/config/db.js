@@ -1,202 +1,150 @@
-const { Pool } = require('pg');
+const { MongoClient } = require('mongodb');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
-// Determine if we should run in mock mode
-const isDbConfigured = process.env.DB_HOST && process.env.DB_USER && process.env.DB_PASSWORD && process.env.DB_NAME;
+const MONGODB_URI = process.env.MONGODB_URI;
+const isDbConfigured = !!MONGODB_URI;
 
-let pool = null;
+let client = null;
+let dbInstance = null;
+let submissionsCollection = null;
 
-// In-Memory Database Fallback for local testing without PostgreSQL instance
 let mockDb = [];
 
 if (isDbConfigured) {
-  console.log('[Database] PostgreSQL Configuration detected. Initializing connection pool...');
-  pool = new Pool({
-    host: process.env.DB_HOST,
-    port: parseInt(process.env.DB_PORT || '5432'),
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    max: 10,
-    idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 5000,
-  });
-
-  pool.on('error', (err, client) => {
-    console.error('[Database] Unexpected error on idle client:', err);
-  });
-
-  // Dynamic schema migrations check
-  pool.query(`
-    ALTER TABLE submissions 
-    ADD COLUMN IF NOT EXISTS score_composition INTEGER DEFAULT NULL,
-    ADD COLUMN IF NOT EXISTS score_watermark INTEGER DEFAULT NULL,
-    ADD COLUMN IF NOT EXISTS score_location INTEGER DEFAULT NULL,
-    ADD COLUMN IF NOT EXISTS score_engagement INTEGER DEFAULT NULL,
-    ADD COLUMN IF NOT EXISTS score_consistency INTEGER DEFAULT NULL,
-    ADD COLUMN IF NOT EXISTS score_total INTEGER DEFAULT NULL;
-  `).then(() => {
-    console.log('[Database] Schema checked and scoring columns validated.');
+  console.log('[Database] Connecting to MongoDB Atlas...');
+  client = new MongoClient(MONGODB_URI);
+  client.connect().then(() => {
+    dbInstance = client.db();
+    submissionsCollection = dbInstance.collection('submissions_migrated');
+    console.log('[Database] MongoDB Atlas connection pool established.');
   }).catch(err => {
-    console.error('[Database] Dynamic schema alteration failed:', err);
+    console.error('[Database] MongoDB connection failed:', err.message);
   });
 } else {
-  console.warn('[Database] Database environment variables missing. Running in MEMORY MOCK MODE.');
+  console.warn('[Database] MONGODB_URI environment variable missing. Running in MEMORY MOCK MODE.');
 }
 
 /**
- * Execute a SQL query. Fallbacks to mock memory database if PostgreSQL isn't configured.
+ * Insert a new submission.
  */
-async function query(text, params) {
-  if (pool) {
-    try {
-      return await pool.query(text, params);
-    } catch (err) {
-      console.error(`[Database] Query error: ${err.message}. Retrying via mock fallback.`);
-      return runMockQuery(text, params);
-    }
+async function insertSubmission(data) {
+  const cleanData = {
+    user_identifier: data.userIdentifier,
+    user_role: data.userRole,
+    media_url: data.mediaUrl,
+    file_name: data.fileName,
+    file_size: parseInt(data.fileSize, 10),
+    location: data.location,
+    travel_date: data.travelDate,
+    full_name: data.fullName || null,
+    tour_manager: data.tourManager || null,
+    device: data.device || null,
+    insta_handle: data.instaHandle || null,
+    status: 'pending',
+    is_winner: false,
+    winner_selected_at: null,
+    score_composition: null,
+    score_watermark: null,
+    score_location: null,
+    score_engagement: null,
+    score_consistency: null,
+    score_total: null,
+    created_at: new Date(),
+    updated_at: new Date()
+  };
+
+  if (submissionsCollection) {
+    // Generate numeric id to maintain simple sequential compatibility
+    const lastDoc = await submissionsCollection.findOne({}, { sort: { id: -1 } });
+    cleanData.id = lastDoc ? lastDoc.id + 1 : 1;
+    
+    await submissionsCollection.insertOne(cleanData);
+    return cleanData;
   } else {
-    return runMockQuery(text, params);
+    cleanData.id = mockDb.length + 1;
+    mockDb.push(cleanData);
+    return cleanData;
   }
 }
 
 /**
- * Runs mock SQL queries on local in-memory mock storage.
- * This ensures the application runs perfectly out-of-the-box for verification.
+ * Fetch filtered list of submissions.
  */
-function runMockQuery(text, params) {
-  const normalized = text.trim().replace(/\s+/g, ' ').toLowerCase();
-  
-  // 1. INSERT INTO submissions
-  if (normalized.includes('insert into submissions')) {
-    // fields: user_identifier, user_role, media_url, file_name, file_size, location, travel_date, full_name, tour_manager, device, insta_handle
-    const [
-      user_identifier, 
-      user_role, 
-      media_url, 
-      file_name, 
-      file_size, 
-      location, 
-      travel_date,
-      full_name,
-      tour_manager,
-      device,
-      insta_handle
-    ] = params;
-    const newRecord = {
-      id: mockDb.length + 1,
-      user_identifier,
-      user_role,
-      media_url,
-      file_name,
-      file_size,
-      location,
-      travel_date,
-      full_name: full_name || null,
-      tour_manager: tour_manager || null,
-      device: device || null,
-      insta_handle: insta_handle || null,
-      status: 'pending',
-      is_winner: false,
-      winner_selected_at: null,
-      score_composition: null,
-      score_watermark: null,
-      score_location: null,
-      score_engagement: null,
-      score_consistency: null,
-      score_total: null,
-      created_at: new Date(),
-      updated_at: new Date()
-    };
-    mockDb.push(newRecord);
-    return { rows: [newRecord], rowCount: 1 };
+async function getSubmissions(filters = {}) {
+  const query = {};
+  if (filters.status) query.status = filters.status;
+  if (filters.role) query.user_role = filters.role;
+  if (filters.isWinner !== undefined) {
+    query.is_winner = filters.isWinner === 'true' || filters.isWinner === true;
   }
 
-  // 2. GET stats (KPI calculation)
-  if (normalized.includes('stats') || (normalized.includes('count(') && normalized.includes('from submissions'))) {
+  if (submissionsCollection) {
+    return await submissionsCollection.find(query).sort({ id: -1 }).toArray();
+  } else {
+    let list = [...mockDb];
+    if (filters.status) list = list.filter(r => r.status === filters.status);
+    if (filters.role) list = list.filter(r => r.user_role === filters.role);
+    if (filters.isWinner !== undefined) {
+      const isWinVal = filters.isWinner === 'true' || filters.isWinner === true;
+      list = list.filter(r => r.is_winner === isWinVal);
+    }
+    list.sort((a, b) => b.id - a.id);
+    return list;
+  }
+}
+
+/**
+ * Update single submission fields by ID.
+ */
+async function updateSubmission(id, updateFields) {
+  const numericId = parseInt(id, 10);
+  const cleanFields = { ...updateFields, updated_at: new Date() };
+
+  if (submissionsCollection) {
+    const result = await submissionsCollection.findOneAndUpdate(
+      { id: numericId },
+      { $set: cleanFields },
+      { returnDocument: 'after' }
+    );
+    return result ? (result.value || result) : null;
+  } else {
+    const record = mockDb.find(r => r.id === numericId);
+    if (record) {
+      Object.assign(record, cleanFields);
+      return record;
+    }
+    return null;
+  }
+}
+
+/**
+ * Fetch database summary stats/KPI values.
+ */
+async function getStats() {
+  if (submissionsCollection) {
+    const total = await submissionsCollection.countDocuments({});
+    const approved = await submissionsCollection.countDocuments({ status: 'approved' });
+    const pending = await submissionsCollection.countDocuments({ status: 'pending' });
+    const locationsList = await submissionsCollection.distinct('location');
+    const locations = locationsList ? locationsList.length : 0;
+    return { total, approved, pending, uniqueLocations: locations };
+  } else {
     const total = mockDb.length;
     const approved = mockDb.filter(r => r.status === 'approved').length;
     const pending = mockDb.filter(r => r.status === 'pending').length;
     const uniqueLocations = [...new Set(mockDb.map(r => r.location))].length;
-    return {
-      rows: [{
-        total_submissions: total,
-        approved_submissions: approved,
-        pending_submissions: pending,
-        unique_locations: uniqueLocations
-      }],
-      rowCount: 1
-    };
+    return { total, approved, pending, uniqueLocations };
   }
-
-  // 3. UPDATE status (Approve / Reject)
-  if (normalized.includes('update submissions') && normalized.includes('set status')) {
-    // UPDATE submissions SET status = $1 WHERE id = $2 RETURNING *
-    const [status, id] = params;
-    const record = mockDb.find(r => r.id === parseInt(id));
-    if (record) {
-      record.status = status;
-      record.updated_at = new Date();
-      return { rows: [record], rowCount: 1 };
-    }
-    return { rows: [], rowCount: 0 };
-  }
-
-  // 4. UPDATE winner status
-  if (normalized.includes('update submissions') && normalized.includes('set is_winner')) {
-    // UPDATE submissions SET is_winner = $1, winner_selected_at = ... WHERE id = $2 RETURNING *
-    const [is_winner, id] = params;
-    const record = mockDb.find(r => r.id === parseInt(id));
-    if (record) {
-      record.is_winner = is_winner;
-      record.winner_selected_at = is_winner ? new Date() : null;
-      record.updated_at = new Date();
-      return { rows: [record], rowCount: 1 };
-    }
-    return { rows: [], rowCount: 0 };
-  }
-
-  // 4b. UPDATE scores
-  if (normalized.includes('update submissions') && normalized.includes('set score_composition')) {
-    const [score_composition, score_watermark, score_location, score_engagement, score_consistency, score_total, id] = params;
-    const record = mockDb.find(r => r.id === parseInt(id));
-    if (record) {
-      record.score_composition = score_composition !== null ? parseInt(score_composition) : null;
-      record.score_watermark = score_watermark !== null ? parseInt(score_watermark) : null;
-      record.score_location = score_location !== null ? parseInt(score_location) : null;
-      record.score_engagement = score_engagement !== null ? parseInt(score_engagement) : null;
-      record.score_consistency = score_consistency !== null ? parseInt(score_consistency) : null;
-      record.score_total = score_total !== null ? parseInt(score_total) : null;
-      record.updated_at = new Date();
-      return { rows: [record], rowCount: 1 };
-    }
-    return { rows: [], rowCount: 0 };
-  }
-
-  // 5. SELECT all (or with filters)
-  if (normalized.includes('select') && normalized.includes('from submissions')) {
-    let result = [...mockDb];
-    // Simple mock filter check
-    if (normalized.includes('status = $')) {
-      const statusFilter = params[0];
-      result = result.filter(r => r.status === statusFilter);
-    } else if (normalized.includes('is_winner = $')) {
-      const winnerFilter = params[0];
-      result = result.filter(r => r.is_winner === winnerFilter);
-    }
-    
-    // Sort descending by id (latest submissions first)
-    result.sort((a, b) => b.id - a.id);
-    return { rows: result, rowCount: result.length };
-  }
-
-  return { rows: [], rowCount: 0 };
 }
 
 module.exports = {
-  query,
-  pool,
+  client,
+  isDbConfigured: () => isDbConfigured,
+  insertSubmission,
+  getSubmissions,
+  updateSubmission,
+  getStats,
   getMockDb: () => mockDb,
   setMockDb: (data) => { mockDb = data; }
 };
