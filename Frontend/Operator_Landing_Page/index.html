@@ -370,12 +370,12 @@
           <!-- Media Upload Drag/Drop Section -->
           <div>
             <label class="block text-xs font-bold text-white uppercase tracking-wider mb-2">
-              Upload Tour Photos / Videos <span class="required-star">*</span>
-              <span class="text-gray-200 font-semibold lowercase">(1 to 25 files, max 15MB each for tour manager)</span>
+              Upload Tour Photos <span class="required-star">*</span>
+              <span class="text-gray-200 font-semibold lowercase">(1 to 25 files, max 15MB each for tour manager, format: JPG, JPEG, PNG)</span>
             </label>
             <div id="dropZone"
               class="border-2 border-dashed border-gray-400 hover:border-[#0052e4] rounded-xl p-6 text-center cursor-pointer transition-all bg-[#eef4ff] flex flex-col items-center justify-center relative overflow-hidden group">
-              <input type="file" id="mediaFile" accept="image/*,video/*" multiple
+              <input type="file" id="mediaFile" accept="image/jpeg,image/jpg,image/png" multiple
                 class="absolute inset-0 opacity-0 cursor-pointer">
               <img src="https://oppo-mmt-media-bucket.s3.eu-north-1.amazonaws.com/assets/UploadIcon.png" alt="Upload"
                 class="w-10 h-10 mb-2 group-hover:scale-105 transition-transform object-contain">
@@ -654,13 +654,12 @@
           continue;
         }
 
-        // 2. Format validation (JPG, JPEG, PNG, MP4, etc.)
+        // 2. Format validation (JPG, JPEG, PNG)
         const ext = file.name.split('.').pop().toLowerCase();
-        const isValidFile = ext === 'jpg' || ext === 'jpeg' || ext === 'png' || ext === 'mp4' ||
-          file.type.startsWith('image/') || file.type === 'video/mp4';
+        const isValidFile = ext === 'jpg' || ext === 'jpeg' || ext === 'png';
 
         if (!isValidFile) {
-          showNotification(`"${file.name}" has an unsupported format. Please upload JPG, JPEG, PNG, or MP4.`, 'error');
+          showNotification(`"${file.name}" has an unsupported format. Please upload JPG, JPEG, or PNG.`, 'error');
           continue;
         }
 
@@ -683,13 +682,13 @@
 
       if (files.length === 0) {
         elements.fileListContainer.classList.add('hidden');
-        elements.dropLabel.innerText = "Drag & drop or browse media";
+        elements.dropLabel.innerText = "Drag & drop or browse images";
         return;
       }
 
       elements.fileListContainer.classList.remove('hidden');
       elements.previewGrid.innerHTML = '';
-      elements.dropLabel.innerText = `Add More Files (${files.length} of 25 selected)`;
+      elements.dropLabel.innerText = `Add More Images (${files.length} of 25 selected)`;
 
       files.forEach((file, index) => {
         const card = document.createElement('div');
@@ -710,30 +709,22 @@
         const thumb = document.createElement('div');
         thumb.className = 'w-full h-24 rounded-lg bg-slate-900/60 overflow-hidden flex items-center justify-center text-xl relative';
 
-        if (file.type.startsWith('image/')) {
-          const img = document.createElement('img');
-          img.className = 'w-full h-full object-cover transition-transform duration-300 group-hover:scale-105';
-          img.src = URL.createObjectURL(file);
-          img.onload = () => URL.revokeObjectURL(img.src);
-          thumb.appendChild(img);
+        const img = document.createElement('img');
+        img.className = 'w-full h-full object-cover transition-transform duration-300 group-hover:scale-105';
+        img.src = URL.createObjectURL(file);
+        img.onload = () => URL.revokeObjectURL(img.src);
+        thumb.appendChild(img);
 
-          // Dark overlay with zoom text on hover
-          const overlay = document.createElement('div');
-          overlay.className = 'absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-[10px] text-white font-bold gap-1 pointer-events-none';
-          overlay.innerHTML = '🔍 Preview';
-          thumb.appendChild(overlay);
+        // Dark overlay with zoom text on hover
+        const overlay = document.createElement('div');
+        overlay.className = 'absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-[10px] text-white font-bold gap-1 pointer-events-none';
+        overlay.innerHTML = '🔍 Preview';
+        thumb.appendChild(overlay);
 
-          thumb.className += ' cursor-pointer group';
-          thumb.addEventListener('click', () => {
-            openImageModal(file);
-          });
-        } else {
-          thumb.innerHTML = '🎥';
-          const videoName = document.createElement('span');
-          videoName.className = 'absolute bottom-1 left-1 bg-black/60 text-[8px] text-gray-300 px-1 py-0.5 rounded truncate max-w-[90%]';
-          videoName.innerText = 'VIDEO';
-          thumb.appendChild(videoName);
-        }
+        thumb.className += ' cursor-pointer group';
+        thumb.addEventListener('click', () => {
+          openImageModal(file);
+        });
         card.appendChild(thumb);
 
         // Details text
