@@ -130,6 +130,10 @@
           <span id="winnersBadge"
             class="ml-auto bg-oppoEmerald text-black font-extrabold text-[10px] px-2.5 py-0.5 rounded-full hidden">0</span>
         </button>
+        <button id="tabCalendar"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full">
+          <span>📅</span> Campaign Calendar
+        </button>
       </nav>
 
       <div class="mt-auto pt-6 border-t border-white/5 text-xxs text-slate-500 flex flex-col gap-2">
@@ -152,6 +156,11 @@
         <span class="text-[10px] font-bold uppercase tracking-wide">Winners</span>
         <span id="winnersBadgeMobile"
           class="absolute top-1.5 right-4 bg-oppoEmerald text-black text-[9px] font-extrabold px-1.5 py-0.5 rounded-full hidden">0</span>
+      </button>
+      <button id="tabCalendarMobile"
+        class="flex-1 flex flex-col items-center justify-center gap-1 py-3 text-slate-400 border-t-2 border-transparent transition-all">
+        <span class="text-lg">📅</span>
+        <span class="text-[10px] font-bold uppercase tracking-wide">Calendar</span>
       </button>
     </nav>
 
@@ -205,21 +214,44 @@
       </div>
 
       <!-- Gallery Filter Bar -->
-      <div id="galleryFilterBar" class="grid grid-cols-1 sm:grid-cols-4 gap-4 glass-card p-4 rounded-2xl">
+      <div id="galleryFilterBar"
+        class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-4 glass-card p-4 rounded-2xl">
         <!-- Submitter Role -->
         <div class="flex flex-col gap-1.5 text-xs font-sans">
           <label for="filterRole" class="text-slate-400 font-bold">Submitter Role</label>
-          <select id="filterRole" class="bg-slate-900/50 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-oppoEmerald transition-colors">
+          <select id="filterRole"
+            class="bg-slate-900/50 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-oppoEmerald transition-colors">
             <option value="all" class="bg-[#05120c]">All Roles</option>
             <option value="traveler" class="bg-[#05120c]">Travelers</option>
             <option value="operator" class="bg-[#05120c]">Tour Managers</option>
           </select>
         </div>
 
+        <!-- Submitter Name -->
+        <div class="flex flex-col gap-1.5 text-xs font-sans">
+          <label for="filterPerson" class="text-slate-400 font-bold">Submitter Name</label>
+          <select id="filterPerson"
+            class="bg-slate-900/50 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-oppoEmerald transition-colors">
+            <option value="all" class="bg-[#05120c]">All Persons</option>
+          </select>
+        </div>
+
+        <!-- MMT Status -->
+        <div class="flex flex-col gap-1.5 text-xs font-sans">
+          <label for="filterApprovalStatus" class="text-slate-400 font-bold">MMT Status</label>
+          <select id="filterApprovalStatus"
+            class="bg-slate-900/50 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-oppoEmerald transition-colors">
+            <option value="all" class="bg-[#05120c]">All Statuses</option>
+            <option value="approved" class="bg-[#05120c]">MMT Approved</option>
+            <option value="non_approved" class="bg-[#05120c]">MMT Non-Approved</option>
+          </select>
+        </div>
+
         <!-- Location -->
         <div class="flex flex-col gap-1.5 text-xs font-sans">
           <label for="filterLocation" class="text-slate-400 font-bold">Location</label>
-          <select id="filterLocation" class="bg-slate-900/50 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-oppoEmerald transition-colors">
+          <select id="filterLocation"
+            class="bg-slate-900/50 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-oppoEmerald transition-colors">
             <option value="all" class="bg-[#05120c]">All Locations</option>
           </select>
         </div>
@@ -227,7 +259,8 @@
         <!-- Month -->
         <div class="flex flex-col gap-1.5 text-xs font-sans">
           <label for="filterMonth" class="text-slate-400 font-bold">Travel Month</label>
-          <select id="filterMonth" class="bg-slate-900/50 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-oppoEmerald transition-colors">
+          <select id="filterMonth"
+            class="bg-slate-900/50 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-oppoEmerald transition-colors">
             <option value="all" class="bg-[#05120c]">All Months</option>
           </select>
         </div>
@@ -235,7 +268,8 @@
         <!-- Search Bar -->
         <div class="flex flex-col gap-1.5 text-xs font-sans">
           <label for="searchLocation" class="text-slate-400 font-bold">Search</label>
-          <input type="text" id="searchLocation" placeholder="🔍 Search submittor or location..." class="bg-slate-900/50 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-oppoEmerald transition-colors placeholder-slate-500">
+          <input type="text" id="searchLocation" placeholder="🔍 Search..."
+            class="bg-slate-900/50 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-oppoEmerald transition-colors placeholder-slate-500">
         </div>
       </div>
 
@@ -278,6 +312,103 @@
         </div>
       </section>
 
+      <!-- CAMPAIGN CALENDAR SECTION (Initially hidden) -->
+      <section id="calendarSection" class="hidden flex flex-col gap-6 md:gap-8">
+        
+        <!-- Stats summary for Calendar -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div class="glass-card rounded-2xl p-5 flex items-center justify-between">
+            <div>
+              <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Total Departures</p>
+              <h3 class="text-3xl font-extrabold text-white mt-1">32</h3>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-[#00e5ff] flex items-center justify-center text-xl">
+              ✈️</div>
+          </div>
+          <div class="glass-card rounded-2xl p-5 flex items-center justify-between">
+            <div>
+              <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">OPPO Devices Allocated</p>
+              <h3 class="text-3xl font-extrabold text-oppoEmerald mt-1 text-glow">38</h3>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-oppoEmerald flex items-center justify-center text-xl">
+              📱</div>
+          </div>
+          <div class="glass-card rounded-2xl p-5 flex items-center justify-between">
+            <div>
+              <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Campaign Period</p>
+              <h3 class="text-lg font-extrabold text-oppoMint mt-2 font-sans tracking-wide">June - August 2026</h3>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center text-xl">
+              📅</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <!-- Calendar Month Widget (Left 5/12 cols) -->
+          <div class="lg:col-span-5 glass-card rounded-2xl p-6 flex flex-col gap-4 border border-[#00b064]/10 bg-[#05120c]/60">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-extrabold text-white uppercase tracking-wider">Visual Schedule</h3>
+              <div class="flex items-center gap-1.5">
+                <button onclick="changeCalendarMonth(-1)" class="w-7 h-7 rounded-lg bg-white/5 border border-white/10 hover:border-oppoEmerald hover:text-oppoEmerald flex items-center justify-center text-xs transition-colors">◀</button>
+                <span id="calendarMonthTitle" class="text-xs font-bold text-white px-2 font-mono">June 2026</span>
+                <button onclick="changeCalendarMonth(1)" class="w-7 h-7 rounded-lg bg-white/5 border border-white/10 hover:border-oppoEmerald hover:text-oppoEmerald flex items-center justify-center text-xs transition-colors">▶</button>
+              </div>
+            </div>
+
+            <!-- Calendar Days Header -->
+            <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-slate-500 uppercase tracking-wider mt-2 border-b border-white/5 pb-2">
+              <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+            </div>
+
+            <!-- Calendar Days Grid -->
+            <div id="calendarDaysGrid" class="grid grid-cols-7 gap-1.5 mt-1 font-mono text-xs">
+              <!-- Rendered dynamically -->
+            </div>
+
+            <!-- Selected Date Departures Detail List -->
+            <div id="dateDetailsCard" class="mt-4 p-4 rounded-xl bg-black/40 border border-white/5 hidden flex flex-col gap-2.5">
+              <h4 id="dateDetailsTitle" class="text-xs font-bold text-oppoMint tracking-wide">📍 Departures on Jun 12</h4>
+              <div id="dateDetailsList" class="flex flex-col gap-2 text-xxs text-slate-300">
+                <!-- Dynamically listed -->
+              </div>
+            </div>
+            
+            <div id="dateDetailsPlaceholder" class="mt-4 text-center py-4 border border-dashed border-white/10 rounded-xl text-xxs text-slate-500 italic">
+              Click on a highlighted day to view destination & device allocation details
+            </div>
+          </div>
+
+          <!-- Schedule Database Table (Right 7/12 cols) -->
+          <div class="lg:col-span-7 glass-card rounded-2xl p-6 flex flex-col gap-4 border border-[#00b064]/10 bg-[#05120c]/60">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h3 class="text-sm font-extrabold text-white uppercase tracking-wider">Trips & Device Allocation</h3>
+                <p class="text-xxs text-slate-500 mt-0.5">Search or view the complete campaign plan</p>
+              </div>
+              <input type="text" id="calendarSearchInput" placeholder="🔍 Search location..." 
+                class="bg-slate-950 border border-white/10 rounded-xl px-3 py-1.5 text-xxs text-white focus:outline-none focus:border-oppoEmerald transition-colors w-full sm:w-48 placeholder-slate-600">
+            </div>
+
+            <div class="overflow-x-auto custom-scrollbar border border-white/5 rounded-xl bg-black/20">
+              <table class="w-full text-[11px] text-left text-slate-300">
+                <thead class="bg-white/5 text-[9px] uppercase tracking-wider text-slate-400 font-bold border-b border-white/5">
+                  <tr>
+                    <th class="px-4 py-3">S.No</th>
+                    <th class="px-4 py-3">Location</th>
+                    <th class="px-4 py-3">Departure Date</th>
+                    <th class="px-4 py-3 text-center">OPPO Devices</th>
+                    <th class="px-4 py-3 text-right">Status</th>
+                  </tr>
+                </thead>
+                <tbody id="calendarTableBody">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </main>
   </div>
 
@@ -305,7 +436,8 @@
             <h3 class="text-base font-extrabold text-white tracking-wide">🏆 Rubric Evaluation</h3>
             <p id="scoringSubInfo" class="text-[10px] text-slate-400 mt-1">Submission #ID • Submitter Details</p>
           </div>
-          <button id="modalDownloadBtn" type="button" class="bg-white/5 border border-white/10 hover:border-oppoMint hover:text-oppoMint text-slate-300 px-3 py-1.5 rounded-lg text-[10px] font-bold flex items-center gap-1.5 transition-all duration-300">
+          <button id="modalDownloadBtn" type="button"
+            class="bg-white/5 border border-white/10 hover:border-oppoMint hover:text-oppoMint text-slate-300 px-3 py-1.5 rounded-lg text-[10px] font-bold flex items-center gap-1.5 transition-all duration-300">
             <span>📥</span> Download
           </button>
         </div>
@@ -402,7 +534,48 @@
       filterRole: 'all', // 'all', 'traveler', 'operator'
       filterLocation: 'all',
       filterMonth: 'all',
-      searchQuery: ''
+      filterPerson: 'all',
+      filterApprovalStatus: 'all',
+      searchQuery: '',
+      // Calendar states
+      calendarYear: 2026,
+      calendarMonth: 5, // June is 5 (0-indexed)
+      selectedCalendarDate: null,
+      calendarSearchQuery: '',
+      campaignSchedule: [
+        { sNo: 1, location: "Bhutan", dateRange: "9 to 14 Jun", startDate: "2026-06-09", endDate: "2026-06-14", devices: 4 },
+        { sNo: 2, location: "Vietnam", dateRange: "12 to 22 Jun", startDate: "2026-06-12", endDate: "2026-06-22", devices: null },
+        { sNo: 3, location: "Vietnam", dateRange: "20 to 27 Jun", startDate: "2026-06-20", endDate: "2026-06-27", devices: null },
+        { sNo: 4, location: "Vietnam", dateRange: "10 to 17 July", startDate: "2026-07-10", endDate: "2026-07-17", devices: 1 },
+        { sNo: 5, location: "Vietnam", dateRange: "22 to 28 July", startDate: "2026-07-22", endDate: "2026-07-28", devices: 1 },
+        { sNo: 6, location: "Italy", dateRange: "18 to 25 Jun", startDate: "2026-06-18", endDate: "2026-06-25", devices: 1 },
+        { sNo: 7, location: "Europe (Paris, Netherlands, Swiss)", dateRange: "15 to 25 Jun", startDate: "2026-06-15", endDate: "2026-06-25", devices: null },
+        { sNo: 8, location: "Europe (Amsterdam Swiss Paris)", dateRange: "12 to 15 July", startDate: "2026-07-12", endDate: "2026-07-15", devices: null },
+        { sNo: 9, location: "Europe (Swiss Paris)", dateRange: "15 to 21 July", startDate: "2026-07-15", endDate: "2026-07-21", devices: 1 },
+        { sNo: 10, location: "Europe", dateRange: "19 to 31 July", startDate: "2026-07-19", endDate: "2026-07-31", devices: 1 },
+        { sNo: 11, location: "Europe", dateRange: "21 to 28 July", startDate: "2026-07-21", endDate: "2026-07-28", devices: 1 },
+        { sNo: 12, location: "Europe", dateRange: "23 to 31 July", startDate: "2026-07-23", endDate: "2026-07-31", devices: 1 },
+        { sNo: 13, location: "USA", dateRange: "26 July to 6 Aug", startDate: "2026-07-26", endDate: "2026-08-06", devices: 1 },
+        { sNo: 14, location: "Almaty", dateRange: "24 to 29 Jun", startDate: "2026-06-24", endDate: "2026-06-29", devices: 1 },
+        { sNo: 15, location: "Thailand", dateRange: "21 to 26 Jun", startDate: "2026-06-21", endDate: "2026-06-26", devices: 1 },
+        { sNo: 16, location: "Japan", dateRange: "15 to 22nd July", startDate: "2026-07-15", endDate: "2026-07-22", devices: 1 },
+        { sNo: 17, location: "Indonesia", dateRange: "16 to 22nd July", startDate: "2026-07-16", endDate: "2026-07-22", devices: null },
+        { sNo: 18, location: "Tbilisi & Batumi", dateRange: "10 to 16 July", startDate: "2026-07-10", endDate: "2026-07-16", devices: 1 },
+        { sNo: 19, location: "Indonesia", dateRange: "23 to 28 July", startDate: "2026-07-23", endDate: "2026-07-28", devices: 1 },
+        { sNo: 20, location: "Kerala", dateRange: "23 to 27 June", startDate: "2026-06-23", endDate: "2026-06-27", devices: 1 },
+        { sNo: 21, location: "Sri Lanka", dateRange: "29 Jun to 6 Jul", startDate: "2026-06-29", endDate: "2026-07-06", devices: 1 },
+        { sNo: 22, location: "South (Coorg, Ooty, Mysore)", dateRange: "30 Jun to 7 Jul", startDate: "2026-06-30", endDate: "2026-07-07", devices: 1 },
+        { sNo: 23, location: "Srinagar", dateRange: "7 to 14 July", startDate: "2026-07-07", endDate: "2026-07-14", devices: 2 },
+        { sNo: 24, location: "Leh", dateRange: "10 to 24 July", startDate: "2026-07-10", endDate: "2026-07-24", devices: 1 },
+        { sNo: 25, location: "Andaman (Neil, Havelock, Portblair)", dateRange: "8 to 14 July", startDate: "2026-07-08", endDate: "2026-07-14", devices: 3 },
+        { sNo: 26, location: "North East (Darjeeling, Gantok, Siliguri)", dateRange: "17 to 24 July", startDate: "2026-07-17", endDate: "2026-07-24", devices: 3 },
+        { sNo: 27, location: "Himachal (Shimla, Manali)", dateRange: "15 to 20 July", startDate: "2026-07-15", endDate: "2026-07-20", devices: 2 },
+        { sNo: 28, location: "Kerala (Munnar, Kochi, Allepey)", dateRange: "22 to 30 July", startDate: "2026-07-22", endDate: "2026-07-30", devices: 3 },
+        { sNo: 29, location: "Udaipur", dateRange: "20 to 22 July", startDate: "2026-07-20", endDate: "2026-07-22", devices: 1 },
+        { sNo: 30, location: "Singapore & Malaysia", dateRange: "23 to 26 July", startDate: "2026-07-23", endDate: "2026-07-26", devices: 1 },
+        { sNo: 31, location: "Singapore & Malaysia", dateRange: "28 to 31 July", startDate: "2026-07-28", endDate: "2026-07-31", devices: 1 },
+        { sNo: 32, location: "South Africa", dateRange: "15 to 22 July", startDate: "2026-07-15", endDate: "2026-07-22", devices: 1 }
+      ]
     };
 
     // DOM Elements
@@ -413,8 +586,10 @@
       statWinners: document.getElementById('statWinners'),
       tabShowcase: document.getElementById('tabShowcase'),
       tabWinners: document.getElementById('tabWinners'),
+      tabCalendar: document.getElementById('tabCalendar'),
       tabShowcaseMobile: document.getElementById('tabShowcaseMobile'),
       tabWinnersMobile: document.getElementById('tabWinnersMobile'),
+      tabCalendarMobile: document.getElementById('tabCalendarMobile'),
       winnersBadge: document.getElementById('winnersBadge'),
       winnersBadgeMobile: document.getElementById('winnersBadgeMobile'),
       gallerySection: document.getElementById('gallerySection'),
@@ -424,6 +599,7 @@
       winnersSection: document.getElementById('winnersSection'),
       winnersEmpty: document.getElementById('winnersEmpty'),
       winnersGrid: document.getElementById('winnersGrid'),
+      calendarSection: document.getElementById('calendarSection'),
       imageModal: document.getElementById('imageModal'),
       modalImg: document.getElementById('modalImg'),
       logoutBtn: document.getElementById('logoutBtn')
@@ -455,7 +631,6 @@
       }, 4000);
     }
 
-    // Tabs toggle
     function setTab(tabName) {
       state.activeTab = tabName;
       const galleryTitle = document.getElementById('galleryTitle');
@@ -464,8 +639,10 @@
       if (tabName === 'showcase') {
         elements.tabShowcase.className = 'flex items-center gap-3 px-4 py-3 rounded-xl bg-oppoGreen text-white font-bold text-sm transition-all duration-300 text-left w-full shadow-lg shadow-oppoGreen/25';
         elements.tabWinners.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full';
+        if (elements.tabCalendar) elements.tabCalendar.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full';
         elements.gallerySection.classList.remove('hidden');
         elements.winnersSection.classList.add('hidden');
+        if (elements.calendarSection) elements.calendarSection.classList.add('hidden');
         galleryTitle.innerText = "Showcase Gallery";
         galleryDesc.innerText = "Review MMT-approved entries, mark contest winners, and compile audit logs.";
         // Update mobile tab bar
@@ -477,11 +654,17 @@
           elements.tabWinnersMobile.classList.remove('text-white', 'bg-oppoGreen/20', 'border-oppoEmerald');
           elements.tabWinnersMobile.classList.add('text-slate-400', 'border-transparent');
         }
-      } else {
+        if (elements.tabCalendarMobile) {
+          elements.tabCalendarMobile.classList.remove('text-white', 'bg-oppoGreen/20', 'border-oppoEmerald');
+          elements.tabCalendarMobile.classList.add('text-slate-400', 'border-transparent');
+        }
+      } else if (tabName === 'winners') {
         elements.tabWinners.className = 'flex items-center gap-3 px-4 py-3 rounded-xl bg-oppoGreen text-white font-bold text-sm transition-all duration-300 text-left w-full shadow-lg shadow-oppoGreen/25';
         elements.tabShowcase.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full';
+        if (elements.tabCalendar) elements.tabCalendar.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full';
         elements.gallerySection.classList.add('hidden');
         elements.winnersSection.classList.remove('hidden');
+        if (elements.calendarSection) elements.calendarSection.classList.add('hidden');
         galleryTitle.innerText = "Contest Winners";
         galleryDesc.innerText = "Browse list of selected contest winners and verify their campaign submissions.";
         renderWinnersList();
@@ -494,11 +677,45 @@
           elements.tabShowcaseMobile.classList.remove('text-white', 'bg-oppoGreen/20', 'border-oppoEmerald');
           elements.tabShowcaseMobile.classList.add('text-slate-400', 'border-transparent');
         }
+        if (elements.tabCalendarMobile) {
+          elements.tabCalendarMobile.classList.remove('text-white', 'bg-oppoGreen/20', 'border-oppoEmerald');
+          elements.tabCalendarMobile.classList.add('text-slate-400', 'border-transparent');
+        }
+      } else {
+        if (elements.tabCalendar) elements.tabCalendar.className = 'flex items-center gap-3 px-4 py-3 rounded-xl bg-oppoGreen text-white font-bold text-sm transition-all duration-300 text-left w-full shadow-lg shadow-oppoGreen/25';
+        elements.tabShowcase.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full';
+        elements.tabWinners.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full';
+        elements.gallerySection.classList.add('hidden');
+        elements.winnersSection.classList.add('hidden');
+        if (elements.calendarSection) elements.calendarSection.classList.remove('hidden');
+        galleryTitle.innerText = "Campaign Calendar";
+        galleryDesc.innerText = "Monitor active departures and tracking of allocated campaign devices.";
+        renderCalendarGrid();
+        renderCalendarTable();
+        // Update mobile tab bar
+        if (elements.tabCalendarMobile) {
+          elements.tabCalendarMobile.classList.add('text-white', 'bg-oppoGreen/20', 'border-oppoEmerald');
+          elements.tabCalendarMobile.classList.remove('text-slate-400', 'border-transparent');
+        }
+        if (elements.tabShowcaseMobile) {
+          elements.tabShowcaseMobile.classList.remove('text-white', 'bg-oppoGreen/20', 'border-oppoEmerald');
+          elements.tabShowcaseMobile.classList.add('text-slate-400', 'border-transparent');
+        }
+        if (elements.tabWinnersMobile) {
+          elements.tabWinnersMobile.classList.remove('text-white', 'bg-oppoGreen/20', 'border-oppoEmerald');
+          elements.tabWinnersMobile.classList.add('text-slate-400', 'border-transparent');
+        }
       }
     }
 
     elements.tabShowcase.addEventListener('click', () => setTab('showcase'));
     elements.tabWinners.addEventListener('click', () => setTab('winners'));
+    if (elements.tabCalendar) elements.tabCalendar.addEventListener('click', () => setTab('calendar'));
+
+    // Mobile bottom tab bar
+    if (elements.tabShowcaseMobile) elements.tabShowcaseMobile.addEventListener('click', () => setTab('showcase'));
+    if (elements.tabWinnersMobile) elements.tabWinnersMobile.addEventListener('click', () => setTab('winners'));
+    if (elements.tabCalendarMobile) elements.tabCalendarMobile.addEventListener('click', () => setTab('calendar'));
 
     // Logout action handler
     if (elements.logoutBtn) {
@@ -575,15 +792,31 @@
             locationSelect.value = locations.includes(currentLocValue) ? currentLocValue : 'all';
           }
 
+          // Dynamic populate Person dropdown
+          const personSelect = document.getElementById('filterPerson');
+          if (personSelect) {
+            const currentPersonValue = personSelect.value;
+            personSelect.innerHTML = '<option value="all" class="bg-[#05120c]">All Persons</option>';
+            const persons = [...new Set(state.approvedEntries.map(e => e.full_name || e.tour_manager).filter(Boolean))].sort();
+            persons.forEach(person => {
+              const opt = document.createElement('option');
+              opt.value = person;
+              opt.innerText = person;
+              opt.className = 'bg-[#05120c]';
+              personSelect.appendChild(opt);
+            });
+            personSelect.value = persons.includes(currentPersonValue) ? currentPersonValue : 'all';
+          }
+
           // Dynamic populate Month dropdown
           const monthSelect = document.getElementById('filterMonth');
           if (monthSelect) {
             const currentMonthValue = monthSelect.value;
             monthSelect.innerHTML = '<option value="all" class="bg-[#05120c]">All Months</option>';
-            
+
             const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             const monthsMap = {};
-            
+
             state.approvedEntries.forEach(entry => {
               if (entry.travel_date) {
                 const d = new Date(entry.travel_date + 'T00:00:00');
@@ -596,7 +829,7 @@
                 }
               }
             });
-            
+
             const sortedMonthKeys = Object.keys(monthsMap).sort().reverse();
             sortedMonthKeys.forEach(key => {
               const opt = document.createElement('option');
@@ -626,11 +859,15 @@
     // Render approved entries showcase
     function renderGallery() {
       elements.galleryGrid.innerHTML = '';
-      
+
       const filtered = state.approvedEntries.filter(entry => {
         const matchesRole = state.filterRole === 'all' || entry.user_role === state.filterRole;
         const matchesLocation = state.filterLocation === 'all' || entry.location === state.filterLocation;
-        
+        const matchesPerson = state.filterPerson === 'all' || entry.full_name === state.filterPerson || entry.tour_manager === state.filterPerson;
+        const matchesApprovalStatus = state.filterApprovalStatus === 'all' ||
+          (state.filterApprovalStatus === 'approved' && entry.status === 'approved') ||
+          (state.filterApprovalStatus === 'non_approved' && entry.status !== 'approved');
+
         let matchesMonth = true;
         if (state.filterMonth !== 'all' && entry.travel_date) {
           const d = new Date(entry.travel_date + 'T00:00:00');
@@ -646,10 +883,10 @@
           matchesMonth = false;
         }
 
-        const matchesSearch = !state.searchQuery || 
+        const matchesSearch = !state.searchQuery ||
           (entry.location && entry.location.toLowerCase().includes(state.searchQuery.toLowerCase())) ||
           (entry.full_name && entry.full_name.toLowerCase().includes(state.searchQuery.toLowerCase()));
-        return matchesRole && matchesLocation && matchesMonth && matchesSearch;
+        return matchesRole && matchesLocation && matchesPerson && matchesApprovalStatus && matchesMonth && matchesSearch;
       });
 
       if (filtered.length === 0) {
@@ -675,7 +912,11 @@
       const filtered = state.winnersList.filter(entry => {
         const matchesRole = state.filterRole === 'all' || entry.user_role === state.filterRole;
         const matchesLocation = state.filterLocation === 'all' || entry.location === state.filterLocation;
-        
+        const matchesPerson = state.filterPerson === 'all' || entry.full_name === state.filterPerson || entry.tour_manager === state.filterPerson;
+        const matchesApprovalStatus = state.filterApprovalStatus === 'all' ||
+          (state.filterApprovalStatus === 'approved' && entry.status === 'approved') ||
+          (state.filterApprovalStatus === 'non_approved' && entry.status !== 'approved');
+
         let matchesMonth = true;
         if (state.filterMonth !== 'all' && entry.travel_date) {
           const d = new Date(entry.travel_date + 'T00:00:00');
@@ -691,10 +932,10 @@
           matchesMonth = false;
         }
 
-        const matchesSearch = !state.searchQuery || 
+        const matchesSearch = !state.searchQuery ||
           (entry.location && entry.location.toLowerCase().includes(state.searchQuery.toLowerCase())) ||
           (entry.full_name && entry.full_name.toLowerCase().includes(state.searchQuery.toLowerCase()));
-        return matchesRole && matchesLocation && matchesMonth && matchesSearch;
+        return matchesRole && matchesLocation && matchesPerson && matchesApprovalStatus && matchesMonth && matchesSearch;
       });
 
       if (filtered.length === 0) {
@@ -1018,6 +1259,8 @@
       const filterRoleSelect = document.getElementById('filterRole');
       const filterLocationSelect = document.getElementById('filterLocation');
       const filterMonthSelect = document.getElementById('filterMonth');
+      const filterPersonSelect = document.getElementById('filterPerson');
+      const filterApprovalStatusSelect = document.getElementById('filterApprovalStatus');
       const searchInput = document.getElementById('searchLocation');
       const modalDownloadBtn = document.getElementById('modalDownloadBtn');
 
@@ -1042,6 +1285,20 @@
           if (state.activeTab === 'winners') renderWinnersList();
         });
       }
+      if (filterPersonSelect) {
+        filterPersonSelect.addEventListener('change', (e) => {
+          state.filterPerson = e.target.value;
+          renderGallery();
+          if (state.activeTab === 'winners') renderWinnersList();
+        });
+      }
+      if (filterApprovalStatusSelect) {
+        filterApprovalStatusSelect.addEventListener('change', (e) => {
+          state.filterApprovalStatus = e.target.value;
+          renderGallery();
+          if (state.activeTab === 'winners') renderWinnersList();
+        });
+      }
       if (searchInput) {
         searchInput.addEventListener('input', (e) => {
           state.searchQuery = e.target.value;
@@ -1057,12 +1314,212 @@
           }
         });
       }
+      const calendarSearchInput = document.getElementById('calendarSearchInput');
+      if (calendarSearchInput) {
+        calendarSearchInput.addEventListener('input', (e) => {
+          state.calendarSearchQuery = e.target.value;
+          renderCalendarTable();
+        });
+      }
     }, 0);
+
+    function changeCalendarMonth(offset) {
+      let m = state.calendarMonth + offset;
+      let y = state.calendarYear;
+      if (m < 0) {
+        m = 11;
+        y--;
+      } else if (m > 11) {
+        m = 0;
+        y++;
+      }
+      // Restrict campaign period from June (5) to August (7) 2026
+      if (y === 2026 && m >= 5 && m <= 7) {
+        state.calendarMonth = m;
+        state.calendarYear = y;
+        state.selectedCalendarDate = null;
+        const detailsCard = document.getElementById('dateDetailsCard');
+        const placeholder = document.getElementById('dateDetailsPlaceholder');
+        if (detailsCard) detailsCard.classList.add('hidden');
+        if (placeholder) placeholder.classList.remove('hidden');
+        renderCalendarGrid();
+      }
+    }
+
+    function selectCalendarDate(dateStr) {
+      state.selectedCalendarDate = dateStr;
+      
+      const trips = getTripsForDate(dateStr);
+      const titleEl = document.getElementById('dateDetailsTitle');
+      const listEl = document.getElementById('dateDetailsList');
+      const cardEl = document.getElementById('dateDetailsCard');
+      const placeholderEl = document.getElementById('dateDetailsPlaceholder');
+      
+      const parsed = new Date(dateStr + 'T00:00:00');
+      const formattedDate = parsed.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+      
+      if (titleEl) titleEl.innerText = `📍 Departures on ${formattedDate}`;
+      if (listEl) {
+        listEl.innerHTML = '';
+        if (trips.length === 0) {
+          listEl.innerHTML = '<p class="text-slate-500 italic">No scheduled departures on this date.</p>';
+        } else {
+          trips.forEach(trip => {
+            const div = document.createElement('div');
+            div.className = 'p-2.5 rounded-lg bg-white/5 border border-white/5 flex flex-col gap-1';
+            div.innerHTML = `
+              <div class="flex justify-between font-bold text-white">
+                <span>✈️ ${trip.location}</span>
+                <span class="text-oppoMint">${trip.devices ? trip.devices + ' devices' : '—'}</span>
+              </div>
+              <div class="text-[10px] text-slate-400">📅 ${trip.dateRange}</div>
+            `;
+            listEl.appendChild(div);
+          });
+        }
+      }
+      
+      if (cardEl) cardEl.classList.remove('hidden');
+      if (placeholderEl) placeholderEl.classList.add('hidden');
+      
+      // Re-render grid to highlight selected day
+      renderCalendarGrid();
+    }
+
+    function getTripsForDate(dateStr) {
+      const d = new Date(dateStr + 'T00:00:00');
+      return state.campaignSchedule.filter(trip => {
+        const start = new Date(trip.startDate + 'T00:00:00');
+        const end = new Date(trip.endDate + 'T00:00:00');
+        return d >= start && d <= end;
+      });
+    }
+
+    function renderCalendarGrid() {
+      const grid = document.getElementById('calendarDaysGrid');
+      const monthTitle = document.getElementById('calendarMonthTitle');
+      if (!grid || !monthTitle) return;
+
+      const year = state.calendarYear;
+      const month = state.calendarMonth; // 0-indexed
+
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      monthTitle.innerText = `${monthNames[month]} ${year}`;
+
+      grid.innerHTML = '';
+
+      // First day of month
+      const firstDay = new Date(year, month, 1).getDay();
+      // Total days in month
+      const totalDays = new Date(year, month + 1, 0).getDate();
+
+      // Empty spaces for previous month's days
+      for (let i = 0; i < firstDay; i++) {
+        const empty = document.createElement('div');
+        empty.className = 'aspect-square';
+        grid.appendChild(empty);
+      }
+
+      // Render days
+      for (let day = 1; day <= totalDays; day++) {
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const dayEl = document.createElement('button');
+        dayEl.type = 'button';
+        dayEl.className = 'aspect-square rounded-lg flex flex-col items-center justify-between p-1.5 border border-white/5 text-left relative transition-all ';
+
+        const trips = getTripsForDate(dateStr);
+        const hasTrips = trips.length > 0;
+        const isSelected = state.selectedCalendarDate === dateStr;
+
+        // Apply visual styling based on trip activity
+        if (isSelected) {
+          dayEl.className += 'bg-oppoGreen text-white border-oppoEmerald shadow-md shadow-oppoGreen/30 z-10 scale-[1.03]';
+        } else if (hasTrips) {
+          dayEl.className += 'bg-[#00b064]/10 text-oppoMint border-[#00b064]/20 hover:border-oppoMint hover:bg-[#00b064]/20';
+        } else {
+          dayEl.className += 'bg-slate-900/20 text-slate-400 hover:border-white/10 hover:text-white';
+        }
+
+        let labelHtml = `<span class="font-extrabold text-[10px]">${day}</span>`;
+        if (hasTrips && !isSelected) {
+          // Dots represent allocated devices/trips
+          const devSum = trips.reduce((sum, t) => sum + (t.devices || 0), 0);
+          labelHtml += `
+            <div class="flex gap-0.5 justify-end w-full mt-auto">
+              <span class="w-1.5 h-1.5 rounded-full bg-oppoEmerald animate-pulse"></span>
+              ${devSum > 0 ? `<span class="text-[8px] font-black text-oppoMint leading-none ml-0.5">${devSum}</span>` : ''}
+            </div>
+          `;
+        } else if (isSelected) {
+          labelHtml += `<span class="text-[8px] font-black text-white mt-auto">Selected</span>`;
+        }
+
+        dayEl.innerHTML = labelHtml;
+        dayEl.addEventListener('click', () => selectCalendarDate(dateStr));
+        grid.appendChild(dayEl);
+      }
+    }
+
+    function renderCalendarTable() {
+      const tbody = document.getElementById('calendarTableBody');
+      if (!tbody) return;
+
+      tbody.innerHTML = '';
+      
+      const filtered = state.campaignSchedule.filter(trip => {
+        const query = state.calendarSearchQuery.toLowerCase();
+        return trip.location.toLowerCase().includes(query) || 
+               trip.dateRange.toLowerCase().includes(query);
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" class="px-4 py-8 text-center text-slate-500 italic">
+              No matching schedule entries found
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      const today = new Date();
+
+      filtered.forEach(trip => {
+        const tr = document.createElement('tr');
+        tr.className = 'border-b border-white/5 hover:bg-white/5 transition-colors';
+
+        // Check trip status (in 2026, let's compare dates)
+        const end = new Date(trip.endDate + 'T00:00:00');
+        const start = new Date(trip.startDate + 'T00:00:00');
+        
+        let statusBadge = '';
+        if (today > end) {
+          statusBadge = '<span class="bg-slate-500/10 text-slate-400 border border-slate-500/20 px-2 py-0.5 rounded text-[9px] font-bold">Completed</span>';
+        } else if (today >= start && today <= end) {
+          statusBadge = '<span class="bg-[#00b064]/10 text-oppoEmerald border border-[#00b064]/20 px-2 py-0.5 rounded text-[9px] font-bold animate-pulse">Ongoing</span>';
+        } else {
+          statusBadge = '<span class="bg-blue-500/10 text-[#00e5ff] border border-blue-500/20 px-2 py-0.5 rounded text-[9px] font-bold">Upcoming</span>';
+        }
+
+        tr.innerHTML = `
+          <td class="px-4 py-3 font-mono text-slate-500">${trip.sNo}</td>
+          <td class="px-4 py-3 font-bold text-white">${trip.location}</td>
+          <td class="px-4 py-3 font-mono">${trip.dateRange}</td>
+          <td class="px-4 py-3 text-center font-extrabold text-oppoMint">${trip.devices !== null ? trip.devices : '—'}</td>
+          <td class="px-4 py-3 text-right">${statusBadge}</td>
+        `;
+        
+        tbody.appendChild(tr);
+      });
+    }
 
     // Explicitly bind to window to resolve inline HTML onclick reference errors
     window.openImageModal = openImageModal;
     window.closeImageModal = closeImageModal;
     window.toggleWinner = toggleWinner;
+    window.changeCalendarMonth = changeCalendarMonth;
+    window.selectCalendarDate = selectCalendarDate;
 
     // EXPORT REPORT: Automated Multi-Sheet Excel generation
     elements.exportExcelBtn.addEventListener('click', async () => {
