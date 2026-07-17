@@ -320,7 +320,7 @@
           <div class="glass-card rounded-2xl p-5 flex items-center justify-between">
             <div>
               <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Total Departures</p>
-              <h3 class="text-3xl font-extrabold text-white mt-1">32</h3>
+              <h3 id="statCalendarDepartures" class="text-3xl font-extrabold text-white mt-1">32</h3>
             </div>
             <div class="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-[#00e5ff] flex items-center justify-center text-xl">
               ✈️</div>
@@ -328,7 +328,7 @@
           <div class="glass-card rounded-2xl p-5 flex items-center justify-between">
             <div>
               <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">OPPO Devices Allocated</p>
-              <h3 class="text-3xl font-extrabold text-oppoEmerald mt-1 text-glow">38</h3>
+              <h3 id="statCalendarDevices" class="text-3xl font-extrabold text-oppoEmerald mt-1 text-glow">38</h3>
             </div>
             <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-oppoEmerald flex items-center justify-center text-xl">
               📱</div>
@@ -600,6 +600,7 @@
       winnersEmpty: document.getElementById('winnersEmpty'),
       winnersGrid: document.getElementById('winnersGrid'),
       calendarSection: document.getElementById('calendarSection'),
+      galleryFilterBar: document.getElementById('galleryFilterBar'),
       imageModal: document.getElementById('imageModal'),
       modalImg: document.getElementById('modalImg'),
       logoutBtn: document.getElementById('logoutBtn')
@@ -631,12 +632,25 @@
       }, 4000);
     }
 
+    function updateCalendarStats() {
+      const departuresEl = document.getElementById('statCalendarDepartures');
+      const devicesEl = document.getElementById('statCalendarDevices');
+      
+      if (departuresEl && devicesEl) {
+        const totalDepartures = state.campaignSchedule.length;
+        const totalDevices = state.campaignSchedule.reduce((sum, t) => sum + (t.devices || 0), 0);
+        departuresEl.innerText = totalDepartures;
+        devicesEl.innerText = totalDevices;
+      }
+    }
+
     function setTab(tabName) {
       state.activeTab = tabName;
       const galleryTitle = document.getElementById('galleryTitle');
       const galleryDesc = document.getElementById('galleryDesc');
 
       if (tabName === 'showcase') {
+        if (elements.galleryFilterBar) elements.galleryFilterBar.classList.remove('hidden');
         elements.tabShowcase.className = 'flex items-center gap-3 px-4 py-3 rounded-xl bg-oppoGreen text-white font-bold text-sm transition-all duration-300 text-left w-full shadow-lg shadow-oppoGreen/25';
         elements.tabWinners.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full';
         if (elements.tabCalendar) elements.tabCalendar.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full';
@@ -659,6 +673,7 @@
           elements.tabCalendarMobile.classList.add('text-slate-400', 'border-transparent');
         }
       } else if (tabName === 'winners') {
+        if (elements.galleryFilterBar) elements.galleryFilterBar.classList.remove('hidden');
         elements.tabWinners.className = 'flex items-center gap-3 px-4 py-3 rounded-xl bg-oppoGreen text-white font-bold text-sm transition-all duration-300 text-left w-full shadow-lg shadow-oppoGreen/25';
         elements.tabShowcase.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full';
         if (elements.tabCalendar) elements.tabCalendar.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full';
@@ -682,6 +697,7 @@
           elements.tabCalendarMobile.classList.add('text-slate-400', 'border-transparent');
         }
       } else {
+        if (elements.galleryFilterBar) elements.galleryFilterBar.classList.add('hidden');
         if (elements.tabCalendar) elements.tabCalendar.className = 'flex items-center gap-3 px-4 py-3 rounded-xl bg-oppoGreen text-white font-bold text-sm transition-all duration-300 text-left w-full shadow-lg shadow-oppoGreen/25';
         elements.tabShowcase.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full';
         elements.tabWinners.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full';
@@ -692,6 +708,7 @@
         galleryDesc.innerText = "Monitor active departures and tracking of allocated campaign devices.";
         renderCalendarGrid();
         renderCalendarTable();
+        updateCalendarStats();
         // Update mobile tab bar
         if (elements.tabCalendarMobile) {
           elements.tabCalendarMobile.classList.add('text-white', 'bg-oppoGreen/20', 'border-oppoEmerald');
@@ -744,6 +761,143 @@
     if (elements.tabShowcaseMobile) elements.tabShowcaseMobile.addEventListener('click', () => setTab('showcase'));
     if (elements.tabWinnersMobile) elements.tabWinnersMobile.addEventListener('click', () => setTab('winners'));
 
+    // Helper function to check if entry matches the travel month
+    function getMatchesMonth(entry, filterMonth) {
+      if (filterMonth === 'all') return true;
+      if (!entry.travel_date) return false;
+      const d = new Date(entry.travel_date + 'T00:00:00');
+      if (isNaN(d.getTime())) return false;
+      const year = d.getFullYear();
+      const monthVal = String(d.getMonth() + 1).padStart(2, '0');
+      const key = `${year}-${monthVal}`;
+      return key === filterMonth;
+    }
+
+    // Synchronize global state variables with the dropdown values
+    function syncStateFromDropdowns() {
+      const roleSelect = document.getElementById('filterRole');
+      const personSelect = document.getElementById('filterPerson');
+      const statusSelect = document.getElementById('filterApprovalStatus');
+      const locationSelect = document.getElementById('filterLocation');
+      const monthSelect = document.getElementById('filterMonth');
+
+      if (roleSelect) state.filterRole = roleSelect.value;
+      if (personSelect) state.filterPerson = personSelect.value;
+      if (statusSelect) state.filterApprovalStatus = statusSelect.value;
+      if (locationSelect) state.filterLocation = locationSelect.value;
+      if (monthSelect) state.filterMonth = monthSelect.value;
+    }
+
+    // Re-populate dropdown menus dynamically based on current values of other dropdowns
+    function updateFilterOptions() {
+      const roleSelect = document.getElementById('filterRole');
+      const personSelect = document.getElementById('filterPerson');
+      const statusSelect = document.getElementById('filterApprovalStatus');
+      const locationSelect = document.getElementById('filterLocation');
+      const monthSelect = document.getElementById('filterMonth');
+
+      if (!roleSelect || !personSelect || !statusSelect || !locationSelect || !monthSelect) return;
+
+      const currentRole = roleSelect.value;
+      const currentPerson = personSelect.value;
+      const currentStatus = statusSelect.value;
+      const currentLoc = locationSelect.value;
+      const currentMonth = monthSelect.value;
+
+      // Helper match checkers
+      const matches = {
+        role: (e, val) => val === 'all' || e.user_role === val,
+        person: (e, val) => val === 'all' || e.full_name === val || e.tour_manager === val,
+        status: (e, val) => val === 'all' || 
+          (val === 'approved' && e.status === 'approved') || 
+          (val === 'non_approved' && e.status !== 'approved'),
+        location: (e, val) => val === 'all' || e.location === val,
+        month: (e, val) => getMatchesMonth(e, val)
+      };
+
+      // 1. Person Options: Filter entries by matching all filters *except* person
+      const personsSubset = state.approvedEntries.filter(e => 
+        matches.role(e, currentRole) &&
+        matches.status(e, currentStatus) &&
+        matches.location(e, currentLoc) &&
+        matches.month(e, currentMonth)
+      );
+      const validPersons = [...new Set(personsSubset.map(e => e.full_name || e.tour_manager).filter(Boolean))].sort();
+
+      personSelect.innerHTML = '<option value="all" class="bg-[#05120c]">All Persons</option>';
+      validPersons.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p;
+        opt.innerText = p;
+        opt.className = 'bg-[#05120c]';
+        personSelect.appendChild(opt);
+      });
+      if (validPersons.includes(currentPerson)) {
+        personSelect.value = currentPerson;
+      } else {
+        personSelect.value = 'all';
+      }
+
+      // 2. Location Options: Filter entries by matching all filters *except* location
+      const locationsSubset = state.approvedEntries.filter(e => 
+        matches.role(e, currentRole) &&
+        matches.person(e, personSelect.value) &&
+        matches.status(e, currentStatus) &&
+        matches.month(e, currentMonth)
+      );
+      const validLocations = [...new Set(locationsSubset.map(e => e.location).filter(Boolean))].sort();
+
+      locationSelect.innerHTML = '<option value="all" class="bg-[#05120c]">All Locations</option>';
+      validLocations.forEach(loc => {
+        const opt = document.createElement('option');
+        opt.value = loc;
+        opt.innerText = loc;
+        opt.className = 'bg-[#05120c]';
+        locationSelect.appendChild(opt);
+      });
+      if (validLocations.includes(currentLoc)) {
+        locationSelect.value = currentLoc;
+      } else {
+        locationSelect.value = 'all';
+      }
+
+      // 3. Month Options: Filter entries by matching all filters *except* month
+      const monthsSubset = state.approvedEntries.filter(e => 
+        matches.role(e, currentRole) &&
+        matches.person(e, personSelect.value) &&
+        matches.status(e, currentStatus) &&
+        matches.location(e, locationSelect.value)
+      );
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      const validMonthsMap = {};
+      monthsSubset.forEach(entry => {
+        if (entry.travel_date) {
+          const d = new Date(entry.travel_date + 'T00:00:00');
+          if (!isNaN(d.getTime())) {
+            const year = d.getFullYear();
+            const monthIdx = d.getMonth();
+            const key = `${year}-${String(monthIdx + 1).padStart(2, '0')}`;
+            validMonthsMap[key] = `${monthNames[monthIdx]} ${year}`;
+          }
+        }
+      });
+
+      monthSelect.innerHTML = '<option value="all" class="bg-[#05120c]">All Months</option>';
+      const sortedMonthKeys = Object.keys(validMonthsMap).sort().reverse();
+      sortedMonthKeys.forEach(key => {
+        const opt = document.createElement('option');
+        opt.value = key;
+        opt.innerText = validMonthsMap[key];
+        opt.className = 'bg-[#05120c]';
+        monthSelect.appendChild(opt);
+      });
+      if (sortedMonthKeys.includes(currentMonth)) {
+        monthSelect.value = currentMonth;
+      } else {
+        monthSelect.value = 'all';
+      }
+    }
+
     // API fetches
     async function loadAllData() {
       elements.galleryLoading.classList.remove('hidden');
@@ -776,70 +930,9 @@
             if (elements.winnersBadgeMobile) elements.winnersBadgeMobile.classList.add('hidden');
           }
 
-          // Dynamic populate Location dropdown
-          const locationSelect = document.getElementById('filterLocation');
-          if (locationSelect) {
-            const currentLocValue = locationSelect.value;
-            locationSelect.innerHTML = '<option value="all" class="bg-[#05120c]">All Locations</option>';
-            const locations = [...new Set(state.approvedEntries.map(e => e.location))].filter(Boolean).sort();
-            locations.forEach(loc => {
-              const opt = document.createElement('option');
-              opt.value = loc;
-              opt.innerText = loc;
-              opt.className = 'bg-[#05120c]';
-              locationSelect.appendChild(opt);
-            });
-            locationSelect.value = locations.includes(currentLocValue) ? currentLocValue : 'all';
-          }
-
-          // Dynamic populate Person dropdown
-          const personSelect = document.getElementById('filterPerson');
-          if (personSelect) {
-            const currentPersonValue = personSelect.value;
-            personSelect.innerHTML = '<option value="all" class="bg-[#05120c]">All Persons</option>';
-            const persons = [...new Set(state.approvedEntries.map(e => e.full_name || e.tour_manager).filter(Boolean))].sort();
-            persons.forEach(person => {
-              const opt = document.createElement('option');
-              opt.value = person;
-              opt.innerText = person;
-              opt.className = 'bg-[#05120c]';
-              personSelect.appendChild(opt);
-            });
-            personSelect.value = persons.includes(currentPersonValue) ? currentPersonValue : 'all';
-          }
-
-          // Dynamic populate Month dropdown
-          const monthSelect = document.getElementById('filterMonth');
-          if (monthSelect) {
-            const currentMonthValue = monthSelect.value;
-            monthSelect.innerHTML = '<option value="all" class="bg-[#05120c]">All Months</option>';
-
-            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            const monthsMap = {};
-
-            state.approvedEntries.forEach(entry => {
-              if (entry.travel_date) {
-                const d = new Date(entry.travel_date + 'T00:00:00');
-                if (!isNaN(d.getTime())) {
-                  const year = d.getFullYear();
-                  const monthIdx = d.getMonth();
-                  const key = `${year}-${String(monthIdx + 1).padStart(2, '0')}`;
-                  const val = `${monthNames[monthIdx]} ${year}`;
-                  monthsMap[key] = val;
-                }
-              }
-            });
-
-            const sortedMonthKeys = Object.keys(monthsMap).sort().reverse();
-            sortedMonthKeys.forEach(key => {
-              const opt = document.createElement('option');
-              opt.value = key;
-              opt.innerText = monthsMap[key];
-              opt.className = 'bg-[#05120c]';
-              monthSelect.appendChild(opt);
-            });
-            monthSelect.value = sortedMonthKeys.includes(currentMonthValue) ? currentMonthValue : 'all';
-          }
+          // Dynamically populate and interlink dropdown options
+          updateFilterOptions();
+          syncStateFromDropdowns();
 
           renderGallery();
           if (state.activeTab === 'winners') {
@@ -1267,6 +1360,8 @@
       if (filterRoleSelect) {
         filterRoleSelect.addEventListener('change', (e) => {
           state.filterRole = e.target.value;
+          updateFilterOptions();
+          syncStateFromDropdowns();
           renderGallery();
           if (state.activeTab === 'winners') renderWinnersList();
         });
@@ -1274,6 +1369,8 @@
       if (filterLocationSelect) {
         filterLocationSelect.addEventListener('change', (e) => {
           state.filterLocation = e.target.value;
+          updateFilterOptions();
+          syncStateFromDropdowns();
           renderGallery();
           if (state.activeTab === 'winners') renderWinnersList();
         });
@@ -1281,6 +1378,8 @@
       if (filterMonthSelect) {
         filterMonthSelect.addEventListener('change', (e) => {
           state.filterMonth = e.target.value;
+          updateFilterOptions();
+          syncStateFromDropdowns();
           renderGallery();
           if (state.activeTab === 'winners') renderWinnersList();
         });
@@ -1288,6 +1387,8 @@
       if (filterPersonSelect) {
         filterPersonSelect.addEventListener('change', (e) => {
           state.filterPerson = e.target.value;
+          updateFilterOptions();
+          syncStateFromDropdowns();
           renderGallery();
           if (state.activeTab === 'winners') renderWinnersList();
         });
@@ -1295,6 +1396,8 @@
       if (filterApprovalStatusSelect) {
         filterApprovalStatusSelect.addEventListener('change', (e) => {
           state.filterApprovalStatus = e.target.value;
+          updateFilterOptions();
+          syncStateFromDropdowns();
           renderGallery();
           if (state.activeTab === 'winners') renderWinnersList();
         });
