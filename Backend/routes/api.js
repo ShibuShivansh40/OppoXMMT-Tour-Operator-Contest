@@ -18,6 +18,7 @@ router.put('/upload/mock-s3-put', uploadController.handleMockS3Put); // For loca
 router.post('/submissions', submissionController.createSubmission);
 router.get('/submissions', apiAuthMiddleware(['mmt', 'oppo']), submissionController.getSubmissions);
 router.get('/submissions/stats', apiAuthMiddleware(['mmt', 'oppo']), submissionController.getStats);
+router.put('/submissions/bulk-moderate', apiAuthMiddleware('mmt'), submissionController.bulkModerateSubmissions);
 router.put('/submissions/:id/moderate', apiAuthMiddleware('mmt'), submissionController.moderateSubmission);
 router.put('/submissions/:id/winner', apiAuthMiddleware('oppo'), submissionController.selectWinner);
 router.put('/submissions/:id/score', apiAuthMiddleware('oppo'), submissionController.saveSubmissionScore);

@@ -180,7 +180,8 @@
       </div>
 
       <!-- Stats Summary Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <!-- Stats Summary Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div
           class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-[#00b064]/20">
           <div>
@@ -201,43 +202,40 @@
             class="w-12 h-12 rounded-2xl bg-[#00b064]/20 border border-[#00b064]/30 text-oppoMint flex items-center justify-center text-xl text-glow">
             🏆</div>
         </div>
-        <div
-          class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-[#00b064]/20">
-          <div>
-            <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Active Locations</p>
-            <h3 id="statLocations" class="text-3xl font-extrabold text-white mt-1">0</h3>
-          </div>
-          <div
-            class="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-[#00e5ff] flex items-center justify-center text-xl">
-            📍</div>
-        </div>
-      </div>
-
-      <!-- Quick Info Card -->
-      <div
-        class="glass-card rounded-2xl p-5 md:p-6 flex flex-col gap-4 md:flex-row md:items-center md:gap-6 justify-between border-l-4 border-l-oppoMint">
-        <div class="flex gap-3 items-start md:items-center">
-          <div class="text-2xl md:text-3xl flex-shrink-0">💡</div>
-          <div>
-            <h4 class="font-extrabold text-white text-sm md:text-base">Contest Audit Reports Ready!</h4>
-            <p class="text-xs text-slate-400 mt-0.5">Use the Generate Excel Report button to fetch all campaign data,
-              approved media URLs, and winner contact details in one file.</p>
-          </div>
-        </div>
       </div>
 
       <!-- Gallery Filter Bar -->
-      <div id="galleryFilterBar" class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 glass-card p-4 rounded-2xl">
-        <div class="flex flex-wrap items-center gap-2 text-xs font-sans">
-          <span class="text-slate-400 font-bold mr-2">Filter Role:</span>
-          <button id="btnRoleAll" class="bg-oppoGreen text-white font-bold py-1.5 px-4 rounded-xl shadow-md transition-all active:scale-95 duration-200 border border-oppoEmerald/20">All Submissions</button>
-          <button id="btnRoleTraveler" class="bg-white/5 text-slate-300 hover:text-white font-bold py-1.5 px-4 rounded-xl transition-all active:scale-95 duration-200 border border-white/10">Travelers</button>
-          <button id="btnRoleOperator" class="bg-white/5 text-slate-300 hover:text-white font-bold py-1.5 px-4 rounded-xl transition-all active:scale-95 duration-200 border border-white/10">Tour Managers</button>
+      <div id="galleryFilterBar" class="grid grid-cols-1 sm:grid-cols-4 gap-4 glass-card p-4 rounded-2xl">
+        <!-- Submitter Role -->
+        <div class="flex flex-col gap-1.5 text-xs font-sans">
+          <label for="filterRole" class="text-slate-400 font-bold">Submitter Role</label>
+          <select id="filterRole" class="bg-slate-900/50 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-oppoEmerald transition-colors">
+            <option value="all" class="bg-[#05120c]">All Roles</option>
+            <option value="traveler" class="bg-[#05120c]">Travelers</option>
+            <option value="operator" class="bg-[#05120c]">Tour Managers</option>
+          </select>
         </div>
-        
-        <!-- Search bar -->
-        <div class="relative flex-grow sm:flex-grow-0 sm:w-64">
-          <input type="text" id="searchLocation" placeholder="🔍 Search by Location..." class="w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-oppoEmerald transition-colors placeholder-slate-500">
+
+        <!-- Location -->
+        <div class="flex flex-col gap-1.5 text-xs font-sans">
+          <label for="filterLocation" class="text-slate-400 font-bold">Location</label>
+          <select id="filterLocation" class="bg-slate-900/50 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-oppoEmerald transition-colors">
+            <option value="all" class="bg-[#05120c]">All Locations</option>
+          </select>
+        </div>
+
+        <!-- Month -->
+        <div class="flex flex-col gap-1.5 text-xs font-sans">
+          <label for="filterMonth" class="text-slate-400 font-bold">Travel Month</label>
+          <select id="filterMonth" class="bg-slate-900/50 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-oppoEmerald transition-colors">
+            <option value="all" class="bg-[#05120c]">All Months</option>
+          </select>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="flex flex-col gap-1.5 text-xs font-sans">
+          <label for="searchLocation" class="text-slate-400 font-bold">Search</label>
+          <input type="text" id="searchLocation" placeholder="🔍 Search submittor or location..." class="bg-slate-900/50 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-oppoEmerald transition-colors placeholder-slate-500">
         </div>
       </div>
 
@@ -325,7 +323,7 @@
           </div>
 
           <!-- Category 2: Watermark Visibility -->
-          <div class="flex flex-col gap-1">
+          <div class="flex flex-col gap-1" id="watermarkContainer">
             <div class="flex justify-between text-xs font-semibold text-slate-300">
               <span>📷 OPPO Watermark Visibility</span>
               <span class="text-oppoMint font-mono" id="valWatermark">0/20</span>
@@ -376,7 +374,7 @@
             </div>
             <div class="text-right">
               <span class="text-2xl font-black text-oppoMint font-mono text-glow" id="valTotalScore">0</span>
-              <span class="text-xs text-slate-500 font-semibold">/100</span>
+              <span class="text-xs text-slate-500 font-semibold" id="totalScoreMax">/100</span>
             </div>
           </div>
 
@@ -402,6 +400,8 @@
       currentScoringEntryId: null,
       currentScoringEntry: null,
       filterRole: 'all', // 'all', 'traveler', 'operator'
+      filterLocation: 'all',
+      filterMonth: 'all',
       searchQuery: ''
     };
 
@@ -411,7 +411,6 @@
       exportExcelBtn: document.getElementById('exportExcelBtn'),
       statApproved: document.getElementById('statApproved'),
       statWinners: document.getElementById('statWinners'),
-      statLocations: document.getElementById('statLocations'),
       tabShowcase: document.getElementById('tabShowcase'),
       tabWinners: document.getElementById('tabWinners'),
       tabShowcaseMobile: document.getElementById('tabShowcaseMobile'),
@@ -535,18 +534,17 @@
       elements.galleryGrid.classList.add('hidden');
 
       try {
-        // Fetch approved entries
-        const res = await fetch(`${state.apiBaseUrl}/api/submissions?status=approved`);
+        // Fetch all submissions (irrespective of approval status)
+        const res = await fetch(`${state.apiBaseUrl}/api/submissions`);
         const result = await res.json();
 
         if (res.ok && result.success) {
           state.approvedEntries = result.data;
           state.winnersList = state.approvedEntries.filter(entry => entry.is_winner);
 
-          // Render stats
-          elements.statApproved.innerText = state.approvedEntries.length;
+          // Render stats (Approved counts only approved ones)
+          elements.statApproved.innerText = state.approvedEntries.filter(e => e.status === 'approved').length;
           elements.statWinners.innerText = state.winnersList.length;
-          elements.statLocations.innerText = [...new Set(state.approvedEntries.map(e => e.location))].length;
 
           // Render Winner Badge count
           if (state.winnersList.length > 0) {
@@ -559,6 +557,55 @@
           } else {
             elements.winnersBadge.classList.add('hidden');
             if (elements.winnersBadgeMobile) elements.winnersBadgeMobile.classList.add('hidden');
+          }
+
+          // Dynamic populate Location dropdown
+          const locationSelect = document.getElementById('filterLocation');
+          if (locationSelect) {
+            const currentLocValue = locationSelect.value;
+            locationSelect.innerHTML = '<option value="all" class="bg-[#05120c]">All Locations</option>';
+            const locations = [...new Set(state.approvedEntries.map(e => e.location))].filter(Boolean).sort();
+            locations.forEach(loc => {
+              const opt = document.createElement('option');
+              opt.value = loc;
+              opt.innerText = loc;
+              opt.className = 'bg-[#05120c]';
+              locationSelect.appendChild(opt);
+            });
+            locationSelect.value = locations.includes(currentLocValue) ? currentLocValue : 'all';
+          }
+
+          // Dynamic populate Month dropdown
+          const monthSelect = document.getElementById('filterMonth');
+          if (monthSelect) {
+            const currentMonthValue = monthSelect.value;
+            monthSelect.innerHTML = '<option value="all" class="bg-[#05120c]">All Months</option>';
+            
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            const monthsMap = {};
+            
+            state.approvedEntries.forEach(entry => {
+              if (entry.travel_date) {
+                const d = new Date(entry.travel_date + 'T00:00:00');
+                if (!isNaN(d.getTime())) {
+                  const year = d.getFullYear();
+                  const monthIdx = d.getMonth();
+                  const key = `${year}-${String(monthIdx + 1).padStart(2, '0')}`;
+                  const val = `${monthNames[monthIdx]} ${year}`;
+                  monthsMap[key] = val;
+                }
+              }
+            });
+            
+            const sortedMonthKeys = Object.keys(monthsMap).sort().reverse();
+            sortedMonthKeys.forEach(key => {
+              const opt = document.createElement('option');
+              opt.value = key;
+              opt.innerText = monthsMap[key];
+              opt.className = 'bg-[#05120c]';
+              monthSelect.appendChild(opt);
+            });
+            monthSelect.value = sortedMonthKeys.includes(currentMonthValue) ? currentMonthValue : 'all';
           }
 
           renderGallery();
@@ -582,10 +629,27 @@
       
       const filtered = state.approvedEntries.filter(entry => {
         const matchesRole = state.filterRole === 'all' || entry.user_role === state.filterRole;
+        const matchesLocation = state.filterLocation === 'all' || entry.location === state.filterLocation;
+        
+        let matchesMonth = true;
+        if (state.filterMonth !== 'all' && entry.travel_date) {
+          const d = new Date(entry.travel_date + 'T00:00:00');
+          if (!isNaN(d.getTime())) {
+            const year = d.getFullYear();
+            const monthVal = String(d.getMonth() + 1).padStart(2, '0');
+            const key = `${year}-${monthVal}`;
+            matchesMonth = (key === state.filterMonth);
+          } else {
+            matchesMonth = false;
+          }
+        } else if (state.filterMonth !== 'all') {
+          matchesMonth = false;
+        }
+
         const matchesSearch = !state.searchQuery || 
           (entry.location && entry.location.toLowerCase().includes(state.searchQuery.toLowerCase())) ||
           (entry.full_name && entry.full_name.toLowerCase().includes(state.searchQuery.toLowerCase()));
-        return matchesRole && matchesSearch;
+        return matchesRole && matchesLocation && matchesMonth && matchesSearch;
       });
 
       if (filtered.length === 0) {
@@ -610,10 +674,27 @@
 
       const filtered = state.winnersList.filter(entry => {
         const matchesRole = state.filterRole === 'all' || entry.user_role === state.filterRole;
+        const matchesLocation = state.filterLocation === 'all' || entry.location === state.filterLocation;
+        
+        let matchesMonth = true;
+        if (state.filterMonth !== 'all' && entry.travel_date) {
+          const d = new Date(entry.travel_date + 'T00:00:00');
+          if (!isNaN(d.getTime())) {
+            const year = d.getFullYear();
+            const monthVal = String(d.getMonth() + 1).padStart(2, '0');
+            const key = `${year}-${monthVal}`;
+            matchesMonth = (key === state.filterMonth);
+          } else {
+            matchesMonth = false;
+          }
+        } else if (state.filterMonth !== 'all') {
+          matchesMonth = false;
+        }
+
         const matchesSearch = !state.searchQuery || 
           (entry.location && entry.location.toLowerCase().includes(state.searchQuery.toLowerCase())) ||
           (entry.full_name && entry.full_name.toLowerCase().includes(state.searchQuery.toLowerCase()));
-        return matchesRole && matchesSearch;
+        return matchesRole && matchesLocation && matchesMonth && matchesSearch;
       });
 
       if (filtered.length === 0) {
@@ -643,8 +724,19 @@
         ? '<span class="bg-blue-500/10 text-[#00e5ff] border border-blue-500/20 px-2 py-0.5 rounded text-[10px] font-bold">Traveler</span>'
         : '<span class="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2 py-0.5 rounded text-[10px] font-bold">Tour Manager</span>';
 
+      // Approval badge
+      let approvalBadge = '';
+      if (entry.status === 'approved') {
+        approvalBadge = '<span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded text-[10px] font-bold">MMT Approved</span>';
+      } else if (entry.status === 'rejected') {
+        approvalBadge = '<span class="bg-red-500/10 text-red-400 border border-red-500/20 px-2 py-0.5 rounded text-[10px] font-bold">MMT Rejected</span>';
+      } else {
+        approvalBadge = '<span class="bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded text-[10px] font-bold">Pending MMT</span>';
+      }
+
+      // Dynamically display total score out of 80 for travelers, 100 for tour managers
       const scoreBadge = entry.score_total !== null && entry.score_total !== undefined
-        ? `<span class="bg-emerald-500/15 text-oppoMint border border-oppoEmerald/20 px-2 py-0.5 rounded text-[10px] font-bold">⭐ ${entry.score_total}/100</span>`
+        ? `<span class="bg-emerald-500/15 text-oppoMint border border-oppoEmerald/20 px-2 py-0.5 rounded text-[10px] font-bold">⭐ ${entry.score_total}/${entry.user_role === 'traveler' ? 80 : 100}</span>`
         : '';
 
       const nameEl = entry.full_name
@@ -668,6 +760,11 @@
       // Detect if media is video by file extension
       const isVideo = entry.file_name && /\.(mp4|mov|avi|mkv|webm)$/i.test(entry.file_name);
 
+      // Hide phone number for travelers on card UI
+      const contactEl = entry.user_role === 'traveler'
+        ? ''
+        : `<span>Contact: ${entry.user_identifier}</span>`;
+
       div.innerHTML = `
         <!-- Image Container -->
         <div id="img-container-${entry.id}" class="relative aspect-video w-full overflow-hidden cursor-pointer bg-slate-950">
@@ -677,9 +774,10 @@
         }
           <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent opacity-90"></div>
           
-          <!-- Role and ID -->
-          <div class="absolute top-3 left-3 flex gap-2">
+          <!-- Role, Approval and ID -->
+          <div class="absolute top-3 left-3 flex flex-wrap gap-1.5 max-w-[90%]">
             ${roleBadge}
+            ${approvalBadge}
             <span class="bg-black/60 text-white font-mono text-[9px] px-1.5 py-0.5 rounded">#${entry.id}</span>
             ${scoreBadge}
           </div>
@@ -697,7 +795,7 @@
         <div class="p-4 flex flex-col justify-between grow gap-4 text-xs">
           <div class="flex flex-col">
             <div class="flex justify-between items-center text-[10px] text-slate-400">
-              <span>Contact: ${entry.user_identifier}</span>
+              ${contactEl}
               <span>${new Date(entry.travel_date + 'T00:00:00').toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}</span>
             </div>
             
@@ -832,6 +930,18 @@
       // Update info text
       document.getElementById('scoringSubInfo').innerText = `Submission #${entry.id} • ${entry.full_name || 'Anonymous Submitter'} (${entry.user_role})`;
 
+      // Hide watermark slider container dynamically for Travelers
+      const watermarkContainer = document.getElementById('watermarkContainer');
+      const totalScoreMax = document.getElementById('totalScoreMax');
+      if (entry.user_role === 'traveler') {
+        if (watermarkContainer) watermarkContainer.classList.add('hidden');
+        document.getElementById('scoreWatermark').value = 0; // Force watermark score to 0
+        if (totalScoreMax) totalScoreMax.innerText = '/80';
+      } else {
+        if (watermarkContainer) watermarkContainer.classList.remove('hidden');
+        if (totalScoreMax) totalScoreMax.innerText = '/100';
+      }
+
       calculateTotalScore();
       elements.imageModal.classList.remove('hidden');
     }
@@ -906,45 +1016,30 @@
         });
       }
 
-      // Role Filter Buttons
-      const btnAll = document.getElementById('btnRoleAll');
-      const btnTraveler = document.getElementById('btnRoleTraveler');
-      const btnOperator = document.getElementById('btnRoleOperator');
+      // Select filters setup
+      const filterRoleSelect = document.getElementById('filterRole');
+      const filterLocationSelect = document.getElementById('filterLocation');
+      const filterMonthSelect = document.getElementById('filterMonth');
       const searchInput = document.getElementById('searchLocation');
       const modalDownloadBtn = document.getElementById('modalDownloadBtn');
 
-      function updateActiveFilterButton(activeBtn) {
-        [btnAll, btnTraveler, btnOperator].forEach(btn => {
-          if (btn) {
-            if (btn === activeBtn) {
-              btn.className = 'bg-oppoGreen text-white font-bold py-1.5 px-4 rounded-xl shadow-md transition-all active:scale-95 duration-200 border border-oppoEmerald/20';
-            } else {
-              btn.className = 'bg-white/5 text-slate-300 hover:text-white font-bold py-1.5 px-4 rounded-xl transition-all active:scale-95 duration-200 border border-white/10';
-            }
-          }
-        });
-      }
-
-      if (btnAll) {
-        btnAll.addEventListener('click', () => {
-          state.filterRole = 'all';
-          updateActiveFilterButton(btnAll);
+      if (filterRoleSelect) {
+        filterRoleSelect.addEventListener('change', (e) => {
+          state.filterRole = e.target.value;
           renderGallery();
           if (state.activeTab === 'winners') renderWinnersList();
         });
       }
-      if (btnTraveler) {
-        btnTraveler.addEventListener('click', () => {
-          state.filterRole = 'traveler';
-          updateActiveFilterButton(btnTraveler);
+      if (filterLocationSelect) {
+        filterLocationSelect.addEventListener('change', (e) => {
+          state.filterLocation = e.target.value;
           renderGallery();
           if (state.activeTab === 'winners') renderWinnersList();
         });
       }
-      if (btnOperator) {
-        btnOperator.addEventListener('click', () => {
-          state.filterRole = 'operator';
-          updateActiveFilterButton(btnOperator);
+      if (filterMonthSelect) {
+        filterMonthSelect.addEventListener('change', (e) => {
+          state.filterMonth = e.target.value;
           renderGallery();
           if (state.activeTab === 'winners') renderWinnersList();
         });
@@ -1105,7 +1200,7 @@
 
         // ==================== SHEET 2: Traveler Photos ====================
         const sheet2Rows = [
-          ['S.No', 'Traveler Name', 'Contact Number', 'Tour Location', 'Upload Date', 'No. of Photos', 'Consent Status', 'UTM Source', 'Referring Tour Manager ID', 'Cloud Drive Link']
+          ['S.No', 'Traveler Name', 'Tour Location', 'Upload Date', 'No. of Photos', 'Consent Status', 'UTM Source', 'Referring Tour Manager ID', 'Cloud Drive Link']
         ];
 
         let sNo2 = 1;
@@ -1116,7 +1211,6 @@
           sheet2Rows.push([
             sNo2++,
             item.full_name || 'Anonymous Submitter',
-            item.user_identifier,
             item.location,
             item.travel_date ? item.travel_date.split('T')[0] : '',
             1,

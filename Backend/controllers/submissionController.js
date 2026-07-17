@@ -309,10 +309,50 @@ async function saveSubmissionScore(req, res) {
   }
 }
 
+/**
+ * Bulk moderate submissions (Approve / Reject multiple).
+ * PUT /api/submissions/bulk-moderate
+ */
+async function bulkModerateSubmissions(req, res) {
+  try {
+    const { ids, status } = req.body; // ids is an array of numeric IDs, status is 'approved' or 'rejected'
+
+    if (!status || (status !== 'approved' && status !== 'rejected')) {
+      return res.status(400).json({
+        success: false,
+        message: "Status parameter must be 'approved' or 'rejected'."
+      });
+    }
+
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Request body must contain a non-empty array 'ids'."
+      });
+    }
+
+    const result = await db.bulkUpdateSubmissions(ids, { status });
+
+    return res.status(200).json({
+      success: true,
+      message: `Successfully marked ${result.modifiedCount} submissions as ${status}.`,
+      data: result
+    });
+  } catch (error) {
+    console.error('[Submission Controller] Error bulk moderating submissions:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Database bulk update failed.',
+      error: error.message
+    });
+  }
+}
+
 module.exports = {
   createSubmission,
   getSubmissions,
   moderateSubmission,
+  bulkModerateSubmissions,
   selectWinner,
   getStats,
   saveSubmissionScore

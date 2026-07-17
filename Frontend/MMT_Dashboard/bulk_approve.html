@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bulk Moderation Tool | MMT UGC Admin Dashboard</title>
+  <meta name="description" content="Secure bulk approval tool for MakeMyTrip admin teams to moderate traveler entries in batches.">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mmtBlue: '#0052e4',
+            mmtLightBlue: '#eef4ff',
+            mmtIndigo: '#1e3459',
+            mmtOrange: '#ff5a00',
+            oppoGreen: '#005a36',
+            oppoEmerald: '#00b064',
+            oppoMint: '#00e5ff',
+            darkBg: '#050c1a',
+            cardBg: '#0b162c'
+          },
+          fontFamily: {
+            sans: ['Lato', 'Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Lato', sans-serif;
+      background-color: #050c1a;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .glass-card {
+      background: rgba(11, 22, 44, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .custom-gradient-text {
+      background: linear-gradient(135deg, #00e5ff 0%, #00b064 50%, #0052e4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .text-glow {
+      text-shadow: 0 0 20px rgba(0, 229, 255, 0.35);
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 3px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+  </style>
+</head>
+
+<body
+  class="text-slate-100 min-h-screen flex flex-col antialiased bg-gradient-to-br from-[#050c1a] via-[#091428] to-[#0c1f3d]">
+
+  <!-- Header -->
+  <header
+    class="bg-[#0b162c]/90 border-b border-white/5 text-white py-3 px-4 md:py-4 md:px-6 flex items-center justify-between shadow-lg backdrop-blur-md z-10 sticky top-0">
+    <div class="flex items-center gap-2 md:gap-3">
+      <a href="https://www.makemytrip.com" target="_blank" rel="noopener noreferrer">
+        <img src="https://promos.makemytrip.com/images/mmtlogo.webp" alt="MakeMyTrip Logo"
+          class="max-w-[100px] md:max-w-[130px]"
+          style="background-color: white; padding: 6px 10px; border-radius: 8px;">
+      </a>
+      <span class="text-white/20">|</span>
+      <p class="text-sm md:text-lg uppercase tracking-wider text-oppoMint font-extrabold text-glow">
+        ⚡ Bulk Moderation Tool
+      </p>
+    </div>
+
+    <div>
+      <a href="/MMT_Dashboard/index.html"
+        class="bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white px-4 py-2 rounded-lg border border-white/10 text-xs font-semibold transition-all flex items-center gap-2">
+        <span>⬅</span> Back to Dashboard
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-8 flex flex-col gap-6">
+
+    <!-- Notification Toast -->
+    <div id="toast"
+      class="hidden text-xs rounded-xl p-3.5 shadow-xl flex items-center gap-2.5 transition-all duration-300 z-50 border fixed bottom-6 right-6">
+    </div>
+
+    <!-- Title and Description -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div>
+        <h1 class="text-2xl md:text-3xl font-black uppercase tracking-tight">Bulk <span class="custom-gradient-text text-glow">Approve / Reject</span></h1>
+        <p class="text-xs md:text-sm text-slate-400 mt-1">Select multiple pending campaign entries to approve or reject them in a single batch operation.</p>
+      </div>
+
+      <!-- Quick Filter -->
+      <div class="flex items-center gap-2 bg-[#0b162c] p-1 border border-white/10 rounded-xl text-xs">
+        <button id="filterPending"
+          class="bg-mmtBlue text-white font-bold py-1.5 px-4 rounded-lg transition-all duration-200 shadow-md">
+          Pending Status Only
+        </button>
+        <button id="filterAll"
+          class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-4 rounded-lg transition-all duration-200">
+          Show All
+        </button>
+      </div>
+    </div>
+
+    <!-- Batch Action Command Bar -->
+    <div id="batchActionCard" class="glass-card rounded-2xl p-4 md:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 border-l-4 border-l-oppoMint shadow-xl">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-mmtBlue/10 flex items-center justify-center text-lg">⚡</div>
+        <div>
+          <h2 class="font-extrabold text-white text-sm md:text-base">Selected items: <span id="selectedCountText" class="text-oppoMint font-black text-lg">0</span></h2>
+          <p class="text-xxs text-slate-400">Mark all selected submissions as approved or rejected at once.</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 w-full sm:w-auto">
+        <button id="btnBulkApprove" disabled
+          class="flex-1 sm:flex-none bg-oppoEmerald disabled:opacity-40 disabled:cursor-not-allowed hover:bg-oppoEmerald/90 text-white font-black py-3 px-6 rounded-xl text-xs active:scale-95 transition-all shadow shadow-oppoEmerald/20 flex items-center justify-center gap-1.5">
+          <span>✔</span> Approve Selected
+        </button>
+        <button id="btnBulkReject" disabled
+          class="flex-1 sm:flex-none bg-red-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-red-500 text-white font-black py-3 px-6 rounded-xl text-xs active:scale-95 transition-all shadow shadow-red-600/20 flex items-center justify-center gap-1.5">
+          <span>✖</span> Reject Selected
+        </button>
+      </div>
+    </div>
+
+    <!-- Queue Box -->
+    <div class="glass-card rounded-2xl overflow-hidden shadow-2xl flex flex-col border border-white/5">
+      <!-- Loading State -->
+      <div id="queueLoading" class="py-24 text-center flex flex-col items-center gap-3">
+        <span class="text-4xl animate-spin">⏳</span>
+        <p class="text-xs font-semibold text-slate-400">Loading submissions...</p>
+      </div>
+
+      <!-- Empty State -->
+      <div id="queueEmpty" class="hidden py-24 text-center flex flex-col items-center gap-3">
+        <span class="text-5xl">🎉</span>
+        <p class="text-base font-black text-white">All Clear! No pending submissions</p>
+        <p class="text-xs text-slate-500">Every submission in this filter is currently moderated.</p>
+      </div>
+
+      <!-- Submissions Table -->
+      <div class="overflow-x-auto w-full custom-scrollbar -webkit-overflow-scrolling-touch">
+        <table id="queueTable" class="w-full text-left text-sm border-collapse hidden" style="min-width: 800px;">
+          <thead>
+            <tr class="bg-white/5 text-slate-300 text-xxs font-extrabold uppercase tracking-widest border-b border-white/5 select-none">
+              <th class="p-4 pl-6 w-12 text-center">
+                <input type="checkbox" id="selectAllCheckbox" class="w-4.5 h-4.5 rounded bg-slate-900 border-white/10 text-mmtBlue focus:ring-mmtBlue cursor-pointer">
+              </th>
+              <th class="p-4 w-16">ID</th>
+              <th class="p-4">Submitter Info</th>
+              <th class="p-4">Preview</th>
+              <th class="p-4">Destination</th>
+              <th class="p-4">Size & Date</th>
+              <th class="p-4">Status</th>
+            </tr>
+          </thead>
+          <tbody id="queueBody" class="divide-y divide-white/5">
+            <!-- Dynamic rows injection -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Image Zoom Modal -->
+  <div id="imageModal" class="hidden fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+    <button onclick="closeImageModal()" class="absolute top-6 right-6 text-white hover:text-oppoMint text-3xl font-bold bg-white/5 hover:bg-white/15 w-12 h-12 rounded-full flex items-center justify-center transition-all focus:outline-none">&times;</button>
+    <div class="max-w-4xl max-h-[85vh] overflow-hidden rounded-2xl shadow-2xl border border-white/10 bg-slate-950/80">
+      <img id="modalImg" src="" alt="Contest Entry Zoomed" class="w-full h-full object-contain max-h-[80vh]">
+    </div>
+  </div>
+
+  <script>
+    const state = {
+      apiBaseUrl: window.location.origin && window.location.origin !== 'null' ? window.location.origin : 'http://localhost:8080',
+      submissions: [],
+      selectedIds: new Set(),
+      filter: 'pending' // 'pending' or 'all'
+    };
+
+    const elements = {
+      toast: document.getElementById('toast'),
+      queueLoading: document.getElementById('queueLoading'),
+      queueEmpty: document.getElementById('queueEmpty'),
+      queueTable: document.getElementById('queueTable'),
+      queueBody: document.getElementById('queueBody'),
+      selectedCountText: document.getElementById('selectedCountText'),
+      btnBulkApprove: document.getElementById('btnBulkApprove'),
+      btnBulkReject: document.getElementById('btnBulkReject'),
+      selectAllCheckbox: document.getElementById('selectAllCheckbox'),
+      imageModal: document.getElementById('imageModal'),
+      modalImg: document.getElementById('modalImg'),
+      filterPending: document.getElementById('filterPending'),
+      filterAll: document.getElementById('filterAll')
+    };
+
+    // Helper functions
+    function showToast(text, type = 'success') {
+      elements.toast.classList.remove('hidden', 'bg-red-500/10', 'text-red-400', 'border-red-500/20', 'bg-emerald-500/10', 'text-oppoMint', 'border-emerald-500/20');
+
+      if (type === 'error') {
+        elements.toast.classList.add('bg-red-500/10', 'text-red-400', 'border', 'border-red-500/20');
+      } else {
+        elements.toast.classList.add('bg-emerald-500/10', 'text-oppoMint', 'border', 'border-emerald-500/20');
+      }
+      elements.toast.innerText = text;
+      elements.toast.classList.remove('hidden');
+
+      setTimeout(() => {
+        elements.toast.classList.add('hidden');
+      }, 4000);
+    }
+
+    async function loadData() {
+      elements.queueLoading.classList.remove('hidden');
+      elements.queueEmpty.classList.add('hidden');
+      elements.queueTable.classList.add('hidden');
+      state.selectedIds.clear();
+      updateSelectionUI();
+
+      try {
+        let url = `${state.apiBaseUrl}/api/submissions`;
+        if (state.filter === 'pending') {
+          url += '?status=pending';
+        }
+
+        const res = await fetch(url);
+        const result = await res.json();
+
+        if (res.ok && result.success) {
+          state.submissions = result.data || [];
+          renderQueue();
+        } else {
+          showToast('Failed to retrieve submissions.', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('Connection to backend API failed.', 'error');
+      } finally {
+        elements.queueLoading.classList.add('hidden');
+      }
+    }
+
+    function renderQueue() {
+      elements.queueBody.innerHTML = '';
+      elements.selectAllCheckbox.checked = false;
+
+      if (state.submissions.length === 0) {
+        elements.queueEmpty.classList.remove('hidden');
+        elements.queueTable.classList.add('hidden');
+        return;
+      }
+
+      elements.queueTable.classList.remove('hidden');
+      elements.queueEmpty.classList.add('hidden');
+
+      state.submissions.forEach(sub => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-white/5 transition-colors border-b border-white/5 text-xs cursor-pointer';
+        tr.dataset.id = sub.id;
+
+        // --- Cell 1: Checkbox ---
+        const tdCheck = document.createElement('td');
+        tdCheck.className = 'p-4 pl-6 text-center';
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'row-checkbox w-4.5 h-4.5 rounded bg-slate-900 border-white/10 text-mmtBlue focus:ring-mmtBlue cursor-pointer';
+        checkbox.checked = state.selectedIds.has(sub.id);
+        checkbox.dataset.id = sub.id;
+
+        // Prevent tr click bubbling from duplicate toggling
+        checkbox.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toggleSelect(sub.id, checkbox.checked);
+        });
+
+        tdCheck.appendChild(checkbox);
+        tr.appendChild(tdCheck);
+
+        // --- Cell 2: ID ---
+        const tdId = document.createElement('td');
+        tdId.className = 'p-4 font-mono text-slate-500';
+        tdId.textContent = '#' + sub.id;
+        tr.appendChild(tdId);
+
+        // --- Cell 3: Submitter Info ---
+        const tdSubmitter = document.createElement('td');
+        tdSubmitter.className = 'p-4';
+        const nameP = document.createElement('p');
+        nameP.className = 'font-bold text-slate-200';
+        nameP.textContent = sub.full_name || 'Anonymous';
+        const identifierP = document.createElement('p');
+        identifierP.className = 'text-slate-400 font-semibold';
+        identifierP.textContent = sub.user_identifier;
+
+        const roleBadge = document.createElement('span');
+        roleBadge.className = sub.user_role === 'traveler'
+          ? 'bg-blue-500/10 text-[#00e5ff] px-2 py-0.5 rounded text-[10px] font-bold border border-blue-500/20 mt-1.5 inline-block'
+          : 'bg-[#00b064]/10 text-oppoEmerald px-2 py-0.5 rounded text-[10px] font-bold border border-[#00b064]/20 mt-1.5 inline-block';
+        roleBadge.textContent = sub.user_role === 'traveler' ? 'Traveler' : 'Tour Manager';
+
+        tdSubmitter.appendChild(nameP);
+        tdSubmitter.appendChild(identifierP);
+        tdSubmitter.appendChild(roleBadge);
+        tr.appendChild(tdSubmitter);
+
+        // --- Cell 4: Preview ---
+        const tdPreview = document.createElement('td');
+        tdPreview.className = 'p-4';
+        const isVideo = sub.file_name && /\.(mp4|mov|avi|mkv|webm)$/i.test(sub.file_name);
+
+        if (isVideo) {
+          const videoBtn = document.createElement('button');
+          videoBtn.className = 'bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-lg p-2 flex items-center gap-2 text-xxs font-bold';
+          videoBtn.innerHTML = '🎥 <span>Open Video</span>';
+          videoBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            window.open(sub.media_url, '_blank');
+          });
+          tdPreview.appendChild(videoBtn);
+        } else {
+          const img = document.createElement('img');
+          img.src = sub.media_url;
+          img.className = 'w-12 h-12 rounded object-cover border border-white/10 hover:scale-105 transition-transform duration-300';
+          img.onerror = () => { img.src = 'https://placehold.co/100x100?text=Media'; };
+          img.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openImageModal(sub.media_url);
+          });
+          tdPreview.appendChild(img);
+        }
+        tr.appendChild(tdPreview);
+
+        // --- Cell 5: Destination ---
+        const tdDest = document.createElement('td');
+        tdDest.className = 'p-4 font-bold text-slate-200';
+        tdDest.textContent = '📍 ' + (sub.location || '—');
+        tr.appendChild(tdDest);
+
+        // --- Cell 6: Size and Date ---
+        const tdSize = document.createElement('td');
+        tdSize.className = 'p-4 text-slate-400';
+        const sizeMB = ((sub.file_size || 0) / (1024 * 1024)).toFixed(2) + ' MB';
+        const dateFormatted = sub.travel_date
+          ? new Date(sub.travel_date + 'T00:00:00').toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
+          : '—';
+        tdSize.innerHTML = `<p class="font-bold text-slate-300">${sizeMB}</p><p class="text-[10px] mt-0.5">${dateFormatted}</p>`;
+        tr.appendChild(tdSize);
+
+        // --- Cell 7: Status ---
+        const tdStatus = document.createElement('td');
+        tdStatus.className = 'p-4';
+        const badge = document.createElement('span');
+        badge.className = 'capitalize text-[10px] font-bold px-2.5 py-1 rounded border ';
+        if (sub.status === 'approved') {
+          badge.className += 'bg-emerald-500/10 text-oppoEmerald border-emerald-500/20';
+        } else if (sub.status === 'rejected') {
+          badge.className += 'bg-red-600/10 text-red-400 border-red-600/20';
+        } else {
+          badge.className += 'bg-[#ff5a00]/10 text-mmtOrange border-[#ff5a00]/20';
+        }
+        badge.textContent = sub.status;
+        tdStatus.appendChild(badge);
+        tr.appendChild(tdStatus);
+
+        // Entire row click selects/deselects
+        tr.addEventListener('click', (e) => {
+          const currentChecked = checkbox.checked;
+          checkbox.checked = !currentChecked;
+          toggleSelect(sub.id, !currentChecked);
+        });
+
+        elements.queueBody.appendChild(tr);
+      });
+    }
+
+    function toggleSelect(id, isSelected) {
+      if (isSelected) {
+        state.selectedIds.add(id);
+      } else {
+        state.selectedIds.delete(id);
+      }
+      updateSelectionUI();
+    }
+
+    function updateSelectionUI() {
+      const count = state.selectedIds.size;
+      elements.selectedCountText.innerText = count;
+
+      if (count > 0) {
+        elements.btnBulkApprove.disabled = false;
+        elements.btnBulkReject.disabled = false;
+      } else {
+        elements.btnBulkApprove.disabled = true;
+        elements.btnBulkReject.disabled = true;
+      }
+
+      // Sync select all checkbox header
+      const rowCheckboxes = document.querySelectorAll('.row-checkbox');
+      if (rowCheckboxes.length > 0) {
+        const allChecked = Array.from(rowCheckboxes).every(cb => cb.checked);
+        elements.selectAllCheckbox.checked = allChecked;
+      }
+    }
+
+    // Select all handler
+    elements.selectAllCheckbox.addEventListener('change', (e) => {
+      const checked = e.target.checked;
+      const rowCheckboxes = document.querySelectorAll('.row-checkbox');
+      rowCheckboxes.forEach(cb => {
+        cb.checked = checked;
+        const id = parseInt(cb.dataset.id, 10);
+        if (checked) {
+          state.selectedIds.add(id);
+        } else {
+          state.selectedIds.delete(id);
+        }
+      });
+      updateSelectionUI();
+    });
+
+    // Bulk action handlers
+    async function triggerBulkModeration(status) {
+      const idsArray = Array.from(state.selectedIds);
+      if (idsArray.length === 0) return;
+
+      const confirmMessage = `Are you sure you want to bulk mark ${idsArray.length} entries as ${status}?`;
+      if (!confirm(confirmMessage)) return;
+
+      elements.btnBulkApprove.disabled = true;
+      elements.btnBulkReject.disabled = true;
+
+      try {
+        const res = await fetch(`${state.apiBaseUrl}/api/submissions/bulk-moderate`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            ids: idsArray,
+            status: status
+          })
+        });
+
+        const result = await res.json();
+        if (res.ok && result.success) {
+          showToast(`Successfully ${status === 'approved' ? 'approved' : 'rejected'} ${idsArray.length} submissions!`, 'success');
+          await loadData();
+        } else {
+          showToast(result.message || 'Bulk update failed.', 'error');
+          updateSelectionUI();
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('API request failed. Please check network connectivity.', 'error');
+        updateSelectionUI();
+      }
+    }
+
+    elements.btnBulkApprove.addEventListener('click', () => triggerBulkModeration('approved'));
+    elements.btnBulkReject.addEventListener('click', () => triggerBulkModeration('rejected'));
+
+    // Filter toggles
+    elements.filterPending.addEventListener('click', () => {
+      state.filter = 'pending';
+      elements.filterPending.className = 'bg-mmtBlue text-white font-bold py-1.5 px-4 rounded-lg transition-all duration-200 shadow-md';
+      elements.filterAll.className = 'hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-4 rounded-lg transition-all duration-200';
+      loadData();
+    });
+
+    elements.filterAll.addEventListener('click', () => {
+      state.filter = 'all';
+      elements.filterAll.className = 'bg-mmtBlue text-white font-bold py-1.5 px-4 rounded-lg transition-all duration-200 shadow-md';
+      elements.filterPending.className = 'hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-4 rounded-lg transition-all duration-200';
+      loadData();
+    });
+
+    // Image Modal zooms
+    function openImageModal(url) {
+      elements.modalImg.src = url;
+      elements.imageModal.classList.remove('hidden');
+    }
+
+    function closeImageModal() {
+      elements.imageModal.classList.add('hidden');
+      elements.modalImg.src = '';
+    }
+
+    window.openImageModal = openImageModal;
+    window.closeImageModal = closeImageModal;
+
+    // Load initial listings
+    loadData();
+  </script>
+</body>
+
+</html>

@@ -119,6 +119,31 @@ async function updateSubmission(id, updateFields) {
 }
 
 /**
+ * Update multiple submissions by their numeric IDs.
+ */
+async function bulkUpdateSubmissions(ids, updateFields) {
+  const numericIds = ids.map(id => parseInt(id, 10));
+  const cleanFields = { ...updateFields, updated_at: new Date() };
+
+  if (submissionsCollection) {
+    const result = await submissionsCollection.updateMany(
+      { id: { $in: numericIds } },
+      { $set: cleanFields }
+    );
+    return { modifiedCount: result.modifiedCount };
+  } else {
+    let modifiedCount = 0;
+    mockDb.forEach(record => {
+      if (numericIds.includes(record.id)) {
+        Object.assign(record, cleanFields);
+        modifiedCount++;
+      }
+    });
+    return { modifiedCount };
+  }
+}
+
+/**
  * Fetch database summary stats/KPI values.
  */
 async function getStats() {
@@ -144,6 +169,7 @@ module.exports = {
   insertSubmission,
   getSubmissions,
   updateSubmission,
+  bulkUpdateSubmissions,
   getStats,
   getMockDb: () => mockDb,
   setMockDb: (data) => { mockDb = data; }
