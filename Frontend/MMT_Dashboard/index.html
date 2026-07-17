@@ -32,6 +32,8 @@
       }
     }
   </script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link
     href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
     rel="stylesheet">
@@ -186,8 +188,8 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
           <!-- Card 1 -->
-          <div
-            class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-white/15">
+          <div onclick="setTab('gallery'); setGalStatusFilter('all');"
+            class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-mmtBlue/40 cursor-pointer">
             <div>
               <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Total Submissions</p>
               <h3 id="kpiTotal" class="text-3xl font-extrabold text-white mt-1">0</h3>
@@ -198,8 +200,8 @@
           </div>
 
           <!-- Card 2 -->
-          <div
-            class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-white/15">
+          <div onclick="setTab('gallery'); setGalStatusFilter('approved');"
+            class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-oppoEmerald/40 cursor-pointer">
             <div>
               <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Approved Media</p>
               <h3 id="kpiApproved" class="text-3xl font-extrabold text-oppoEmerald mt-1">0</h3>
@@ -210,8 +212,8 @@
           </div>
 
           <!-- Card 3 -->
-          <div
-            class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-white/15">
+          <div onclick="setTab('moderation'); setFilter('pending');"
+            class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-mmtOrange/40 cursor-pointer">
             <div>
               <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Pending Moderation</p>
               <h3 id="kpiPending" class="text-3xl font-extrabold text-mmtOrange mt-1">0</h3>
@@ -222,8 +224,8 @@
           </div>
 
           <!-- Card 4 -->
-          <div
-            class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-white/15">
+          <div onclick="setTab('gallery');"
+            class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-oppoMint/40 cursor-pointer">
             <div>
               <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Unique Locations</p>
               <h3 id="kpiLocations" class="text-3xl font-extrabold text-[#00e5ff] mt-1">0</h3>
@@ -233,6 +235,45 @@
               📍</div>
           </div>
 
+        </div>
+
+        <!-- Destination Quick Filter Dropdown -->
+        <div class="glass-card rounded-2xl p-5 md:p-6 border border-white/5 bg-[#0b162c]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h4 class="font-extrabold text-white text-sm md:text-base">📍 Active Locations Quick View</h4>
+            <p class="text-xs text-slate-400 mt-0.5">Select a destination to filter and view its submissions in the UGC Gallery.</p>
+          </div>
+          <div class="relative w-full sm:w-64">
+            <select id="overviewDestSelect"
+              class="w-full bg-[#0b162c] text-slate-200 border border-white/10 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-oppoEmerald transition-colors cursor-pointer">
+              <option value="all">📍 Select Active Location...</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Data Visualization Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Chart Card 1 -->
+          <div class="glass-card rounded-2xl p-6 flex flex-col gap-4 border border-white/5 bg-[#0b162c]/40">
+            <h3 class="text-sm font-bold text-slate-300 uppercase tracking-wider">Submissions by Destination</h3>
+            <div class="relative h-64 w-full flex items-center justify-center">
+              <canvas id="destinationChart"></canvas>
+            </div>
+          </div>
+          <!-- Chart Card 2 -->
+          <div class="glass-card rounded-2xl p-6 flex flex-col gap-4 border border-white/5 bg-[#0b162c]/40">
+            <h3 class="text-sm font-bold text-slate-300 uppercase tracking-wider">Submitter & Status Distribution</h3>
+            <div class="grid grid-cols-2 gap-4 h-64 items-center">
+              <div class="relative h-full w-full flex flex-col items-center justify-center">
+                <canvas id="roleChart"></canvas>
+                <span class="text-[10px] font-bold text-slate-400 mt-2">Submitter Role</span>
+              </div>
+              <div class="relative h-full w-full flex flex-col items-center justify-center">
+                <canvas id="statusChart"></canvas>
+                <span class="text-[10px] font-bold text-slate-400 mt-2">Moderation Status</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Quick Info Panel -->
@@ -619,13 +660,181 @@
     elements.filterRoleTraveler.addEventListener('click', () => setRoleFilter('traveler'));
     elements.filterRoleOperator.addEventListener('click', () => setRoleFilter('operator'));
 
+    // Global variable to keep track of chart instances
+    let destChartInstance = null;
+    let roleChartInstance = null;
+    let statusChartInstance = null;
+
     // API fetches
     async function loadAllData() {
       await fetchStats();
+      
+      // Fetch all submissions for the overview charts & active locations dropbox
+      try {
+        const res = await fetch(`${state.apiBaseUrl}/api/submissions`);
+        const result = await res.json();
+        if (res.ok && result.success) {
+          const allSubmissions = result.data;
+          
+          // Populate Active Locations Dropbox on home page
+          const overviewDestSelect = document.getElementById('overviewDestSelect');
+          if (overviewDestSelect) {
+            const prevVal = overviewDestSelect.value;
+            overviewDestSelect.innerHTML = '<option value="all">📍 Select Active Location...</option>';
+            const locations = [...new Set(allSubmissions.map(s => s.location).filter(Boolean))].sort();
+            locations.forEach(loc => {
+              const opt = document.createElement('option');
+              opt.value = loc;
+              opt.textContent = loc;
+              overviewDestSelect.appendChild(opt);
+            });
+            if (locations.includes(prevVal)) {
+              overviewDestSelect.value = prevVal;
+            }
+          }
+          
+          // Render Overview Charts
+          renderOverviewCharts(allSubmissions);
+        }
+      } catch (err) {
+        console.error('Failed to load submissions for overview charts/dropbox:', err);
+      }
+
       if (state.activeTab === 'moderation') {
         await fetchSubmissions();
       } else if (state.activeTab === 'gallery') {
         await fetchGallerySubmissions();
+      }
+    }
+
+    function renderOverviewCharts(submissions) {
+      if (destChartInstance) destChartInstance.destroy();
+      if (roleChartInstance) roleChartInstance.destroy();
+      if (statusChartInstance) statusChartInstance.destroy();
+
+      // 1. Destination Chart Data
+      const locCounts = {};
+      submissions.forEach(s => {
+        if (s.location) {
+          locCounts[s.location] = (locCounts[s.location] || 0) + 1;
+        }
+      });
+      const locLabels = Object.keys(locCounts);
+      const locData = Object.values(locCounts);
+
+      const ctxDest = document.getElementById('destinationChart');
+      if (ctxDest) {
+        destChartInstance = new Chart(ctxDest, {
+          type: 'bar',
+          data: {
+            labels: locLabels,
+            datasets: [{
+              label: 'Submissions',
+              data: locData,
+              backgroundColor: 'rgba(0, 82, 228, 0.65)',
+              borderColor: '#0052e4',
+              borderWidth: 1.5,
+              borderRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                backgroundColor: 'rgba(11, 22, 44, 0.95)',
+                titleColor: '#fff',
+                bodyColor: '#cbd5e1',
+                borderColor: 'rgba(255,255,255,0.1)',
+                borderWidth: 1
+              }
+            },
+            scales: {
+              x: {
+                grid: { display: false },
+                ticks: { color: '#94a3b8', font: { size: 10 } }
+              },
+              y: {
+                grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                ticks: { color: '#94a3b8', font: { size: 10 }, precision: 0 }
+              }
+            }
+          }
+        });
+      }
+
+      // 2. Role Chart Data
+      const roleCounts = { traveler: 0, operator: 0 };
+      submissions.forEach(s => {
+        if (s.user_role === 'traveler') roleCounts.traveler++;
+        else roleCounts.operator++;
+      });
+
+      const ctxRole = document.getElementById('roleChart');
+      if (ctxRole) {
+        roleChartInstance = new Chart(ctxRole, {
+          type: 'doughnut',
+          data: {
+            labels: ['Travelers', 'Tour Managers'],
+            datasets: [{
+              data: [roleCounts.traveler, roleCounts.operator],
+              backgroundColor: ['#00e5ff', '#00b064'],
+              borderColor: '#0b162c',
+              borderWidth: 2
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                backgroundColor: 'rgba(11, 22, 44, 0.95)',
+                borderColor: 'rgba(255,255,255,0.1)',
+                borderWidth: 1
+              }
+            },
+            cutout: '65%'
+          }
+        });
+      }
+
+      // 3. Status Chart Data
+      const statusCounts = { approved: 0, pending: 0, rejected: 0 };
+      submissions.forEach(s => {
+        if (s.status === 'approved') statusCounts.approved++;
+        else if (s.status === 'rejected') statusCounts.rejected++;
+        else statusCounts.pending++;
+      });
+
+      const ctxStatus = document.getElementById('statusChart');
+      if (ctxStatus) {
+        statusChartInstance = new Chart(ctxStatus, {
+          type: 'doughnut',
+          data: {
+            labels: ['Approved', 'Pending', 'Rejected'],
+            datasets: [{
+              data: [statusCounts.approved, statusCounts.pending, statusCounts.rejected],
+              backgroundColor: ['#00b064', '#ff5a00', '#ef4444'],
+              borderColor: '#0b162c',
+              borderWidth: 2
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                backgroundColor: 'rgba(11, 22, 44, 0.95)',
+                borderColor: 'rgba(255,255,255,0.1)',
+                borderWidth: 1
+              }
+            },
+            cutout: '65%'
+          }
+        });
       }
     }
 
@@ -1127,6 +1336,28 @@
     window.openImageModal = openImageModal;
     window.closeImageModal = closeImageModal;
     window.moderate = moderate;
+    window.setTab = setTab;
+    window.setFilter = setFilter;
+    window.setGalStatusFilter = setGalStatusFilter;
+
+    // Setup active location selection quick view listener
+    setTimeout(() => {
+      const overviewDestSelect = document.getElementById('overviewDestSelect');
+      if (overviewDestSelect) {
+        overviewDestSelect.addEventListener('change', (e) => {
+          const selectedLoc = e.target.value;
+          if (selectedLoc !== 'all') {
+            const galDestSelect = document.getElementById('galDestSelect');
+            if (galDestSelect) {
+              galDestSelect.value = selectedLoc;
+            }
+            setTab('gallery');
+            renderGallery();
+            overviewDestSelect.value = 'all'; // reset to placeholder
+          }
+        });
+      }
+    }, 0);
 
     // Initial load
     loadAllData();
