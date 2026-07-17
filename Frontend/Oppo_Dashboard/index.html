@@ -760,10 +760,8 @@
       // Detect if media is video by file extension
       const isVideo = entry.file_name && /\.(mp4|mov|avi|mkv|webm)$/i.test(entry.file_name);
 
-      // Hide phone number for travelers on card UI
-      const contactEl = entry.user_role === 'traveler'
-        ? ''
-        : `<span>Contact: ${entry.user_identifier}</span>`;
+      // Hide contact details on card UI for privacy
+      const contactEl = '';
 
       div.innerHTML = `
         <!-- Image Container -->
