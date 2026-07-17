@@ -256,21 +256,25 @@
           <!-- Chart Card 1 -->
           <div class="glass-card rounded-2xl p-6 flex flex-col gap-4 border border-white/5 bg-[#0b162c]/40">
             <h3 class="text-sm font-bold text-slate-300 uppercase tracking-wider">Submissions by Destination</h3>
-            <div class="relative h-64 w-full flex items-center justify-center">
+            <div class="relative h-60 w-full">
               <canvas id="destinationChart"></canvas>
             </div>
           </div>
           <!-- Chart Card 2 -->
           <div class="glass-card rounded-2xl p-6 flex flex-col gap-4 border border-white/5 bg-[#0b162c]/40">
             <h3 class="text-sm font-bold text-slate-300 uppercase tracking-wider">Submitter & Status Distribution</h3>
-            <div class="grid grid-cols-2 gap-4 h-64 items-center">
-              <div class="relative h-full w-full flex flex-col items-center justify-center">
-                <canvas id="roleChart"></canvas>
-                <span class="text-[10px] font-bold text-slate-400 mt-2">Submitter Role</span>
+            <div class="grid grid-cols-2 gap-4 items-stretch">
+              <div class="flex flex-col items-center justify-center">
+                <div class="relative h-44 w-full">
+                  <canvas id="roleChart"></canvas>
+                </div>
+                <span class="text-[10px] font-bold text-slate-400 mt-1">Submitter Role</span>
               </div>
-              <div class="relative h-full w-full flex flex-col items-center justify-center">
-                <canvas id="statusChart"></canvas>
-                <span class="text-[10px] font-bold text-slate-400 mt-2">Moderation Status</span>
+              <div class="flex flex-col items-center justify-center">
+                <div class="relative h-44 w-full">
+                  <canvas id="statusChart"></canvas>
+                </div>
+                <span class="text-[10px] font-bold text-slate-400 mt-1">Moderation Status</span>
               </div>
             </div>
           </div>
