@@ -434,15 +434,51 @@
   </div>
 
   <!-- Image Lightbox Modal Overlay -->
-  <div id="imageModal" class="hidden fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-6"
+  <div id="imageModal" class="hidden fixed inset-0 bg-black/95 z-50 flex flex-col items-center justify-center p-6"
     onclick="closeImageModal()">
-    <button class="absolute top-4 right-4 text-white text-3xl font-bold hover:scale-115 transition-transform"
+    <button class="absolute top-4 right-4 text-white text-3xl font-bold hover:scale-115 transition-transform z-50"
       onclick="closeImageModal()">×</button>
-    <!-- Prevent click inside image or content from closing modal -->
-    <div class="relative max-w-4xl max-h-full flex items-center justify-center animate-zoom-in"
+    
+    <!-- Prevent click inside content area from closing modal -->
+    <div class="relative w-full max-w-5xl flex flex-col items-center gap-4 animate-zoom-in"
       onclick="event.stopPropagation()">
-      <img id="modalImg" src=""
-        class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl border border-white/10">
+      
+      <!-- Image & Navigation Row -->
+      <div class="relative w-full flex items-center justify-between gap-4">
+        <!-- Previous Button -->
+        <button id="modalPrevBtn" class="bg-black/60 hover:bg-black/80 text-white rounded-full w-12 h-12 flex items-center justify-center border border-white/10 hover:border-white/30 transition-all font-bold text-2xl active:scale-90 select-none z-10 flex-shrink-0">
+          ‹
+        </button>
+        
+        <!-- Image Container -->
+        <div class="flex-grow flex items-center justify-center max-h-[70vh] relative overflow-hidden bg-slate-950/40 rounded-xl border border-white/5">
+          <img id="modalImg" src=""
+            class="max-w-full max-h-[70vh] object-contain rounded-lg shadow-2xl">
+        </div>
+        
+        <!-- Next Button -->
+        <button id="modalNextBtn" class="bg-black/60 hover:bg-black/80 text-white rounded-full w-12 h-12 flex items-center justify-center border border-white/10 hover:border-white/30 transition-all font-bold text-2xl active:scale-90 select-none z-10 flex-shrink-0">
+          ›
+        </button>
+      </div>
+
+      <!-- Action Panel & Meta Details -->
+      <div id="modalActionPanel" class="w-full max-w-3xl bg-slate-900/90 backdrop-blur-md border border-white/10 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-2xl">
+        <div class="text-left">
+          <h4 id="modalMetaTitle" class="text-white font-bold text-sm flex items-center gap-1.5">📍 Loading...</h4>
+          <p id="modalMetaSubtitle" class="text-slate-400 text-xs mt-1">Loading details...</p>
+        </div>
+        
+        <!-- Moderation Actions -->
+        <div class="flex items-center gap-3">
+          <button id="modalApproveBtn" class="bg-oppoEmerald hover:bg-oppoEmerald/90 text-white font-extrabold py-2.5 px-6 rounded-xl text-xs transition-all active:scale-95 shadow shadow-oppoEmerald/20 flex items-center gap-1.5">
+            ✔️ Approve
+          </button>
+          <button id="modalRejectBtn" class="bg-red-600 hover:bg-red-500 text-white font-extrabold py-2.5 px-6 rounded-xl text-xs transition-all active:scale-95 shadow shadow-red-600/20 flex items-center gap-1.5">
+            ❌ Reject
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -956,19 +992,19 @@
 
         if (isVideo) {
           const videoThumb = document.createElement('div');
-          videoThumb.className = 'w-12 h-12 rounded bg-white/5 border border-white/10 flex items-center justify-center text-xl flex-shrink-0';
+          videoThumb.className = 'w-36 h-24 rounded bg-white/5 border border-white/10 flex items-center justify-center text-xl flex-shrink-0';
           videoThumb.textContent = '🎥';
           previewWrapper.appendChild(videoThumb);
           previewWrapper.addEventListener('click', () => window.open(sub.media_url, '_blank'));
         } else {
           const thumb = document.createElement('img');
-          thumb.src = sub.media_url;
-          thumb.className = 'w-12 h-12 rounded object-cover border border-white/10 flex-shrink-0';
-          thumb.style.minWidth = '48px';
+          thumb.src = sub.thumbnail_url || sub.media_url;
+          thumb.loading = 'lazy';
+          thumb.className = 'w-36 h-24 rounded object-contain bg-slate-950 border border-white/10 flex-shrink-0';
           thumb.alt = sub.file_name || 'UGC Asset';
           thumb.onerror = () => { thumb.src = 'https://placehold.co/100x100?text=Media'; };
           previewWrapper.appendChild(thumb);
-          previewWrapper.addEventListener('click', () => openImageModal(sub.media_url));
+          previewWrapper.addEventListener('click', () => openImageModal(sub));
         }
 
         const labelDiv = document.createElement('div');
@@ -1191,8 +1227,9 @@
         imgContainer.className = 'w-full h-40 bg-slate-900/60 relative overflow-hidden flex items-center justify-center cursor-pointer';
 
         const img = document.createElement('img');
-        img.src = sub.media_url;
-        img.className = 'w-full h-full object-cover transition-transform duration-500 group-hover:scale-110';
+        img.src = sub.thumbnail_url || sub.media_url;
+        img.loading = 'lazy';
+        img.className = 'w-full h-full object-contain bg-slate-950 transition-transform duration-500 group-hover:scale-110';
         img.alt = sub.file_name || 'UGC Asset';
         img.onerror = () => { img.src = 'https://placehold.co/400x300?text=Broken+Media'; };
         imgContainer.appendChild(img);
@@ -1206,12 +1243,12 @@
         zoomBtn.innerHTML = '🔍 View';
         zoomBtn.addEventListener('click', (e) => {
           e.stopPropagation();
-          openImageModal(sub.media_url);
+          openImageModal(sub);
         });
         overlay.appendChild(zoomBtn);
 
         imgContainer.appendChild(overlay);
-        imgContainer.addEventListener('click', () => openImageModal(sub.media_url));
+        imgContainer.addEventListener('click', () => openImageModal(sub));
         card.appendChild(imgContainer);
 
         // Body details
@@ -1325,8 +1362,72 @@
     document.getElementById('galDeviceSelect').addEventListener('change', renderGallery);
 
     // Modal helpers
-    function openImageModal(url) {
-      elements.modalImg.src = url;
+    state.currentSub = null;
+    state.currentModalIndex = -1;
+
+    function openImageModal(subOrUrl) {
+      let sub = null;
+      if (typeof subOrUrl === 'object' && subOrUrl !== null) {
+        sub = subOrUrl;
+      } else {
+        // Fallback for URL string (e.g. from overview charts or static links)
+        const urlStr = String(subOrUrl);
+        sub = state.submissions.find(s => s.media_url === urlStr || s.thumbnail_url === urlStr);
+      }
+
+      if (!sub) {
+        // Simple fallback
+        const url = typeof subOrUrl === 'string' ? subOrUrl : (subOrUrl ? subOrUrl.media_url : '');
+        elements.modalImg.src = url;
+        document.getElementById('modalPrevBtn').classList.add('hidden');
+        document.getElementById('modalNextBtn').classList.add('hidden');
+        document.getElementById('modalActionPanel').classList.add('hidden');
+        elements.imageModal.classList.remove('hidden');
+        return;
+      }
+
+      state.currentSub = sub;
+      elements.modalImg.src = sub.media_url;
+
+      if (state.activeTab === 'moderation') {
+        // Show navigation controls and action panel
+        document.getElementById('modalPrevBtn').classList.remove('hidden');
+        document.getElementById('modalNextBtn').classList.remove('hidden');
+        document.getElementById('modalActionPanel').classList.remove('hidden');
+
+        // Update titles
+        document.getElementById('modalMetaTitle').innerHTML = `📍 ${sub.location || '—'}`;
+        document.getElementById('modalMetaSubtitle').innerText = `Submission #${sub.id} • ${sub.full_name || 'Anonymous'} (${sub.user_role === 'traveler' ? 'Traveler' : 'Tour Manager'})`;
+
+        // Manage active index and button states
+        const idx = state.submissions.findIndex(s => s.id === sub.id);
+        state.currentModalIndex = idx;
+
+        const prevBtn = document.getElementById('modalPrevBtn');
+        const nextBtn = document.getElementById('modalNextBtn');
+
+        if (idx <= 0) {
+          prevBtn.disabled = true;
+          prevBtn.classList.add('opacity-30', 'cursor-not-allowed');
+        } else {
+          prevBtn.disabled = false;
+          prevBtn.classList.remove('opacity-30', 'cursor-not-allowed');
+        }
+
+        if (idx >= state.submissions.length - 1 || idx === -1) {
+          nextBtn.disabled = true;
+          nextBtn.classList.add('opacity-30', 'cursor-not-allowed');
+        } else {
+          nextBtn.disabled = false;
+          nextBtn.classList.remove('opacity-30', 'cursor-not-allowed');
+        }
+      } else {
+        // Hide moderation options if viewed from other tabs (like Gallery)
+        document.getElementById('modalPrevBtn').classList.add('hidden');
+        document.getElementById('modalNextBtn').classList.add('hidden');
+        document.getElementById('modalActionPanel').classList.add('hidden');
+      }
+
       elements.imageModal.classList.remove('hidden');
     }
 
@@ -1334,7 +1435,72 @@
     function closeImageModal() {
       elements.imageModal.classList.add('hidden');
       elements.modalImg.src = '';
+      state.currentSub = null;
+      state.currentModalIndex = -1;
     }
+
+    function modalNavigate(offset) {
+      if (state.currentModalIndex === -1) return;
+      const nextIdx = state.currentModalIndex + offset;
+      if (nextIdx >= 0 && nextIdx < state.submissions.length) {
+        openImageModal(state.submissions[nextIdx]);
+      }
+    }
+
+    async function modalModerate(targetStatus) {
+      if (!state.currentSub) return;
+      const currentId = state.currentSub.id;
+      const currentIndex = state.submissions.findIndex(s => s.id === currentId);
+
+      // Determine next item in current filtered queue before state refreshes
+      let nextSub = null;
+      if (currentIndex !== -1) {
+        if (currentIndex + 1 < state.submissions.length) {
+          nextSub = state.submissions[currentIndex + 1];
+        } else if (currentIndex - 1 >= 0) {
+          nextSub = state.submissions[currentIndex - 1];
+        }
+      }
+
+      // Perform moderation
+      await moderate(currentId, targetStatus);
+
+      // Advance to next image if available, else exit lightbox
+      if (nextSub) {
+        // Search in updated submission list
+        const updatedSub = state.submissions.find(s => s.id === nextSub.id);
+        if (updatedSub) {
+          openImageModal(updatedSub);
+        } else {
+          if (state.submissions.length > 0) {
+            const fallbackIdx = Math.min(currentIndex, state.submissions.length - 1);
+            openImageModal(state.submissions[fallbackIdx]);
+          } else {
+            closeImageModal();
+          }
+        }
+      } else {
+        closeImageModal();
+      }
+    }
+
+    // Attach click listeners to new modal buttons
+    document.getElementById('modalPrevBtn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      modalNavigate(-1);
+    });
+    document.getElementById('modalNextBtn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      modalNavigate(1);
+    });
+    document.getElementById('modalApproveBtn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      modalModerate('approved');
+    });
+    document.getElementById('modalRejectBtn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      modalModerate('rejected');
+    });
 
     // Export helpers globally to resolve inline onclick reference errors
     window.openImageModal = openImageModal;
@@ -1343,6 +1509,8 @@
     window.setTab = setTab;
     window.setFilter = setFilter;
     window.setGalStatusFilter = setGalStatusFilter;
+    window.modalNavigate = modalNavigate;
+    window.modalModerate = modalModerate;
 
     // Setup active location selection quick view listener
     setTimeout(() => {

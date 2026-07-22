@@ -33,6 +33,7 @@ async function insertSubmission(data) {
     user_identifier: data.userIdentifier,
     user_role: data.userRole,
     media_url: data.mediaUrl,
+    thumbnail_url: data.thumbnailUrl || data.mediaUrl,
     file_name: data.fileName,
     file_size: parseInt(data.fileSize, 10),
     location: data.location,

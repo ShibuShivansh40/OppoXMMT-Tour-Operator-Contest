@@ -60,13 +60,15 @@ async function createSubmission(req, res) {
     });
 
     const signedUrl = await s3.getSignedDownloadUrl(cleanRecord.media_url);
+    const signedThumbUrl = await s3.getSignedDownloadUrl(cleanRecord.thumbnail_url || cleanRecord.media_url);
 
     return res.status(201).json({
       success: true,
       message: 'Submission successfully recorded.',
       data: {
         ...cleanRecord,
-        media_url: signedUrl
+        media_url: signedUrl,
+        thumbnail_url: signedThumbUrl
       }
     });
   } catch (error) {
@@ -90,7 +92,8 @@ async function getSubmissions(req, res) {
 
     const signedRows = await Promise.all(records.map(async (row) => {
       const signedUrl = await s3.getSignedDownloadUrl(row.media_url);
-      return { ...row, media_url: signedUrl };
+      const signedThumbUrl = await s3.getSignedDownloadUrl(row.thumbnail_url || row.media_url);
+      return { ...row, media_url: signedUrl, thumbnail_url: signedThumbUrl };
     }));
 
     return res.status(200).json({
@@ -134,13 +137,15 @@ async function moderateSubmission(req, res) {
     }
 
     const signedUrl = await s3.getSignedDownloadUrl(updatedRecord.media_url);
+    const signedThumbUrl = await s3.getSignedDownloadUrl(updatedRecord.thumbnail_url || updatedRecord.media_url);
 
     return res.status(200).json({
       success: true,
       message: `Submission successfully marked as ${status}.`,
       data: {
         ...updatedRecord,
-        media_url: signedUrl
+        media_url: signedUrl,
+        thumbnail_url: signedThumbUrl
       }
     });
   } catch (error) {
@@ -183,13 +188,15 @@ async function selectWinner(req, res) {
     }
 
     const signedUrl = await s3.getSignedDownloadUrl(updatedRecord.media_url);
+    const signedThumbUrl = await s3.getSignedDownloadUrl(updatedRecord.thumbnail_url || updatedRecord.media_url);
 
     return res.status(200).json({
       success: true,
       message: val ? 'Winner successfully selected!' : 'Winner status revoked.',
       data: {
         ...updatedRecord,
-        media_url: signedUrl
+        media_url: signedUrl,
+        thumbnail_url: signedThumbUrl
       }
     });
   } catch (error) {
@@ -290,13 +297,15 @@ async function saveSubmissionScore(req, res) {
     }
 
     const signedUrl = await s3.getSignedDownloadUrl(updatedRecord.media_url);
+    const signedThumbUrl = await s3.getSignedDownloadUrl(updatedRecord.thumbnail_url || updatedRecord.media_url);
 
     return res.status(200).json({
       success: true,
       message: 'Scores successfully saved!',
       data: {
         ...updatedRecord,
-        media_url: signedUrl
+        media_url: signedUrl,
+        thumbnail_url: signedThumbUrl
       }
     });
   } catch (error) {

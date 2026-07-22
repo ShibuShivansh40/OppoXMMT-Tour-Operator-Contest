@@ -62,11 +62,14 @@ async function generatePresignedUploadUrl(fileName, fileType, customObjectKey) {
  */
 function getMockUploadDetails(fileName, bucketName, objectKey) {
   const localPort = process.env.PORT || 8080;
+  const isThumb = objectKey.includes('/thumb-') || objectKey.includes('thumb_');
+  const width = isThumb ? 400 : 800;
+  const height = isThumb ? 300 : 600;
   // If no S3, we point to a mock endpoint on the local server that simulates the PUT request
   return {
     isMock: true,
     uploadUrl: `http://localhost:${localPort}/api/upload/mock-s3-put?key=${encodeURIComponent(objectKey)}`,
-    mediaUrl: `https://picsum.photos/800/600?random=${Math.floor(Math.random() * 1000)}`, // Returns high-quality random image for local visuals
+    mediaUrl: `https://picsum.photos/${width}/${height}?random=${Math.floor(Math.random() * 1000)}`, // Returns high-quality random image for local visuals
     objectKey: objectKey
   };
 }
