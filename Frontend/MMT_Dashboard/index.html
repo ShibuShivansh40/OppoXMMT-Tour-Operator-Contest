@@ -395,6 +395,16 @@
                 class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all">Rejected</button>
             </div>
 
+            <!-- Role Category -->
+            <div class="flex items-center gap-1 bg-[#0b162c] p-1 border border-white/10 rounded-xl">
+              <button id="galFilterRoleAll"
+                class="bg-mmtBlue text-white font-bold py-1.5 px-3 rounded-lg transition-all shadow-md">All Roles</button>
+              <button id="galFilterRoleTraveler"
+                class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all">Travelers</button>
+              <button id="galFilterRoleOperator"
+                class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all">Tour Managers</button>
+            </div>
+
             <!-- Destination Dropdown Filter -->
             <div class="relative">
               <select id="galDestSelect"
@@ -489,6 +499,16 @@
 
   <!-- Script Logic -->
   <script>
+    // Safari-compatible date parser
+    function parseDateSafely(dateStr) {
+      if (!dateStr) return new Date();
+      const parts = dateStr.split('-');
+      if (parts.length === 3) {
+        return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+      }
+      return new Date(dateStr.replace(/-/g, '/'));
+    }
+
     // State management
     let state = {
       apiBaseUrl: 'http://localhost:8080',
@@ -496,6 +516,7 @@
       currentFilter: 'pending', // 'all', 'pending', 'approved', 'rejected'
       currentRoleFilter: 'all', // 'all', 'traveler', 'operator'
       galFilterStatus: 'all',
+      galFilterRole: 'all',
       submissions: [],
       stats: { total: 0, approved: 0, pending: 0, uniqueLocations: 0 }
     };
@@ -1049,7 +1070,7 @@
         tdSize.className = 'p-4';
         const sizeMB = (sub.file_size / (1024 * 1024)).toFixed(2) + ' MB';
         const dateFormatted = sub.travel_date
-          ? new Date(sub.travel_date + 'T00:00:00').toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
+          ? parseDateSafely(sub.travel_date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
           : '—';
         const sizeP = document.createElement('p');
         sizeP.className = 'text-slate-300 font-bold text-xs';
@@ -1200,6 +1221,7 @@
       grid.innerHTML = '';
 
       const statusVal = state.galFilterStatus;
+      const roleVal = state.galFilterRole;
       const destVal = document.getElementById('galDestSelect').value;
       const deviceVal = document.getElementById('galDeviceSelect').value;
 
@@ -1208,10 +1230,11 @@
         if (isVideo) return false; // Gallery shows images only
 
         const matchesStatus = statusVal === 'all' || sub.status === statusVal;
+        const matchesRole = roleVal === 'all' || sub.user_role === roleVal;
         const matchesDest = destVal === 'all' || sub.location === destVal;
         const matchesDevice = deviceVal === 'all' || sub.device === deviceVal;
 
-        return matchesStatus && matchesDest && matchesDevice;
+        return matchesStatus && matchesRole && matchesDest && matchesDevice;
       });
 
       if (filtered.length === 0) {
@@ -1357,11 +1380,36 @@
       renderGallery();
     }
 
+    function setGalRoleFilter(roleType) {
+      state.galFilterRole = roleType;
+      const filters = [
+        { el: document.getElementById('galFilterRoleAll'), key: 'all' },
+        { el: document.getElementById('galFilterRoleTraveler'), key: 'traveler' },
+        { el: document.getElementById('galFilterRoleOperator'), key: 'operator' }
+      ];
+
+      filters.forEach(item => {
+        if (item.el) {
+          if (item.key === roleType) {
+            item.el.className = 'bg-mmtBlue text-white font-bold py-1.5 px-3 rounded-lg transition-all shadow-md';
+          } else {
+            item.el.className = 'hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all';
+          }
+        }
+      });
+
+      renderGallery();
+    }
+
     // Register Gallery events
     document.getElementById('galFilterAll').addEventListener('click', () => setGalStatusFilter('all'));
     document.getElementById('galFilterPending').addEventListener('click', () => setGalStatusFilter('pending'));
     document.getElementById('galFilterApproved').addEventListener('click', () => setGalStatusFilter('approved'));
     document.getElementById('galFilterRejected').addEventListener('click', () => setGalStatusFilter('rejected'));
+
+    document.getElementById('galFilterRoleAll').addEventListener('click', () => setGalRoleFilter('all'));
+    document.getElementById('galFilterRoleTraveler').addEventListener('click', () => setGalRoleFilter('traveler'));
+    document.getElementById('galFilterRoleOperator').addEventListener('click', () => setGalRoleFilter('operator'));
 
     document.getElementById('galDestSelect').addEventListener('change', renderGallery);
     document.getElementById('galDeviceSelect').addEventListener('change', renderGallery);
@@ -1394,7 +1442,7 @@
       state.currentSub = sub;
       elements.modalImg.src = sub.thumbnail_url || sub.media_url;
 
-      if (state.activeTab === 'moderation') {
+      if (state.activeTab === 'moderation' || state.activeTab === 'gallery') {
         // Show navigation controls and action panel
         document.getElementById('modalPrevBtn').classList.remove('hidden');
         document.getElementById('modalNextBtn').classList.remove('hidden');
@@ -1514,6 +1562,7 @@
     window.setTab = setTab;
     window.setFilter = setFilter;
     window.setGalStatusFilter = setGalStatusFilter;
+    window.setGalRoleFilter = setGalRoleFilter;
     window.modalNavigate = modalNavigate;
     window.modalModerate = modalModerate;
 
