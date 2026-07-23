@@ -363,6 +363,11 @@
             </table>
           </div>
 
+          <!-- Load More Button -->
+          <div id="queueLoadMoreContainer" class="flex justify-center my-6 hidden">
+            <button id="queueLoadMoreBtn" class="bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white px-5 py-2 rounded-xl border border-white/10 text-xs font-semibold transition-all">Load More</button>
+          </div>
+
         </div>
       </section>
 
@@ -1377,7 +1382,7 @@
 
       if (!sub) {
         // Simple fallback
-        const url = typeof subOrUrl === 'string' ? subOrUrl : (subOrUrl ? subOrUrl.media_url : '');
+        const url = typeof subOrUrl === 'string' ? subOrUrl : (subOrUrl ? (subOrUrl.thumbnail_url || subOrUrl.media_url) : '');
         elements.modalImg.src = url;
         document.getElementById('modalPrevBtn').classList.add('hidden');
         document.getElementById('modalNextBtn').classList.add('hidden');
@@ -1387,7 +1392,7 @@
       }
 
       state.currentSub = sub;
-      elements.modalImg.src = sub.media_url;
+      elements.modalImg.src = sub.thumbnail_url || sub.media_url;
 
       if (state.activeTab === 'moderation') {
         // Show navigation controls and action panel

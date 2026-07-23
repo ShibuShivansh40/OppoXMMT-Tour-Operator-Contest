@@ -1248,7 +1248,7 @@
       } else {
         video.classList.add('hidden');
         video.src = '';
-        img.src = entry.media_url;
+        img.src = entry.thumbnail_url || entry.media_url;
         img.classList.remove('hidden');
       }
 
