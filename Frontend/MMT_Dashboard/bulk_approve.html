@@ -120,16 +120,35 @@
         <p class="text-xs md:text-sm text-slate-400 mt-1">Select multiple pending campaign entries to approve or reject them in a single batch operation.</p>
       </div>
 
-      <!-- Quick Filter -->
-      <div class="flex items-center gap-2 bg-[#0b162c] p-1 border border-white/10 rounded-xl text-xs">
-        <button id="filterPending"
-          class="bg-mmtBlue text-white font-bold py-1.5 px-4 rounded-lg transition-all duration-200 shadow-md">
-          Pending Status Only
-        </button>
-        <button id="filterAll"
-          class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-4 rounded-lg transition-all duration-200">
-          Show All
-        </button>
+      <!-- Filters Container -->
+      <div class="flex flex-wrap items-center gap-3">
+        <!-- Quick Filter -->
+        <div class="flex items-center gap-2 bg-[#0b162c] p-1 border border-white/10 rounded-xl text-xs select-none">
+          <button id="filterPending"
+            class="bg-mmtBlue text-white font-bold py-1.5 px-4 rounded-lg transition-all duration-200 shadow-md">
+            Pending Status Only
+          </button>
+          <button id="filterAll"
+            class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-4 rounded-lg transition-all duration-200">
+            Show All
+          </button>
+        </div>
+
+        <!-- Role Filter -->
+        <div class="flex items-center gap-2 bg-[#0b162c] p-1 border border-white/10 rounded-xl text-xs select-none">
+          <button id="filterRoleAll"
+            class="bg-mmtBlue text-white font-bold py-1.5 px-4 rounded-lg transition-all duration-200 shadow-md">
+            All Roles
+          </button>
+          <button id="filterRoleTraveler"
+            class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-4 rounded-lg transition-all duration-200">
+            Travelers
+          </button>
+          <button id="filterRoleOperator"
+            class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-4 rounded-lg transition-all duration-200">
+            Tour Managers
+          </button>
+        </div>
       </div>
     </div>
 
@@ -203,11 +222,22 @@
   </div>
 
   <script>
+    // Safari-compatible date parser
+    function parseDateSafely(dateStr) {
+      if (!dateStr) return new Date();
+      const parts = dateStr.split('-');
+      if (parts.length === 3) {
+        return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+      }
+      return new Date(dateStr.replace(/-/g, '/'));
+    }
+
     const state = {
       apiBaseUrl: window.location.origin && window.location.origin !== 'null' ? window.location.origin : 'http://localhost:8080',
       submissions: [],
       selectedIds: new Set(),
-      filter: 'pending' // 'pending' or 'all'
+      filter: 'pending', // 'pending' or 'all'
+      filterRole: 'all' // 'all', 'traveler', 'operator'
     };
 
     const elements = {
@@ -252,8 +282,15 @@
 
       try {
         let url = `${state.apiBaseUrl}/api/submissions`;
+        const params = [];
         if (state.filter === 'pending') {
-          url += '?status=pending';
+          params.push('status=pending');
+        }
+        if (state.filterRole !== 'all') {
+          params.push(`role=${state.filterRole}`);
+        }
+        if (params.length > 0) {
+          url += `?${params.join('&')}`;
         }
 
         const res = await fetch(url);
@@ -375,7 +412,7 @@
         tdSize.className = 'p-4 text-slate-400';
         const sizeMB = ((sub.file_size || 0) / (1024 * 1024)).toFixed(2) + ' MB';
         const dateFormatted = sub.travel_date
-          ? new Date(sub.travel_date + 'T00:00:00').toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
+          ? parseDateSafely(sub.travel_date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
           : '—';
         tdSize.innerHTML = `<p class="font-bold text-slate-300">${sizeMB}</p><p class="text-[10px] mt-0.5">${dateFormatted}</p>`;
         tr.appendChild(tdSize);
@@ -507,6 +544,31 @@
       elements.filterPending.className = 'hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-4 rounded-lg transition-all duration-200';
       loadData();
     });
+
+    // Role filter toggles
+    function setRoleFilter(roleType) {
+      state.filterRole = roleType;
+      const filters = [
+        { el: document.getElementById('filterRoleAll'), key: 'all' },
+        { el: document.getElementById('filterRoleTraveler'), key: 'traveler' },
+        { el: document.getElementById('filterRoleOperator'), key: 'operator' }
+      ];
+
+      filters.forEach(item => {
+        if (item.el) {
+          if (item.key === roleType) {
+            item.el.className = 'bg-mmtBlue text-white font-bold py-1.5 px-4 rounded-lg transition-all duration-200 shadow-md';
+          } else {
+            item.el.className = 'hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-4 rounded-lg transition-all duration-200';
+          }
+        }
+      });
+      loadData();
+    }
+
+    document.getElementById('filterRoleAll').addEventListener('click', () => setRoleFilter('all'));
+    document.getElementById('filterRoleTraveler').addEventListener('click', () => setRoleFilter('traveler'));
+    document.getElementById('filterRoleOperator').addEventListener('click', () => setRoleFilter('operator'));
 
     // Image Modal zooms
     function openImageModal(url) {
