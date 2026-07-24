@@ -5,8 +5,8 @@ const { MongoClient } = require('mongodb');
 const { s3Client } = require('./config/s3');
 require('dotenv').config();
 
-const BUCKET_NAME = process.env.S3_BUCKET_NAME || 'oppo-mmt-media-bucket';
-const REGION = process.env.AWS_REGION || 'eu-north-1';
+const BUCKET_NAME = process.env.S3_BUCKET_NAME || 'oppoxmmt-tour-campaign-mumbai';
+const REGION = process.env.AWS_REGION || 'ap-south-1';
 const MONGODB_URI = process.env.MONGODB_URI;
 
 const TARGET_DIRECTORIES = [

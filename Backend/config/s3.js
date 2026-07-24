@@ -25,7 +25,7 @@ if (isS3Configured) {
  * Falls back to generating a mock upload endpoint if S3 credentials are not set.
  */
 async function generatePresignedUploadUrl(fileName, fileType, customObjectKey) {
-  const bucketName = (process.env.S3_BUCKET_NAME && process.env.S3_BUCKET_NAME.trim()) || 'oppo-mmt-media-bucket';
+  const bucketName = (process.env.S3_BUCKET_NAME && process.env.S3_BUCKET_NAME.trim()) || 'oppoxmmt-tour-campaign-mumbai';
   const objectKey = customObjectKey || `ugc-campaign/${Date.now()}-${fileName}`;
 
   if (s3Client) {
@@ -82,7 +82,7 @@ async function getSignedDownloadUrl(mediaUrl) {
     const urlObj = new URL(mediaUrl);
     // Pathname starts with '/', so remove leading '/' to get key
     const objectKey = decodeURIComponent(urlObj.pathname.substring(1));
-    const bucketName = process.env.S3_BUCKET_NAME || 'oppo-mmt-media-bucket';
+    const bucketName = process.env.S3_BUCKET_NAME || 'oppoxmmt-tour-campaign-mumbai';
 
     const command = new GetObjectCommand({
       Bucket: bucketName,
