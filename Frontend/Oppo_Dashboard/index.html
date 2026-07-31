@@ -945,26 +945,43 @@
         monthSelect.value = 'all';
       }
 
-      // 4. Device Options: Filter entries by matching all filters *except* device
+      // 4. Device Options: Filter entries by matching all filters *except* device,
+      // restricted to approved traveler submissions to align with the Traveler Device Distribution widget.
       const devicesSubset = state.approvedEntries.filter(e => 
+        e.status === 'approved' &&
+        e.user_role === 'traveler' &&
         matches.role(e, currentRole) &&
         matches.person(e, personSelect.value) &&
         matches.status(e, currentStatus) &&
         matches.location(e, locationSelect.value) &&
         matches.month(e, currentMonth)
       );
-      const validDevicesMap = {};
+
+      // Track unique travelers (by user_identifier) per device
+      const deviceTravelersMap = {};
       devicesSubset.forEach(e => {
         const d = e.device || 'Unknown Device';
-        validDevicesMap[d] = (validDevicesMap[d] || 0) + 1;
+        if (!deviceTravelersMap[d]) {
+          deviceTravelersMap[d] = new Set();
+        }
+        if (e.user_identifier) {
+          deviceTravelersMap[d].add(e.user_identifier);
+        }
       });
 
-      deviceSelect.innerHTML = `<option value="all" class="bg-[#05120c]">All Devices (${devicesSubset.length})</option>`;
-      const validDevices = Object.keys(validDevicesMap).sort();
+      // Sum of unique traveler counts across all matched devices
+      let totalUniqueCount = 0;
+      const validDevices = Object.keys(deviceTravelersMap).sort();
       validDevices.forEach(d => {
+        totalUniqueCount += deviceTravelersMap[d].size;
+      });
+
+      deviceSelect.innerHTML = `<option value="all" class="bg-[#05120c]">All Devices (${totalUniqueCount})</option>`;
+      validDevices.forEach(d => {
+        const count = deviceTravelersMap[d].size;
         const opt = document.createElement('option');
         opt.value = d;
-        opt.innerText = `${d} (${validDevicesMap[d]})`;
+        opt.innerText = `${d} (${count})`;
         opt.className = 'bg-[#05120c]';
         deviceSelect.appendChild(opt);
       });
@@ -1154,7 +1171,8 @@
         month: (e, val) => getMatchesMonth(e, val)
       };
 
-      const deviceCounts = {};
+      // Track unique travelers (by user_identifier) per device
+      const deviceTravelers = {};
       state.approvedEntries.forEach(entry => {
         if (
           entry.status === 'approved' &&
@@ -1166,11 +1184,18 @@
           matches.month(entry, currentMonth)
         ) {
           const d = entry.device || 'Unknown Device';
-          deviceCounts[d] = (deviceCounts[d] || 0) + 1;
+          if (!deviceTravelers[d]) {
+            deviceTravelers[d] = new Set();
+          }
+          if (entry.user_identifier) {
+            deviceTravelers[d].add(entry.user_identifier);
+          }
         }
       });
 
-      const sortedDevices = Object.entries(deviceCounts).sort((a, b) => b[1] - a[1]);
+      const sortedDevices = Object.entries(deviceTravelers)
+        .map(([device, travelersSet]) => [device, travelersSet.size])
+        .sort((a, b) => b[1] - a[1]);
 
       if (sortedDevices.length === 0) {
         listEl.innerHTML = '<p class="text-[10px] text-slate-500 italic py-2">No matching submissions.</p>';
