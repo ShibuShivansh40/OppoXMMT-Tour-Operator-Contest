@@ -189,8 +189,7 @@
       </div>
 
       <!-- Stats Summary Grid -->
-      <!-- Stats Summary Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div
           class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-[#00b064]/20">
           <div>
@@ -211,11 +210,26 @@
             class="w-12 h-12 rounded-2xl bg-[#00b064]/20 border border-[#00b064]/30 text-oppoMint flex items-center justify-center text-xl text-glow">
             🏆</div>
         </div>
+        <div id="deviceDistributionBar"
+          class="glass-card rounded-2xl p-5 flex flex-col gap-3 transition-all duration-300 hover:scale-[1.03] hover:border-[#00b064]/20">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Traveler Devices</p>
+              <p class="text-[9px] text-slate-500 mt-0.5">Approved traveler images by model</p>
+            </div>
+            <div
+              class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 text-oppoMint flex items-center justify-center text-lg text-glow">
+              📱</div>
+          </div>
+          <div id="deviceDistributionList" class="flex flex-col gap-2 overflow-y-auto max-h-[110px] custom-scrollbar pr-1">
+            <!-- Dynamically populated progress bars -->
+          </div>
+        </div>
       </div>
 
       <!-- Gallery Filter Bar -->
       <div id="galleryFilterBar"
-        class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-4 glass-card p-4 rounded-2xl">
+        class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-4 glass-card p-4 rounded-2xl">
         <!-- Submitter Role -->
         <div class="flex flex-col gap-1.5 text-xs font-sans">
           <label for="filterRole" class="text-slate-400 font-bold">Submitter Role</label>
@@ -244,6 +258,15 @@
             <option value="all" class="bg-[#05120c]">All Statuses</option>
             <option value="approved" class="bg-[#05120c]">MMT Approved</option>
             <option value="non_approved" class="bg-[#05120c]">MMT Non-Approved</option>
+          </select>
+        </div>
+
+        <!-- Device Filter -->
+        <div class="flex flex-col gap-1.5 text-xs font-sans">
+          <label for="filterDevice" class="text-slate-400 font-bold">Device</label>
+          <select id="filterDevice"
+            class="bg-slate-900/50 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-oppoEmerald transition-colors">
+            <option value="all" class="bg-[#05120c]">All Devices</option>
           </select>
         </div>
 
@@ -546,6 +569,7 @@
       filterMonth: 'all',
       filterPerson: 'all',
       filterApprovalStatus: 'all',
+      filterDevice: 'all',
       searchQuery: '',
       // Calendar states
       calendarYear: 2026,
@@ -611,6 +635,9 @@
       winnersGrid: document.getElementById('winnersGrid'),
       calendarSection: document.getElementById('calendarSection'),
       galleryFilterBar: document.getElementById('galleryFilterBar'),
+      filterDevice: document.getElementById('filterDevice'),
+      deviceDistributionBar: document.getElementById('deviceDistributionBar'),
+      deviceDistributionList: document.getElementById('deviceDistributionList'),
       imageModal: document.getElementById('imageModal'),
       modalImg: document.getElementById('modalImg'),
       logoutBtn: document.getElementById('logoutBtn')
@@ -661,6 +688,7 @@
 
       if (tabName === 'showcase') {
         if (elements.galleryFilterBar) elements.galleryFilterBar.classList.remove('hidden');
+        if (elements.deviceDistributionBar) elements.deviceDistributionBar.classList.remove('hidden');
         elements.tabShowcase.className = 'flex items-center gap-3 px-4 py-3 rounded-xl bg-oppoGreen text-white font-bold text-sm transition-all duration-300 text-left w-full shadow-lg shadow-oppoGreen/25';
         elements.tabWinners.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full';
         if (elements.tabCalendar) elements.tabCalendar.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full';
@@ -684,6 +712,7 @@
         }
       } else if (tabName === 'winners') {
         if (elements.galleryFilterBar) elements.galleryFilterBar.classList.remove('hidden');
+        if (elements.deviceDistributionBar) elements.deviceDistributionBar.classList.remove('hidden');
         elements.tabWinners.className = 'flex items-center gap-3 px-4 py-3 rounded-xl bg-oppoGreen text-white font-bold text-sm transition-all duration-300 text-left w-full shadow-lg shadow-oppoGreen/25';
         elements.tabShowcase.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full';
         if (elements.tabCalendar) elements.tabCalendar.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full';
@@ -708,6 +737,7 @@
         }
       } else {
         if (elements.galleryFilterBar) elements.galleryFilterBar.classList.add('hidden');
+        if (elements.deviceDistributionBar) elements.deviceDistributionBar.classList.add('hidden');
         if (elements.tabCalendar) elements.tabCalendar.className = 'flex items-center gap-3 px-4 py-3 rounded-xl bg-oppoGreen text-white font-bold text-sm transition-all duration-300 text-left w-full shadow-lg shadow-oppoGreen/25';
         elements.tabShowcase.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full';
         elements.tabWinners.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full';
@@ -790,12 +820,14 @@
       const statusSelect = document.getElementById('filterApprovalStatus');
       const locationSelect = document.getElementById('filterLocation');
       const monthSelect = document.getElementById('filterMonth');
+      const deviceSelect = document.getElementById('filterDevice');
 
       if (roleSelect) state.filterRole = roleSelect.value;
       if (personSelect) state.filterPerson = personSelect.value;
       if (statusSelect) state.filterApprovalStatus = statusSelect.value;
       if (locationSelect) state.filterLocation = locationSelect.value;
       if (monthSelect) state.filterMonth = monthSelect.value;
+      if (deviceSelect) state.filterDevice = deviceSelect.value;
     }
 
     // Re-populate dropdown menus dynamically based on current values of other dropdowns
@@ -805,14 +837,16 @@
       const statusSelect = document.getElementById('filterApprovalStatus');
       const locationSelect = document.getElementById('filterLocation');
       const monthSelect = document.getElementById('filterMonth');
+      const deviceSelect = document.getElementById('filterDevice');
 
-      if (!roleSelect || !personSelect || !statusSelect || !locationSelect || !monthSelect) return;
+      if (!roleSelect || !personSelect || !statusSelect || !locationSelect || !monthSelect || !deviceSelect) return;
 
       const currentRole = roleSelect.value;
       const currentPerson = personSelect.value;
       const currentStatus = statusSelect.value;
       const currentLoc = locationSelect.value;
       const currentMonth = monthSelect.value;
+      const currentDevice = deviceSelect.value;
 
       // Helper match checkers
       const matches = {
@@ -822,7 +856,8 @@
           (val === 'approved' && e.status === 'approved') || 
           (val === 'non_approved' && e.status !== 'approved'),
         location: (e, val) => val === 'all' || e.location === val,
-        month: (e, val) => getMatchesMonth(e, val)
+        month: (e, val) => getMatchesMonth(e, val),
+        device: (e, val) => val === 'all' || (e.device || 'Unknown Device') === val
       };
 
       // 1. Person Options: Filter entries by matching all filters *except* person
@@ -830,7 +865,8 @@
         matches.role(e, currentRole) &&
         matches.status(e, currentStatus) &&
         matches.location(e, currentLoc) &&
-        matches.month(e, currentMonth)
+        matches.month(e, currentMonth) &&
+        matches.device(e, currentDevice)
       );
       const validPersons = [...new Set(personsSubset.map(e => e.full_name || e.tour_manager).filter(Boolean))].sort();
 
@@ -853,7 +889,8 @@
         matches.role(e, currentRole) &&
         matches.person(e, personSelect.value) &&
         matches.status(e, currentStatus) &&
-        matches.month(e, currentMonth)
+        matches.month(e, currentMonth) &&
+        matches.device(e, currentDevice)
       );
       const validLocations = [...new Set(locationsSubset.map(e => e.location).filter(Boolean))].sort();
 
@@ -876,7 +913,8 @@
         matches.role(e, currentRole) &&
         matches.person(e, personSelect.value) &&
         matches.status(e, currentStatus) &&
-        matches.location(e, locationSelect.value)
+        matches.location(e, locationSelect.value) &&
+        matches.device(e, currentDevice)
       );
       const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
       const validMonthsMap = {};
@@ -905,6 +943,35 @@
         monthSelect.value = currentMonth;
       } else {
         monthSelect.value = 'all';
+      }
+
+      // 4. Device Options: Filter entries by matching all filters *except* device
+      const devicesSubset = state.approvedEntries.filter(e => 
+        matches.role(e, currentRole) &&
+        matches.person(e, personSelect.value) &&
+        matches.status(e, currentStatus) &&
+        matches.location(e, locationSelect.value) &&
+        matches.month(e, currentMonth)
+      );
+      const validDevicesMap = {};
+      devicesSubset.forEach(e => {
+        const d = e.device || 'Unknown Device';
+        validDevicesMap[d] = (validDevicesMap[d] || 0) + 1;
+      });
+
+      deviceSelect.innerHTML = `<option value="all" class="bg-[#05120c]">All Devices (${devicesSubset.length})</option>`;
+      const validDevices = Object.keys(validDevicesMap).sort();
+      validDevices.forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d;
+        opt.innerText = `${d} (${validDevicesMap[d]})`;
+        opt.className = 'bg-[#05120c]';
+        deviceSelect.appendChild(opt);
+      });
+      if (validDevices.includes(currentDevice)) {
+        deviceSelect.value = currentDevice;
+      } else {
+        deviceSelect.value = 'all';
       }
     }
 
@@ -945,6 +1012,7 @@
           syncStateFromDropdowns();
 
           renderGallery();
+          renderDeviceDistribution();
           if (state.activeTab === 'winners') {
             renderWinnersList();
           }
@@ -986,10 +1054,12 @@
           matchesMonth = false;
         }
 
+        const matchesDevice = state.filterDevice === 'all' || (entry.device || 'Unknown Device') === state.filterDevice;
+
         const matchesSearch = !state.searchQuery ||
           (entry.location && entry.location.toLowerCase().includes(state.searchQuery.toLowerCase())) ||
           (entry.full_name && entry.full_name.toLowerCase().includes(state.searchQuery.toLowerCase()));
-        return matchesRole && matchesLocation && matchesPerson && matchesApprovalStatus && matchesMonth && matchesSearch;
+        return matchesRole && matchesLocation && matchesPerson && matchesApprovalStatus && matchesMonth && matchesSearch && matchesDevice;
       });
 
       if (filtered.length === 0) {
@@ -1035,10 +1105,12 @@
           matchesMonth = false;
         }
 
+        const matchesDevice = state.filterDevice === 'all' || (entry.device || 'Unknown Device') === state.filterDevice;
+
         const matchesSearch = !state.searchQuery ||
           (entry.location && entry.location.toLowerCase().includes(state.searchQuery.toLowerCase())) ||
           (entry.full_name && entry.full_name.toLowerCase().includes(state.searchQuery.toLowerCase()));
-        return matchesRole && matchesLocation && matchesPerson && matchesApprovalStatus && matchesMonth && matchesSearch;
+        return matchesRole && matchesLocation && matchesPerson && matchesApprovalStatus && matchesMonth && matchesSearch && matchesDevice;
       });
 
       if (filtered.length === 0) {
@@ -1050,6 +1122,114 @@
       filtered.forEach(entry => {
         const card = createEntryCard(entry);
         elements.winnersGrid.appendChild(card);
+      });
+    }
+
+    function renderDeviceDistribution() {
+      const listEl = document.getElementById('deviceDistributionList');
+      if (!listEl) return;
+
+      listEl.innerHTML = '';
+
+      // Count approved submissions per device matching current filters (except device filter)
+      const roleSelect = document.getElementById('filterRole');
+      const personSelect = document.getElementById('filterPerson');
+      const statusSelect = document.getElementById('filterApprovalStatus');
+      const locationSelect = document.getElementById('filterLocation');
+      const monthSelect = document.getElementById('filterMonth');
+
+      const currentRole = roleSelect ? roleSelect.value : 'all';
+      const currentPerson = personSelect ? personSelect.value : 'all';
+      const currentStatus = statusSelect ? statusSelect.value : 'all';
+      const currentLoc = locationSelect ? locationSelect.value : 'all';
+      const currentMonth = monthSelect ? monthSelect.value : 'all';
+
+      const matches = {
+        role: (e, val) => val === 'all' || e.user_role === val,
+        person: (e, val) => val === 'all' || e.full_name === val || e.tour_manager === val,
+        status: (e, val) => val === 'all' || 
+          (val === 'approved' && e.status === 'approved') || 
+          (val === 'non_approved' && e.status !== 'approved'),
+        location: (e, val) => val === 'all' || e.location === val,
+        month: (e, val) => getMatchesMonth(e, val)
+      };
+
+      const deviceCounts = {};
+      state.approvedEntries.forEach(entry => {
+        if (
+          entry.status === 'approved' &&
+          entry.user_role === 'traveler' && // Restrict to Traveler devices only
+          matches.role(entry, currentRole) &&
+          matches.person(entry, currentPerson) &&
+          matches.status(entry, currentStatus) &&
+          matches.location(entry, currentLoc) &&
+          matches.month(entry, currentMonth)
+        ) {
+          const d = entry.device || 'Unknown Device';
+          deviceCounts[d] = (deviceCounts[d] || 0) + 1;
+        }
+      });
+
+      const sortedDevices = Object.entries(deviceCounts).sort((a, b) => b[1] - a[1]);
+
+      if (sortedDevices.length === 0) {
+        listEl.innerHTML = '<p class="text-[10px] text-slate-500 italic py-2">No matching submissions.</p>';
+        return;
+      }
+
+      // Calculate total count to compute percentages
+      let totalCount = 0;
+      sortedDevices.forEach(([_, count]) => totalCount += count);
+
+      sortedDevices.forEach(([device, count]) => {
+        const itemBtn = document.createElement('button');
+        itemBtn.type = 'button';
+        itemBtn.className = 'w-full text-left flex flex-col gap-1 transition-all duration-300 focus:outline-none';
+
+        const percent = totalCount > 0 ? Math.round((count / totalCount) * 100) : 0;
+        const isActive = state.filterDevice === device;
+
+        // Apply distinct style if it's active vs inactive
+        const borderStyle = isActive 
+          ? 'bg-oppoGreen/15 border border-[#00b064]/30 p-2 rounded-xl scale-[1.01]' 
+          : 'hover:bg-white/5 border border-transparent p-2 rounded-xl';
+
+        itemBtn.className += ` ${borderStyle}`;
+
+        itemBtn.innerHTML = `
+          <div class="flex justify-between items-center text-[10px] font-bold">
+            <span class="${isActive ? 'text-oppoMint font-black' : 'text-slate-300'} transition-colors">${device}</span>
+            <span class="${isActive ? 'text-oppoMint' : 'text-slate-400'} font-mono">${count} (${percent}%)</span>
+          </div>
+          <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden">
+            <div class="h-full bg-gradient-to-r from-oppoGreen to-oppoEmerald rounded-full transition-all duration-500" style="width: ${percent}%"></div>
+          </div>
+        `;
+
+        itemBtn.addEventListener('click', () => {
+          const deviceSelect = document.getElementById('filterDevice');
+          if (deviceSelect) {
+            if (state.filterDevice === device) {
+              deviceSelect.value = 'all';
+              state.filterDevice = 'all';
+            } else {
+              deviceSelect.value = device;
+              state.filterDevice = device;
+            }
+            updateFilterOptions();
+            syncStateFromDropdowns();
+            renderGallery();
+            renderDeviceDistribution();
+            if (state.activeTab === 'winners') renderWinnersList();
+            
+            const gallerySec = document.getElementById('gallerySection');
+            if (gallerySec) {
+              gallerySec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }
+        });
+
+        listEl.appendChild(itemBtn);
       });
     }
 
@@ -1364,6 +1544,7 @@
       const filterMonthSelect = document.getElementById('filterMonth');
       const filterPersonSelect = document.getElementById('filterPerson');
       const filterApprovalStatusSelect = document.getElementById('filterApprovalStatus');
+      const filterDeviceSelect = document.getElementById('filterDevice');
       const searchInput = document.getElementById('searchLocation');
       const modalDownloadBtn = document.getElementById('modalDownloadBtn');
 
@@ -1373,6 +1554,7 @@
           updateFilterOptions();
           syncStateFromDropdowns();
           renderGallery();
+          renderDeviceDistribution();
           if (state.activeTab === 'winners') renderWinnersList();
         });
       }
@@ -1382,6 +1564,7 @@
           updateFilterOptions();
           syncStateFromDropdowns();
           renderGallery();
+          renderDeviceDistribution();
           if (state.activeTab === 'winners') renderWinnersList();
         });
       }
@@ -1391,6 +1574,7 @@
           updateFilterOptions();
           syncStateFromDropdowns();
           renderGallery();
+          renderDeviceDistribution();
           if (state.activeTab === 'winners') renderWinnersList();
         });
       }
@@ -1400,6 +1584,7 @@
           updateFilterOptions();
           syncStateFromDropdowns();
           renderGallery();
+          renderDeviceDistribution();
           if (state.activeTab === 'winners') renderWinnersList();
         });
       }
@@ -1409,6 +1594,17 @@
           updateFilterOptions();
           syncStateFromDropdowns();
           renderGallery();
+          renderDeviceDistribution();
+          if (state.activeTab === 'winners') renderWinnersList();
+        });
+      }
+      if (filterDeviceSelect) {
+        filterDeviceSelect.addEventListener('change', (e) => {
+          state.filterDevice = e.target.value;
+          updateFilterOptions();
+          syncStateFromDropdowns();
+          renderGallery();
+          renderDeviceDistribution();
           if (state.activeTab === 'winners') renderWinnersList();
         });
       }
@@ -1416,6 +1612,7 @@
         searchInput.addEventListener('input', (e) => {
           state.searchQuery = e.target.value;
           renderGallery();
+          renderDeviceDistribution();
           if (state.activeTab === 'winners') renderWinnersList();
         });
       }
@@ -1742,7 +1939,7 @@
 
         // ==================== SHEET 1: Tour Manager Photos ====================
         const sheet1Rows = [
-          ['S.No', 'Tour Manager Name', 'Tour Manager ID', 'Tour Location', 'Upload Date', 'No. of Photos', 'Photo Quality Score', 'Watermark Verified', 'Cloud Drive Link', 'Contest Points (MTD)', 'Contest Rank (MTD)']
+          ['S.No', 'Tour Manager Name', 'Tour Manager ID', 'Tour Location', 'Upload Date', 'Device', 'No. of Photos', 'Photo Quality Score', 'Watermark Verified', 'Cloud Drive Link', 'Contest Points (MTD)', 'Contest Rank (MTD)']
         ];
 
         let sNo1 = 1;
@@ -1757,6 +1954,7 @@
             item.user_identifier,
             item.location,
             item.travel_date ? item.travel_date.split('T')[0] : '',
+            item.device || '—',
             1,
             item.score_total !== null && item.score_total !== undefined ? item.score_total : '',
             watermarkVerified,
@@ -1768,7 +1966,7 @@
 
         // ==================== SHEET 2: Traveler Photos ====================
         const sheet2Rows = [
-          ['S.No', 'Traveler Name', 'Tour Location', 'Upload Date', 'No. of Photos', 'Consent Status', 'UTM Source', 'Referring Tour Manager ID', 'Cloud Drive Link']
+          ['S.No', 'Traveler Name', 'Tour Location', 'Upload Date', 'Device', 'No. of Photos', 'Consent Status', 'UTM Source', 'Referring Tour Manager ID', 'Cloud Drive Link']
         ];
 
         let sNo2 = 1;
@@ -1781,6 +1979,7 @@
             item.full_name || 'Anonymous Submitter',
             item.location,
             item.travel_date ? item.travel_date.split('T')[0] : '',
+            item.device || '—',
             1,
             'Granted',
             mockUtm,
