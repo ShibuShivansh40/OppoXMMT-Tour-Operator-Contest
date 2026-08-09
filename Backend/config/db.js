@@ -8,8 +8,10 @@ const isDbConfigured = !!MONGODB_URI;
 let client = null;
 let dbInstance = null;
 let submissionsCollection = null;
+let surveyResponsesCollection = null;
 
 let mockDb = [];
+let mockSurveyDb = [];
 
 if (isDbConfigured) {
   console.log('[Database] Connecting to MongoDB Atlas...');
@@ -17,6 +19,7 @@ if (isDbConfigured) {
   client.connect().then(() => {
     dbInstance = client.db();
     submissionsCollection = dbInstance.collection('submissions_migrated');
+    surveyResponsesCollection = dbInstance.collection('survey_responses');
     console.log('[Database] MongoDB Atlas connection pool established.');
   }).catch(err => {
     console.error('[Database] MongoDB connection failed:', err.message);
@@ -164,6 +167,42 @@ async function getStats() {
   }
 }
 
+/**
+ * Insert a new survey response.
+ */
+async function insertSurveyResponse(data) {
+  const cleanData = {
+    q1: data.q1 || null,
+    q2: data.q2 || null,
+    q3: data.q3 || null,
+    q4: data.q4 || null,
+    q5: data.q5 || null,
+    q6: data.q6 || null,
+    q7: Array.isArray(data.q7) ? data.q7 : (data.q7 ? [data.q7] : []),
+    q8: data.q8 || '',
+    created_at: new Date()
+  };
+
+  if (surveyResponsesCollection) {
+    await surveyResponsesCollection.insertOne(cleanData);
+    return cleanData;
+  } else {
+    mockSurveyDb.push(cleanData);
+    return cleanData;
+  }
+}
+
+/**
+ * Fetch all survey responses.
+ */
+async function getSurveyResponses() {
+  if (surveyResponsesCollection) {
+    return await surveyResponsesCollection.find({}).sort({ created_at: -1 }).toArray();
+  } else {
+    return [...mockSurveyDb].sort((a, b) => b.created_at - a.created_at);
+  }
+}
+
 module.exports = {
   client,
   isDbConfigured: () => isDbConfigured,
@@ -172,6 +211,9 @@ module.exports = {
   updateSubmission,
   bulkUpdateSubmissions,
   getStats,
+  insertSurveyResponse,
+  getSurveyResponses,
   getMockDb: () => mockDb,
-  setMockDb: (data) => { mockDb = data; }
+  setMockDb: (data) => { mockDb = data; },
+  getMockSurveyDb: () => mockSurveyDb
 };

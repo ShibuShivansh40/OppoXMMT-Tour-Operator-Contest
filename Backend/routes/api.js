@@ -4,6 +4,7 @@ const router = express.Router();
 const uploadController = require('../controllers/uploadController');
 const submissionController = require('../controllers/submissionController');
 const metadataController = require('../controllers/metadataController');
+const surveyController = require('../controllers/surveyController');
 const { apiAuthMiddleware, handleLogin, handleLogout } = require('../middleware/auth');
 
 // 0. Authentication Routing
@@ -27,6 +28,10 @@ router.put('/submissions/:id/score', apiAuthMiddleware('oppo'), submissionContro
 router.get('/metadata/locations', metadataController.getLocations);
 router.get('/metadata/operators', metadataController.getOperators);
 router.get('/metadata/devices', metadataController.getDevices);
+
+// 4. Survey Submission Routing
+router.post('/survey', surveyController.submitSurvey);
+router.get('/survey', apiAuthMiddleware('mmt'), surveyController.getSurveys);
 
 module.exports = router;
 

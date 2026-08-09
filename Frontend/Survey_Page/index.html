@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Super Every Journey Survey | OPPO x MakeMyTrip</title>
+
+  <!-- SEO Tags -->
+  <meta name="description"
+    content="Super Every Journey Contest Survey form by OPPO x MakeMyTrip. Tell us about your travel photography habits and win exciting rewards.">
+  <link rel="shortcut icon" href="//imgak.mmtcdn.com/seo/cms-staticpages/sites/default/files/favicon_0.ico"
+    type="image/vnd.microsoft.icon">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mmtBlue: '#0052e4',
+            mmtIndigo: '#1e3459',
+            mmtOrange: '#ff5a00',
+            oppoGreen: '#005a36',
+            oppoEmerald: '#00b064',
+            oppoMint: '#00e5ff',
+            darkBg: '#050c1a',
+            cardBg: '#0b162c'
+          },
+          fontFamily: {
+            sans: ['Lato', 'Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800;900" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Lato', sans-serif;
+      background-color: #f8fafc;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .custom-bg-gradient {
+      background: linear-gradient(90deg, #89939A 0%, #DCA589 27%, #FA9A4A 65%, #FFCB7E 100%);
+    }
+
+    .required-star {
+      color: #ff3b30;
+      font-weight: bold;
+      margin-left: 0.125rem;
+    }
+
+    .option-card:hover {
+      background-color: rgba(0, 82, 228, 0.04);
+      border-color: rgba(0, 82, 228, 0.3);
+    }
+
+    .option-card.selected {
+      background-color: rgba(0, 82, 228, 0.08);
+      border-color: #0052e4;
+      box-shadow: 0 0 0 1px #0052e4;
+    }
+  </style>
+</head>
+
+<body class="text-slate-800 flex flex-col justify-between antialiased min-h-screen">
+
+  <!-- Desktop Logo Band (MMT logo only) -->
+  <div class="w-full bg-white border-b border-gray-150 py-3.5 px-6 md:px-12">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
+      <a href="https://www.makemytrip.com" target="_blank" rel="noopener noreferrer">
+        <img src="https://promos.makemytrip.com/images/mmtlogo.webp" alt="MakeMyTrip Logo" class="max-w-[125px]">
+      </a>
+      <div class="text-[10px] md:text-xs font-bold text-[#1e3459] uppercase tracking-wider">
+        OPPO x MakeMyTrip Initiative
+      </div>
+    </div>
+  </div>
+
+  <!-- Header Banner -->
+  <header class="w-full relative overflow-hidden">
+    <picture>
+      <!-- REPLACE THIS URL WITH YOUR CLOUD TOP BAND IMAGE URL WHEN READY -->
+      <source media="(max-width: 767px)"
+        srcset="https://oppoxmmt-tour-campaign-mumbai.s3.ap-south-1.amazonaws.com/assets/OppoxMMTSurveyTopBandMobile.webp">
+      <img
+        src="https://oppoxmmt-tour-campaign-mumbai.s3.ap-south-1.amazonaws.com/assets/OppoxMMTSurveyTopBandDesktop.webp"
+        alt="Survey Header Banner" class="w-full h-auto object-cover min-h-[140px] md:min-h-auto">
+    </picture>
+  </header>
+
+  <!-- Title & Intro -->
+  <div class="w-full custom-bg-gradient text-[#1e3459] py-8 px-4">
+    <div class="max-w-3xl mx-auto text-center flex flex-col items-center">
+      <span class="text-xs uppercase tracking-[0.2em] font-extrabold text-[#0052e4] mb-2">Super Every Journey</span>
+      <h1 class="text-2xl md:text-3xl font-black tracking-tight mb-4">Contest Survey</h1>
+      <p class="text-[#334e68] text-xs md:text-sm leading-relaxed font-semibold max-w-xl">
+        Recently completed your trip? We'd love to hear about your travel experience and photography preferences.
+        Complete this short survey for a chance to be one of the Top
+        10 travellers to win an MMT Gift Card worth ₹2,500.<br><br><em>*Terms and conditions apply</em>
+      </p>
+    </div>
+  </div>
+
+  <!-- Main Survey Form Section -->
+  <div class="w-full bg-[#f8fafc] text-slate-800 py-10 px-4 flex-grow">
+    <main class="w-full max-w-3xl mx-auto">
+
+      <!-- Main Card Container -->
+      <div
+        class="custom-bg-gradient text-white rounded-2xl shadow-2xl p-5 md:p-8 flex flex-col gap-6 relative overflow-hidden transition-all duration-300">
+
+        <!-- Notification Alerts -->
+        <div id="notification" class="hidden text-xs rounded-xl p-3 flex items-center gap-2 transition-all"></div>
+
+        <form id="surveyForm" class="flex flex-col gap-6 text-left">
+
+          <!-- SECTION 1: CONTEST PREFERENCES -->
+          <div class="flex flex-col gap-4">
+            <h3 class="text-sm font-extrabold tracking-widest uppercase border-b border-white/20 pb-2 text-[#1e3459]">
+              I. Super Every Journey Contest
+            </h3>
+
+            <!-- Question 1 -->
+            <div
+              class="bg-white rounded-xl p-4 md:p-5 border border-gray-200 shadow-sm text-slate-800 flex flex-col gap-3">
+              <p class="text-xs font-bold text-slate-900 leading-snug">
+                1. Would you participate in a travel photography contest where you could submit your best photo from the
+                trip and win rewards? <span class="required-star">*</span>
+              </p>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="radio" name="q1" value="Definitely" required
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300">
+                  <span class="text-xs font-semibold text-slate-700">Definitely</span>
+                </label>
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="radio" name="q1" value="Maybe" required
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300">
+                  <span class="text-xs font-semibold text-slate-700">Maybe</span>
+                </label>
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="radio" name="q1" value="Unlikely" required
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300">
+                  <span class="text-xs font-semibold text-slate-700">Unlikely</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div
+              class="bg-white rounded-xl p-4 md:p-5 border border-gray-200 shadow-sm text-slate-800 flex flex-col gap-3">
+              <p class="text-xs font-bold text-slate-900 leading-snug">
+                2. What would motivate you most to participate? <span class="required-star">*</span>
+              </p>
+              <div class="flex flex-col gap-2">
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="radio" name="q2" value="Smartphone prize" required
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300">
+                  <span class="text-xs font-semibold text-slate-700">Smartphone prize</span>
+                </label>
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="radio" name="q2" value="MMT travel vouchers" required
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300">
+                  <span class="text-xs font-semibold text-slate-700">MMT travel vouchers</span>
+                </label>
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="radio" name="q2" value="Cash rewards" required
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300">
+                  <span class="text-xs font-semibold text-slate-700">Cash rewards</span>
+                </label>
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="radio" name="q2" value="Recognition & features" required
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300">
+                  <span class="text-xs font-semibold text-slate-700">Recognition & features</span>
+                </label>
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="radio" name="q2" value="Opportunity to enter a global photography competition" required
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300">
+                  <span class="text-xs font-semibold text-slate-700">Opportunity to enter a global photography
+                    competition</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div
+              class="bg-white rounded-xl p-4 md:p-5 border border-gray-200 shadow-sm text-slate-800 flex flex-col gap-3">
+              <p class="text-xs font-bold text-slate-900 leading-snug">
+                3. Would an opportunity for your photograph to progress to OPPO's Global Photography Awards make the
+                contest more exciting for you? <span class="required-star">*</span>
+              </p>
+              <div class="flex flex-col gap-2">
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="radio" name="q3" value="Definitely" required
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300">
+                  <span class="text-xs font-semibold text-slate-700">Definitely</span>
+                </label>
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="radio" name="q3" value="Somewhat" required
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300">
+                  <span class="text-xs font-semibold text-slate-700">Somewhat</span>
+                </label>
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="radio" name="q3" value="No difference" required
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300">
+                  <span class="text-xs font-semibold text-slate-700">No difference</span>
+                </label>
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="radio" name="q3" value="Not interested" required
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300">
+                  <span class="text-xs font-semibold text-slate-700">Not interested</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 2: PRODUCT & BRAND -->
+          <div class="flex flex-col gap-4 mt-2">
+            <h3 class="text-sm font-extrabold tracking-widest uppercase border-b border-white/20 pb-2 text-[#1e3459]">
+              II. Product & Brand
+            </h3>
+
+            <!-- Question 4 -->
+            <div
+              class="bg-white rounded-xl p-4 md:p-5 border border-gray-200 shadow-sm text-slate-800 flex flex-col gap-3">
+              <p class="text-xs font-bold text-slate-900 leading-snug">
+                4. How familiar are you with OPPO's Find Series smartphones? <span class="required-star">*</span>
+              </p>
+              <div class="flex flex-col gap-2">
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="radio" name="q4" value="Very familiar" required
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300">
+                  <span class="text-xs font-semibold text-slate-700">Very familiar</span>
+                </label>
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="radio" name="q4" value="Somewhat familiar" required
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300">
+                  <span class="text-xs font-semibold text-slate-700">Somewhat familiar</span>
+                </label>
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="radio" name="q4" value="Heard of it" required
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300">
+                  <span class="text-xs font-semibold text-slate-700">Heard of it</span>
+                </label>
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="radio" name="q4" value="Not familiar" required
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300">
+                  <span class="text-xs font-semibold text-slate-700">Not familiar</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div
+              class="bg-white rounded-xl p-4 md:p-5 border border-gray-200 shadow-sm text-slate-800 flex flex-col gap-3">
+              <p class="text-xs font-bold text-slate-900 leading-snug">
+                5. Which of these would make you most interested in trying an OPPO phone on your next trip? <span
+                  class="required-star">*</span>
+              </p>
+              <div class="flex flex-col gap-2">
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="radio" name="q5" value="Better camera clarity" required
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300">
+                  <span class="text-xs font-semibold text-slate-700">Better camera clarity</span>
+                </label>
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="radio" name="q5" value="Powerful zoom" required
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300">
+                  <span class="text-xs font-semibold text-slate-700">Powerful zoom</span>
+                </label>
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="radio" name="q5" value="Better portraits" required
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300">
+                  <span class="text-xs font-semibold text-slate-700">Better portraits</span>
+                </label>
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="radio" name="q5" value="Better night photography" required
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300">
+                  <span class="text-xs font-semibold text-slate-700">Better night photography</span>
+                </label>
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="radio" name="q5" value="Long battery life" required
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300">
+                  <span class="text-xs font-semibold text-slate-700">Long battery life</span>
+                </label>
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="radio" name="q5" value="AI photo editing" required
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300">
+                  <span class="text-xs font-semibold text-slate-700">AI photo editing</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 3: BRAND & TRAVEL PHOTOGRAPHY -->
+          <div class="flex flex-col gap-4 mt-2">
+            <h3 class="text-sm font-extrabold tracking-widest uppercase border-b border-white/20 pb-2 text-[#1e3459]">
+              III. Brand & Travel Photography
+            </h3>
+
+            <!-- Question 6 -->
+            <div
+              class="bg-white rounded-xl p-4 md:p-5 border border-gray-200 shadow-sm text-slate-800 flex flex-col gap-3">
+              <p class="text-xs font-bold text-slate-900 leading-snug">
+                6. How important is your smartphone camera when you travel? <span class="required-star">*</span>
+              </p>
+              <div class="flex flex-col gap-2">
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="radio" name="q6" value="Extremely important" required
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300">
+                  <span class="text-xs font-semibold text-slate-700">Extremely important</span>
+                </label>
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="radio" name="q6" value="Very important" required
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300">
+                  <span class="text-xs font-semibold text-slate-700">Very important</span>
+                </label>
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="radio" name="q6" value="Somewhat important" required
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300">
+                  <span class="text-xs font-semibold text-slate-700">Somewhat important</span>
+                </label>
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="radio" name="q6" value="Not important" required
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300">
+                  <span class="text-xs font-semibold text-slate-700">Not important</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Question 7 -->
+            <div
+              class="bg-white rounded-xl p-4 md:p-5 border border-gray-200 shadow-sm text-slate-800 flex flex-col gap-3">
+              <p class="text-xs font-bold text-slate-900 leading-snug">
+                7. What do you use your smartphone camera for most while travelling? <span
+                  class="text-slate-400 font-medium">(Select all that apply)</span> <span class="required-star">*</span>
+              </p>
+              <div class="flex flex-col gap-2" id="q7Group">
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="checkbox" name="q7" value="Landscapes"
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300 rounded">
+                  <span class="text-xs font-semibold text-slate-700">Landscapes</span>
+                </label>
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="checkbox" name="q7" value="People & portraits"
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300 rounded">
+                  <span class="text-xs font-semibold text-slate-700">People & portraits</span>
+                </label>
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="checkbox" name="q7" value="Selfies"
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300 rounded">
+                  <span class="text-xs font-semibold text-slate-700">Selfies</span>
+                </label>
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="checkbox" name="q7" value="Food & culture"
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300 rounded">
+                  <span class="text-xs font-semibold text-slate-700">Food & culture</span>
+                </label>
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="checkbox" name="q7" value="Zoom shots"
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300 rounded">
+                  <span class="text-xs font-semibold text-slate-700">Zoom shots</span>
+                </label>
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="checkbox" name="q7" value="Videos & Reels"
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300 rounded">
+                  <span class="text-xs font-semibold text-slate-700">Videos & Reels</span>
+                </label>
+                <label
+                  class="option-card flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer transition-all duration-200">
+                  <input type="checkbox" name="q7" value="Night photography"
+                    class="w-4 h-4 text-[#0052e4] focus:ring-[#0052e4] border-gray-300 rounded">
+                  <span class="text-xs font-semibold text-slate-700">Night photography</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Question 8 -->
+            <div
+              class="bg-white rounded-xl p-4 md:p-5 border border-gray-200 shadow-sm text-slate-800 flex flex-col gap-3">
+              <p class="text-xs font-bold text-slate-900 leading-snug">
+                8. When you think of a smartphone with a great camera, which brand comes to mind first? <span
+                  class="required-star">*</span>
+              </p>
+              <div>
+                <input type="text" id="q8" placeholder="Type your answer here..." required
+                  class="w-full bg-white border border-gray-300 rounded-lg py-2.5 px-4 text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-xs font-semibold">
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" id="submitSurveyBtn"
+            class="w-full bg-[#1e3459] hover:bg-[#122340] text-white font-extrabold py-3.5 px-4 rounded-xl shadow-lg active:scale-95 transition-all text-sm tracking-wide mt-4 border border-transparent">
+            Submit Feedback
+          </button>
+        </form>
+
+        <!-- Successful Entry Modal -->
+        <div id="successCard"
+          class="hidden absolute inset-0 bg-[#1e3459]/95 flex flex-col items-center justify-center p-6 text-center z-30 transition-all">
+          <div class="text-5xl mb-4 animate-bounce">🎉</div>
+          <h3 class="text-2xl font-extrabold text-white font-sans">Feedback Submitted!</h3>
+          <p class="text-gray-300 text-xs mt-3 max-w-xs leading-relaxed">
+            Thank you for sharing your feedback. Your response has been successfully logged.
+          </p>
+          <button type="button" id="resetBtn"
+            class="mt-8 bg-white/10 hover:bg-white/20 text-white font-bold py-2.5 px-6 rounded-lg text-xs tracking-wider uppercase transition-all">
+            Submit another response
+          </button>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="w-full custom-bg-gradient border-t border-white/5 py-6 px-6 md:px-12 text-[#1e3459] text-xs">
+    <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="font-bold text-center md:text-left">
+        Super Every Journey <span class="text-[#1e3459] font-black">#SuperEveryJourney</span> <span
+          class="text-[#1e3459] font-black">#ShotOnOPPO</span>
+      </div>
+      <div class="font-black text-center md:text-right">
+        A MakeMyTrip x OPPO Initiative
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script Logic -->
+  <script>
+    // State management
+    let state = {
+      apiBaseUrl: window.location.origin
+    };
+
+    // Initialize API Base Url
+    if (window.location.origin && window.location.origin !== 'null') {
+      state.apiBaseUrl = window.location.origin;
+    } else {
+      state.apiBaseUrl = 'http://localhost:8080';
+    }
+
+    const elements = {
+      notification: document.getElementById('notification'),
+      surveyForm: document.getElementById('surveyForm'),
+      submitSurveyBtn: document.getElementById('submitSurveyBtn'),
+      successCard: document.getElementById('successCard'),
+      resetBtn: document.getElementById('resetBtn'),
+      q8: document.getElementById('q8')
+    };
+
+    // Styling logic for radio and checkbox items to add visual feedback on check/select
+    const options = document.querySelectorAll('.option-card');
+    options.forEach(card => {
+      const input = card.querySelector('input');
+
+      // Update initial checked state styles on boot
+      if (input.checked) {
+        card.classList.add('selected');
+      }
+
+      card.addEventListener('click', () => {
+        // Radio logic: clear other radios in same group
+        if (input.type === 'radio') {
+          const groupName = input.name;
+          const groupCards = document.querySelectorAll(`input[name="${groupName}"]`);
+          groupCards.forEach(item => {
+            item.closest('.option-card').classList.remove('selected');
+          });
+        }
+
+        // Wait a tick for the browser check event, then apply styles
+        setTimeout(() => {
+          if (input.checked) {
+            card.classList.add('selected');
+          } else {
+            card.classList.remove('selected');
+          }
+        }, 10);
+      });
+    });
+
+    // Alert helper
+    function showNotification(text, type = 'success') {
+      elements.notification.className = 'text-xs rounded-xl p-3 flex items-center gap-2 transition-all';
+      if (type === 'error') {
+        elements.notification.classList.add('bg-red-500/10', 'text-red-400', 'border', 'border-red-500/20');
+      } else {
+        elements.notification.classList.add('bg-emerald-500/10', 'text-oppoMint', 'border', 'border-emerald-500/20');
+      }
+      elements.notification.innerText = text;
+      elements.notification.classList.remove('hidden');
+
+      setTimeout(() => {
+        elements.notification.classList.add('hidden');
+      }, 5000);
+    }
+
+    // Submit Action
+    elements.surveyForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Validate checkboxes (Q7)
+      const checkedBoxes = document.querySelectorAll('input[name="q7"]:checked');
+      if (checkedBoxes.length === 0) {
+        showNotification('Please select at least one travel photography use case for question 7.', 'error');
+        return;
+      }
+
+      // Gather radio values
+      const q1Val = document.querySelector('input[name="q1"]:checked')?.value;
+      const q2Val = document.querySelector('input[name="q2"]:checked')?.value;
+      const q3Val = document.querySelector('input[name="q3"]:checked')?.value;
+      const q4Val = document.querySelector('input[name="q4"]:checked')?.value;
+      const q5Val = document.querySelector('input[name="q5"]:checked')?.value;
+      const q6Val = document.querySelector('input[name="q6"]:checked')?.value;
+      const q7Val = Array.from(checkedBoxes).map(cb => cb.value);
+      const q8Val = elements.q8.value.trim();
+
+      // Submit lock
+      elements.submitSurveyBtn.disabled = true;
+      elements.submitSurveyBtn.innerText = 'Submitting your responses...';
+
+      try {
+        const response = await fetch(`${state.apiBaseUrl}/api/survey`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            q1: q1Val,
+            q2: q2Val,
+            q3: q3Val,
+            q4: q4Val,
+            q5: q5Val,
+            q6: q6Val,
+            q7: q7Val,
+            q8: q8Val
+          })
+        });
+
+        const resData = await response.json();
+
+        if (response.ok && resData.success) {
+          elements.successCard.classList.remove('hidden');
+        } else {
+          throw new Error(resData.message || 'Submission failed');
+        }
+      } catch (err) {
+        console.error(err);
+        showNotification(err.message || 'Connection error. Please try again.', 'error');
+      } finally {
+        elements.submitSurveyBtn.disabled = false;
+        elements.submitSurveyBtn.innerText = 'Submit Feedback';
+      }
+    });
+
+    // Reset Form
+    elements.resetBtn.addEventListener('click', () => {
+      elements.surveyForm.reset();
+      options.forEach(card => card.classList.remove('selected'));
+      elements.successCard.classList.add('hidden');
+    });
+  </script>
+</body>
+
+</html>

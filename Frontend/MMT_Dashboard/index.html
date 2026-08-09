@@ -133,6 +133,10 @@
           class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 hover:text-white text-slate-400 font-bold text-sm transition-all duration-300 text-left">
           <span>🖼️</span> UGC Gallery
         </button>
+        <button id="navSurvey"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 hover:text-white text-slate-400 font-bold text-sm transition-all duration-300 text-left w-full">
+          <span>📝</span> Survey Responses
+        </button>
         <button onclick="window.location.href='/MMT_Dashboard/bulk_approve.html'"
           class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 hover:text-white text-slate-400 font-bold text-sm transition-all duration-300 text-left">
           <span>⚡</span> Bulk Approve
@@ -164,6 +168,11 @@
         class="flex-1 flex flex-col items-center justify-center gap-1 py-3 text-slate-400 border-t-2 border-transparent transition-all">
         <span class="text-lg">🖼️</span>
         <span class="text-[10px] font-bold uppercase tracking-wide">Gallery</span>
+      </button>
+      <button id="navSurveyMobile"
+        class="flex-1 flex flex-col items-center justify-center gap-1 py-3 text-slate-400 border-t-2 border-transparent transition-all">
+        <span class="text-lg">📝</span>
+        <span class="text-[10px] font-bold uppercase tracking-wide">Survey</span>
       </button>
     </nav>
 
@@ -445,6 +454,73 @@
         </div>
       </section>
 
+      <!-- PAGE 4: SURVEY RESPONSES (Initially hidden) -->
+      <section id="sectionSurvey" class="hidden flex flex-col gap-6">
+        <div>
+          <h2 class="text-2xl md:text-3xl font-black tracking-tight text-white uppercase">Survey <span
+              class="custom-gradient-text text-glow">Responses</span></h2>
+          <p class="text-sm text-slate-400 mt-1">Monitor feedback and responses submitted by travellers for the Super Every Journey Contest.</p>
+        </div>
+
+        <!-- Survey Stats Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="glass-card rounded-2xl p-5 flex items-center justify-between">
+            <div>
+              <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Total Surveys</p>
+              <h3 id="surveyStatTotal" class="text-2xl font-extrabold text-white mt-1">0</h3>
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 text-[#00e5ff] flex items-center justify-center text-lg">📝</div>
+          </div>
+          <div class="glass-card rounded-2xl p-5 flex items-center justify-between">
+            <div>
+              <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Would Participate</p>
+              <h3 id="surveyStatParticipate" class="text-2xl font-extrabold text-oppoEmerald mt-1">0%</h3>
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-oppoEmerald flex items-center justify-center text-lg">📈</div>
+          </div>
+          <div class="glass-card rounded-2xl p-5 flex items-center justify-between">
+            <div>
+              <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Familiar with Find</p>
+              <h3 id="surveyStatFamiliar" class="text-2xl font-extrabold text-oppoMint mt-1">0%</h3>
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-oppoMint flex items-center justify-center text-lg">📱</div>
+          </div>
+          <div class="glass-card rounded-2xl p-5 flex items-center justify-between">
+            <div>
+              <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Camera Important</p>
+              <h3 id="surveyStatCamera" class="text-2xl font-extrabold text-mmtOrange mt-1">0%</h3>
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/20 text-mmtOrange flex items-center justify-center text-lg">📷</div>
+          </div>
+        </div>
+
+        <!-- Responses List Container -->
+        <div class="glass-card rounded-2xl p-6 min-h-[300px] flex flex-col gap-6 border border-white/5 bg-[#0b162c]/40">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold text-slate-300 uppercase tracking-wider">Responses List</h3>
+            <span id="surveyResponsesCountLabel" class="text-xxs bg-white/10 px-2.5 py-1 rounded-full text-slate-300 font-bold">0 Items</span>
+          </div>
+
+          <!-- Loading State -->
+          <div id="surveyLoading" class="py-12 text-center flex flex-col items-center gap-3">
+            <span class="text-2xl animate-spin">⏳</span>
+            <p class="text-xs font-semibold text-slate-400">Loading survey responses from database...</p>
+          </div>
+
+          <!-- Empty State -->
+          <div id="surveyEmpty" class="hidden py-12 text-center flex flex-col items-center gap-3">
+            <span class="text-3xl">📝</span>
+            <p class="text-sm font-bold text-white">No survey responses recorded yet</p>
+            <p class="text-xs text-slate-500">As travellers complete the survey, their feedback will appear here.</p>
+          </div>
+
+          <!-- Responses Grid -->
+          <div id="surveyGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6 hidden">
+            <!-- Dynamically populated response card elements -->
+          </div>
+        </div>
+      </section>
+
     </main>
   </div>
 
@@ -527,14 +603,17 @@
       navOverview: document.getElementById('navOverview'),
       navModeration: document.getElementById('navModeration'),
       navGallery: document.getElementById('navGallery'),
+      navSurvey: document.getElementById('navSurvey'),
       navOverviewMobile: document.getElementById('navOverviewMobile'),
       navModerationMobile: document.getElementById('navModerationMobile'),
       navGalleryMobile: document.getElementById('navGalleryMobile'),
+      navSurveyMobile: document.getElementById('navSurveyMobile'),
       pendingBadge: document.getElementById('pendingBadge'),
       pendingBadgeMobile: document.getElementById('pendingBadgeMobile'),
       sectionOverview: document.getElementById('sectionOverview'),
       sectionModeration: document.getElementById('sectionModeration'),
       sectionGallery: document.getElementById('sectionGallery'),
+      sectionSurvey: document.getElementById('sectionSurvey'),
       goToQueueBtn: document.getElementById('goToQueueBtn'),
       filterAll: document.getElementById('filterAll'),
       filterPending: document.getElementById('filterPending'),
@@ -551,6 +630,14 @@
       kpiApproved: document.getElementById('kpiApproved'),
       kpiPending: document.getElementById('kpiPending'),
       kpiLocations: document.getElementById('kpiLocations'),
+      surveyLoading: document.getElementById('surveyLoading'),
+      surveyEmpty: document.getElementById('surveyEmpty'),
+      surveyGrid: document.getElementById('surveyGrid'),
+      surveyStatTotal: document.getElementById('surveyStatTotal'),
+      surveyStatParticipate: document.getElementById('surveyStatParticipate'),
+      surveyStatFamiliar: document.getElementById('surveyStatFamiliar'),
+      surveyStatCamera: document.getElementById('surveyStatCamera'),
+      surveyResponsesCountLabel: document.getElementById('surveyResponsesCountLabel'),
       imageModal: document.getElementById('imageModal'),
       modalImg: document.getElementById('modalImg'),
       logoutBtn: document.getElementById('logoutBtn')
@@ -590,7 +677,8 @@
       const tabs = [
         { el: elements.navOverview, name: 'overview' },
         { el: elements.navModeration, name: 'moderation' },
-        { el: elements.navGallery, name: 'gallery' }
+        { el: elements.navGallery, name: 'gallery' },
+        { el: elements.navSurvey, name: 'survey' }
       ];
       tabs.forEach(item => {
         if (item.el) {
@@ -608,7 +696,8 @@
       const mobileTabs = [
         { el: elements.navOverviewMobile, name: 'overview' },
         { el: elements.navModerationMobile, name: 'moderation' },
-        { el: elements.navGalleryMobile, name: 'gallery' }
+        { el: elements.navGalleryMobile, name: 'gallery' },
+        { el: elements.navSurveyMobile, name: 'survey' }
       ];
       mobileTabs.forEach(item => {
         if (item.el) {
@@ -626,18 +715,22 @@
       elements.sectionOverview.classList.toggle('hidden', tabName !== 'overview');
       elements.sectionModeration.classList.toggle('hidden', tabName !== 'moderation');
       elements.sectionGallery.classList.toggle('hidden', tabName !== 'gallery');
+      elements.sectionSurvey.classList.toggle('hidden', tabName !== 'survey');
 
       // Load specific tab data
       if (tabName === 'moderation') {
         fetchSubmissions();
       } else if (tabName === 'gallery') {
         fetchGallerySubmissions();
+      } else if (tabName === 'survey') {
+        fetchSurveyResponses();
       }
     }
 
     elements.navOverview.addEventListener('click', () => setTab('overview'));
     elements.navModeration.addEventListener('click', () => setTab('moderation'));
     elements.navGallery.addEventListener('click', () => setTab('gallery'));
+    elements.navSurvey.addEventListener('click', () => setTab('survey'));
     elements.goToQueueBtn.addEventListener('click', () => setTab('moderation'));
 
     // Logout action handler
@@ -667,6 +760,7 @@
     if (elements.navOverviewMobile) elements.navOverviewMobile.addEventListener('click', () => setTab('overview'));
     if (elements.navModerationMobile) elements.navModerationMobile.addEventListener('click', () => setTab('moderation'));
     if (elements.navGalleryMobile) elements.navGalleryMobile.addEventListener('click', () => setTab('gallery'));
+    if (elements.navSurveyMobile) elements.navSurveyMobile.addEventListener('click', () => setTab('survey'));
 
     // Filter lists inside moderation queue
     function setFilter(filterType) {
@@ -1482,6 +1576,110 @@
       }
 
       elements.imageModal.classList.remove('hidden');
+    }
+
+    async function fetchSurveyResponses() {
+      elements.surveyLoading.classList.remove('hidden');
+      elements.surveyEmpty.classList.add('hidden');
+      elements.surveyGrid.classList.add('hidden');
+
+      try {
+        const res = await fetch(`${state.apiBaseUrl}/api/survey`);
+        const result = await res.json();
+
+        if (res.ok && result.success) {
+          const responses = result.data || [];
+          renderSurveyResponses(responses);
+        } else {
+          throw new Error(result.message || 'Failed to fetch surveys');
+        }
+      } catch (err) {
+        console.error('Failed to load surveys:', err);
+        showToast(err.message || 'Error loading survey responses.', 'error');
+        elements.surveyLoading.classList.add('hidden');
+        elements.surveyEmpty.classList.remove('hidden');
+      }
+    }
+
+    function renderSurveyResponses(responses) {
+      elements.surveyLoading.classList.add('hidden');
+
+      // Calculate stats
+      const total = responses.length;
+      const countDef = responses.filter(r => r.q1 === 'Definitely').length;
+      const countFamiliar = responses.filter(r => r.q4 === 'Very familiar' || r.q4 === 'Somewhat familiar').length;
+      const countCamera = responses.filter(r => r.q6 === 'Extremely important' || r.q6 === 'Very important').length;
+
+      elements.surveyStatTotal.innerText = total;
+      elements.surveyStatParticipate.innerText = total ? Math.round((countDef / total) * 100) + '%' : '0%';
+      elements.surveyStatFamiliar.innerText = total ? Math.round((countFamiliar / total) * 100) + '%' : '0%';
+      elements.surveyStatCamera.innerText = total ? Math.round((countCamera / total) * 100) + '%' : '0%';
+      elements.surveyResponsesCountLabel.innerText = `${total} Items`;
+
+      if (total === 0) {
+        elements.surveyEmpty.classList.remove('hidden');
+        elements.surveyGrid.classList.add('hidden');
+        return;
+      }
+
+      elements.surveyEmpty.classList.add('hidden');
+      elements.surveyGrid.classList.remove('hidden');
+      elements.surveyGrid.innerHTML = '';
+
+      responses.forEach((r, idx) => {
+        const dateObj = r.created_at ? new Date(r.created_at) : new Date();
+        const dateStr = dateObj.toLocaleString('en-IN', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+
+        const card = document.createElement('div');
+        card.className = 'bg-[#0b162c]/60 border border-white/5 rounded-2xl p-5 flex flex-col gap-4 text-xs font-sans text-slate-300';
+        card.innerHTML = `
+          <div class="flex items-center justify-between border-b border-white/5 pb-2">
+            <span class="font-black text-oppoMint uppercase tracking-wider text-[10px]">Response #${total - idx}</span>
+            <span class="text-slate-500 font-bold text-[10px]">${dateStr}</span>
+          </div>
+          <div class="flex flex-col gap-3">
+            <div>
+              <p class="text-slate-500 font-bold text-[9px] uppercase tracking-wide">Q1. Would participate in photography contest?</p>
+              <p class="text-white font-bold mt-0.5">${r.q1 || '—'}</p>
+            </div>
+            <div>
+              <p class="text-slate-500 font-bold text-[9px] uppercase tracking-wide">Q2. Motivation to participate?</p>
+              <p class="text-white font-bold mt-0.5">${r.q2 || '—'}</p>
+            </div>
+            <div>
+              <p class="text-slate-500 font-bold text-[9px] uppercase tracking-wide">Q3. Progress to OPPO Global Awards excitement?</p>
+              <p class="text-white font-bold mt-0.5">${r.q3 || '—'}</p>
+            </div>
+            <div>
+              <p class="text-slate-500 font-bold text-[9px] uppercase tracking-wide">Q4. Familiarity with Find Series?</p>
+              <p class="text-white font-bold mt-0.5">${r.q4 || '—'}</p>
+            </div>
+            <div>
+              <p class="text-slate-500 font-bold text-[9px] uppercase tracking-wide">Q5. Triggers to try OPPO phone?</p>
+              <p class="text-white font-bold mt-0.5">${r.q5 || '—'}</p>
+            </div>
+            <div>
+              <p class="text-slate-500 font-bold text-[9px] uppercase tracking-wide">Q6. Smartphone camera travel importance?</p>
+              <p class="text-white font-bold mt-0.5">${r.q6 || '—'}</p>
+            </div>
+            <div>
+              <p class="text-slate-500 font-bold text-[9px] uppercase tracking-wide">Q7. Travel camera main use cases?</p>
+              <p class="text-white font-bold mt-0.5">${Array.isArray(r.q7) ? r.q7.join(', ') : (r.q7 || '—')}</p>
+            </div>
+            <div class="bg-blue-500/5 border border-blue-500/10 rounded-xl p-3 mt-1 flex flex-col gap-0.5">
+              <p class="text-oppoMint font-black text-[9px] uppercase tracking-wider">Q8. Top of mind smartphone camera brand</p>
+              <p class="text-[#00e5ff] font-extrabold text-sm uppercase tracking-wide text-glow">${r.q8 || '—'}</p>
+            </div>
+          </div>
+        `;
+        elements.surveyGrid.appendChild(card);
+      });
     }
 
     // Prevents closing modal immediately due to click bubbling
