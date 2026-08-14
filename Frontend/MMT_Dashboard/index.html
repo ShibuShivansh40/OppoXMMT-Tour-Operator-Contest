@@ -1644,6 +1644,13 @@
             <span class="text-slate-500 font-bold text-[10px]">${dateStr}</span>
           </div>
           <div class="flex flex-col gap-3">
+            <div class="bg-white/5 border border-white/5 rounded-xl p-3 mb-1 flex flex-col gap-1 text-[11px]">
+              <p class="text-oppoMint font-black text-[9px] uppercase tracking-wider mb-1">Participant Details</p>
+              <p class="text-white font-extrabold"><span class="text-slate-400 font-bold">Name:</span> ${r.name || '—'}</p>
+              <p class="text-white font-semibold"><span class="text-slate-400 font-bold">Location:</span> ${r.location || '—'}</p>
+              <p class="text-white font-semibold"><span class="text-slate-400 font-bold">Email:</span> ${r.email || '—'}</p>
+              <p class="text-white font-semibold"><span class="text-slate-400 font-bold">Phone:</span> ${r.phone || '—'}</p>
+            </div>
             <div>
               <p class="text-slate-500 font-bold text-[9px] uppercase tracking-wide">Q1. Would participate in photography contest?</p>
               <p class="text-white font-bold mt-0.5">${r.q1 || '—'}</p>

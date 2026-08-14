@@ -172,6 +172,10 @@ async function getStats() {
  */
 async function insertSurveyResponse(data) {
   const cleanData = {
+    name: data.name || '',
+    location: data.location || '',
+    email: data.email || '',
+    phone: data.phone || '',
     q1: data.q1 || null,
     q2: data.q2 || null,
     q3: data.q3 || null,

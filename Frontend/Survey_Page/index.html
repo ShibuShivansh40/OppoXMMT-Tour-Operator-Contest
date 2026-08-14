@@ -121,10 +121,55 @@
 
         <form id="surveyForm" class="flex flex-col gap-6 text-left">
 
-          <!-- SECTION 1: CONTEST PREFERENCES -->
+          <!-- SECTION 1: CONTACT DETAILS -->
           <div class="flex flex-col gap-4">
             <h3 class="text-sm font-extrabold tracking-widest uppercase border-b border-white/20 pb-2 text-[#1e3459]">
-              I. Super Every Journey Contest
+              I. Contact Details (For Winner Identification)
+            </h3>
+
+            <div class="bg-white rounded-xl p-4 md:p-5 border border-gray-200 shadow-sm text-slate-800 flex flex-col gap-4">
+              <!-- Name -->
+              <div class="flex flex-col gap-1.5">
+                <label for="name" class="text-xs font-bold text-slate-900">
+                  Full Name <span class="required-star">*</span>
+                </label>
+                <input type="text" id="name" placeholder="Enter your full name" required
+                  class="w-full bg-white border border-gray-300 rounded-lg py-2.5 px-4 text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-xs font-semibold">
+              </div>
+
+              <!-- Location -->
+              <div class="flex flex-col gap-1.5">
+                <label for="location" class="text-xs font-bold text-slate-900">
+                  Location (City, State) <span class="required-star">*</span>
+                </label>
+                <input type="text" id="location" placeholder="Enter your current location" required
+                  class="w-full bg-white border border-gray-300 rounded-lg py-2.5 px-4 text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-xs font-semibold">
+              </div>
+
+              <!-- Email -->
+              <div class="flex flex-col gap-1.5">
+                <label for="email" class="text-xs font-bold text-slate-900">
+                  Email Address <span class="required-star">*</span>
+                </label>
+                <input type="email" id="email" placeholder="Enter your email address" required
+                  class="w-full bg-white border border-gray-300 rounded-lg py-2.5 px-4 text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-xs font-semibold">
+              </div>
+
+              <!-- Phone Number -->
+              <div class="flex flex-col gap-1.5">
+                <label for="phone" class="text-xs font-bold text-slate-900">
+                  Phone Number <span class="required-star">*</span>
+                </label>
+                <input type="tel" id="phone" placeholder="Enter your 10-digit mobile number" required pattern="[0-9]{10}" title="Please enter a valid 10-digit mobile number"
+                  class="w-full bg-white border border-gray-300 rounded-lg py-2.5 px-4 text-slate-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0052e4] focus:border-transparent transition-all text-xs font-semibold">
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 2: CONTEST PREFERENCES -->
+          <div class="flex flex-col gap-4">
+            <h3 class="text-sm font-extrabold tracking-widest uppercase border-b border-white/20 pb-2 text-[#1e3459]">
+              II. Super Every Journey Contest
             </h3>
 
             <!-- Question 1 -->
@@ -233,10 +278,10 @@
             </div>
           </div>
 
-          <!-- SECTION 2: PRODUCT & BRAND -->
+          <!-- SECTION 3: PRODUCT & BRAND -->
           <div class="flex flex-col gap-4 mt-2">
             <h3 class="text-sm font-extrabold tracking-widest uppercase border-b border-white/20 pb-2 text-[#1e3459]">
-              II. Product & Brand
+              III. Product & Brand
             </h3>
 
             <!-- Question 4 -->
@@ -321,10 +366,10 @@
             </div>
           </div>
 
-          <!-- SECTION 3: BRAND & TRAVEL PHOTOGRAPHY -->
+          <!-- SECTION 4: BRAND & TRAVEL PHOTOGRAPHY -->
           <div class="flex flex-col gap-4 mt-2">
             <h3 class="text-sm font-extrabold tracking-widest uppercase border-b border-white/20 pb-2 text-[#1e3459]">
-              III. Brand & Travel Photography
+              IV. Brand & Travel Photography
             </h3>
 
             <!-- Question 6 -->
@@ -487,7 +532,11 @@
       submitSurveyBtn: document.getElementById('submitSurveyBtn'),
       successCard: document.getElementById('successCard'),
       resetBtn: document.getElementById('resetBtn'),
-      q8: document.getElementById('q8')
+      q8: document.getElementById('q8'),
+      name: document.getElementById('name'),
+      location: document.getElementById('location'),
+      email: document.getElementById('email'),
+      phone: document.getElementById('phone')
     };
 
     // Styling logic for radio and checkbox items to add visual feedback on check/select
@@ -548,7 +597,11 @@
         return;
       }
 
-      // Gather radio values
+      // Gather contact and question values
+      const nameVal = elements.name.value.trim();
+      const locationVal = elements.location.value.trim();
+      const emailVal = elements.email.value.trim();
+      const phoneVal = elements.phone.value.trim();
       const q1Val = document.querySelector('input[name="q1"]:checked')?.value;
       const q2Val = document.querySelector('input[name="q2"]:checked')?.value;
       const q3Val = document.querySelector('input[name="q3"]:checked')?.value;
@@ -569,6 +622,10 @@
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
+            name: nameVal,
+            location: locationVal,
+            email: emailVal,
+            phone: phoneVal,
             q1: q1Val,
             q2: q2Val,
             q3: q3Val,

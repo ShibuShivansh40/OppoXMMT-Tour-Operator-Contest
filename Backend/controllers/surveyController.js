@@ -6,13 +6,13 @@ const db = require('../config/db');
  */
 async function submitSurvey(req, res) {
   try {
-    const { q1, q2, q3, q4, q5, q6, q7, q8 } = req.body;
+    const { q1, q2, q3, q4, q5, q6, q7, q8, name, location, email, phone } = req.body;
 
     // Validation checks
-    if (!q1 || !q2 || !q3 || !q4 || !q5 || !q6 || !q8) {
+    if (!q1 || !q2 || !q3 || !q4 || !q5 || !q6 || !q8 || !name || !location || !email || !phone) {
       return res.status(400).json({
         success: false,
-        message: 'All questions are required. Please answer all fields.'
+        message: 'All questions and contact fields are required. Please answer all fields.'
       });
     }
 
@@ -25,7 +25,7 @@ async function submitSurvey(req, res) {
 
     // Insert into database
     const savedResponse = await db.insertSurveyResponse({
-      q1, q2, q3, q4, q5, q6, q7, q8
+      q1, q2, q3, q4, q5, q6, q7, q8, name, location, email, phone
     });
 
     return res.status(201).json({
