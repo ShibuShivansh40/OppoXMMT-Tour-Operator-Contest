@@ -1,0 +1,2298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MakeMyTrip | OPPO Reno16 Light Edition</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+
+    <style>
+        /* Core Reset & Light Theme Palette */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-color: #f8fafc;
+            --bg-card: rgba(255, 255, 255, 0.82);
+            --bg-card-solid: #ffffff;
+            --border-subtle: rgba(15, 23, 42, 0.08);
+            --border-glow: rgba(2, 132, 199, 0.35);
+            --primary: #0284c7;
+            --primary-glow: rgba(2, 132, 199, 0.25);
+            --primary-dark: #0369a1;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --accent-soft: #e0f2fe;
+            --card-shadow: 0 18px 40px -10px rgba(15, 23, 42, 0.08);
+            --radius-lg: 24px;
+        }
+
+        html,
+        body {
+            width: 100%;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: auto !important;
+        }
+
+        /* Lenis Smooth Scroll */
+        html.lenis {
+            height: auto;
+        }
+
+        .lenis-smooth {
+            scroll-behavior: auto !important;
+        }
+
+        .lenis-smooth [data-lenis-prevent] {
+            overscroll-behavior: contain;
+        }
+
+        .lenis-stopped {
+            overflow: hidden;
+        }
+
+        /* Custom Light Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* Glassmorphism & UI Tokens */
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--card-shadow);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            background: var(--accent-soft);
+            color: var(--primary-dark);
+            border: 1px solid rgba(2, 132, 199, 0.25);
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        /* Navigation Header */
+        .logoContainer {
+            padding: 16px 6%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logoContainer img {
+            max-width: 110px;
+            height: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s, transform 0.2s;
+            opacity: 0.8;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+            opacity: 1;
+            transform: translateY(-1px);
+        }
+
+        /* Top Banner Hero Image */
+        .top-banner {
+            width: 100%;
+            margin-top: 56px;
+            overflow: hidden;
+            position: relative;
+            background: #f8fafc;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .top-banner img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* UNIFIED 3D STICKY CANVAS WRAPPER */
+        .sticky-experience-wrapper {
+            position: relative;
+            width: 100%;
+            background: radial-gradient(circle at 50% 15%, #e0f2fe 0%, #f8fafc 70%);
+            z-index: 1;
+        }
+
+        .three-canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 2;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        /* HERO SECTION */
+        .hero-section {
+            min-height: 80vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 30px 20px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .glow-orb {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(186, 230, 253, 0.7) 0%, rgba(248, 250, 252, 0) 70%);
+            top: 25%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            filter: blur(60px);
+        }
+
+        .hero-content {
+            max-width: 900px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content .eyebrow {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 6px;
+            color: var(--primary);
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 18px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .hero-title {
+            font-size: clamp(3.2rem, 7vw, 6.2rem);
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            background: linear-gradient(180deg, #0f172a 0%, #334155 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 24px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.05rem, 2vw, 1.3rem);
+            font-weight: 400;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .scroll-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .scroll-indicator span {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: var(--text-muted);
+        }
+
+        .mouse-icon {
+            width: 24px;
+            height: 38px;
+            border: 2px solid var(--text-muted);
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .mouse-icon .wheel {
+            width: 4px;
+            height: 8px;
+            background-color: var(--primary);
+            border-radius: 2px;
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: scrollWheel 1.5s infinite;
+        }
+
+        @keyframes scrollWheel {
+            0% {
+                top: 6px;
+                opacity: 1;
+            }
+
+            100% {
+                top: 20px;
+                opacity: 0;
+            }
+        }
+
+        /* 3D SHOWCASE SECTION */
+        .showcase-section {
+            height: 100vh;
+            width: 100%;
+            position: relative;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .showcase-sticky {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 12%;
+        }
+
+        .showcase-text-wrapper {
+            width: 460px;
+            height: 360px;
+            position: relative;
+        }
+
+        .showcase-text-card {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transform: translateY(30px);
+            pointer-events: none;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .showcase-text-card.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .showcase-text-card h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 16px;
+            color: var(--text-main);
+        }
+
+        .showcase-text-card p {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            line-height: 1.65;
+        }
+
+        /* FEATURES SECTION (Phone pinned left, cards on right) */
+        .features-section {
+            position: relative;
+            z-index: 3;
+            padding: 40px 0 60px 0;
+        }
+
+        .features-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px 0 20px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .features-spacer {
+            width: 58%;
+            pointer-events: none;
+        }
+
+        .features-cards-list {
+            width: 42%;
+            max-width: 540px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .feature-card {
+            padding: 26px 28px;
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .feature-card-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(2, 132, 199, 0.08) 0%, rgba(255, 255, 255, 0) 60%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+
+        .feature-card:hover .feature-card-glow {
+            opacity: 1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px -10px rgba(2, 132, 199, 0.15);
+        }
+
+        .feature-icon-wrapper {
+            width: 58px;
+            height: 58px;
+            border-radius: 16px;
+            background: var(--accent-soft);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+            transition: transform 0.4s;
+        }
+
+        .feature-card:hover .feature-icon-wrapper {
+            transform: scale(1.08) rotate(4deg);
+            background: #bae6fd;
+        }
+
+        .feature-icon {
+            width: 34px;
+            height: 34px;
+            object-fit: contain;
+        }
+
+        .feature-text-content {
+            flex: 1;
+        }
+
+        .feature-card h3 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--text-main);
+        }
+
+        .feature-card p {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* SCROLLABLE REELS SECTION WITH PINNED PROGRESSION */
+        .reels-section-wrapper {
+            padding: 50px 0 40px;
+            background: #f1f5f9;
+            position: relative;
+            z-index: 4;
+            overflow: hidden;
+            border-top: 1px solid var(--border-subtle);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .reels-section-wrapper h2 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+            color: var(--text-main);
+        }
+
+        .reels-section-wrapper p.section-sub {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            font-size: 1.05rem;
+        }
+
+        .swiper-container {
+            width: 100%;
+            padding: 15px 0 30px;
+        }
+
+        .swiper-slide {
+            width: 260px;
+            height: 462px;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            background: #000;
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.15);
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .swiper-slide:hover {
+            border-color: var(--primary);
+            transform: scale(1.04);
+            box-shadow: 0 20px 45px rgba(2, 132, 199, 0.25);
+        }
+
+        .swiper-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.9;
+            transition: opacity 0.4s, transform 0.4s;
+        }
+
+        .swiper-slide:hover img {
+            opacity: 0.75;
+            transform: scale(1.05);
+        }
+
+        .play-button-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 56px;
+            height: 56px;
+            background: rgba(2, 132, 199, 0.9);
+            backdrop-filter: blur(8px);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 8px 20px rgba(2, 132, 199, 0.4);
+            opacity: 0.85;
+            transition: all 0.3s;
+        }
+
+        .swiper-slide:hover .play-button-overlay {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.1);
+            background: var(--primary);
+        }
+
+        .play-button-overlay::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-top: 9px solid transparent;
+            border-bottom: 9px solid transparent;
+            border-left: 14px solid #ffffff;
+            margin-left: 4px;
+        }
+
+        .swiper-slide-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 24px 18px;
+            background: linear-gradient(transparent, rgba(15, 23, 42, 0.92));
+            text-align: left;
+            color: #ffffff;
+        }
+
+        .swiper-slide-overlay span {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #38bdf8;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .swiper-slide-overlay h4 {
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        /* VIDEO MODAL POPUP */
+        .video-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .video-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .phone-mockup {
+            width: 320px;
+            height: 640px;
+            background: #000;
+            border: 6px solid #334155;
+            border-radius: 40px;
+            position: relative;
+            z-index: 1002;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            transform: scale(0.85) translateY(40px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .video-modal.active .phone-mockup {
+            transform: scale(1) translateY(0);
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 110px;
+            height: 22px;
+            background: #334155;
+            border-bottom-left-radius: 16px;
+            border-bottom-right-radius: 16px;
+            z-index: 1010;
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            right: 40px;
+            top: 40px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 22px;
+            cursor: pointer;
+            z-index: 1011;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: none;
+        }
+
+        .modal-close-btn:hover {
+            background: var(--primary);
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        .phone-screen-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: #000;
+        }
+
+        .phone-screen-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .insta-overlay-ui {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px 18px 18px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.95));
+            z-index: 1008;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            color: #fff;
+        }
+
+        .insta-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .insta-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            background: #fff;
+        }
+
+        .insta-username {
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .insta-caption {
+            font-size: 12px;
+            line-height: 1.4;
+            color: #f1f5f9;
+            max-width: 80%;
+        }
+
+        /* HORIZONTAL PARALLAX PACKAGES SECTION */
+        .horizontal-section {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            z-index: 4;
+            overflow: hidden;
+            background: #f8fafc;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .horizontal-sticky {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .horizontal-scroll-container {
+            display: flex;
+            align-items: center;
+            padding-left: 8vw;
+            padding-right: 15vw;
+            width: max-content;
+            height: 100%;
+        }
+
+        .horizontal-intro {
+            width: 380px;
+            padding-right: 60px;
+            flex-shrink: 0;
+        }
+
+        .horizontal-intro h2 {
+            font-size: 3rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            color: var(--text-main);
+        }
+
+        .horizontal-intro p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        .destination-card {
+            width: 320px;
+            height: 480px;
+            border-radius: var(--radius-lg);
+            margin-right: 35px;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+            background: #fff;
+            border: 1px solid var(--border-subtle);
+            box-shadow: var(--card-shadow);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .destination-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 25px 50px -12px rgba(2, 132, 199, 0.2);
+        }
+
+        .destination-card .image-wrapper {
+            width: 100%;
+            height: 60%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .destination-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .destination-card:hover img {
+            transform: scale(1.04);
+        }
+
+        .card-content {
+            height: 40%;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: #fff;
+        }
+
+        .card-content h3 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .card-content p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .book-now-btn {
+            display: inline-block;
+            background: linear-gradient(90deg, #46A3FB 0%, #1D74F6 100%);
+            color: #fff;
+            padding: 10px 22px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(29, 116, 246, 0.3);
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .book-now-btn:hover {
+            box-shadow: 0 6px 20px rgba(29, 116, 246, 0.45);
+            transform: translateY(-2px);
+        }
+
+        /* CUSTOMIZER & SPEC SELECTOR SECTION */
+        .customizer-section {
+            min-height: 100vh;
+            padding: 120px 0;
+            background: #f8fafc;
+            position: relative;
+            z-index: 3;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .customizer-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: grid;
+            grid-template-columns: 1.1fr 0.8fr 1.1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .customizer-left {
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+        }
+
+        .customizer-left h2 {
+            font-size: 3rem;
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            color: var(--text-main);
+        }
+
+        .customizer-left p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+
+        .color-picker-wrapper h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+            color: var(--text-main);
+        }
+
+        .color-options {
+            display: flex;
+            gap: 18px;
+        }
+
+        .color-dot {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            padding: 3px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .color-dot:hover {
+            transform: scale(1.1);
+        }
+
+        .color-dot.active {
+            border-color: var(--primary);
+        }
+
+        .color-dot span {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25);
+        }
+
+        .color-dot[data-color="silver"] span {
+            background: #d1d5db;
+        }
+
+        .color-dot[data-color="green"] span {
+            background: #059669;
+        }
+
+        .color-dot[data-color="black"] span {
+            background: #1e293b;
+        }
+
+        .color-dot::after {
+            content: attr(data-label);
+            position: absolute;
+            bottom: -28px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-muted);
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .color-dot:hover::after {
+            opacity: 1;
+        }
+
+        .ticket-builder-form {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .form-group input,
+        .form-group select {
+            background: #ffffff;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-main);
+            padding: 13px 18px;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        /* BOARDING PASS DIGITAL CARD */
+        .boarding-pass-wrapper {
+            perspective: 1000px;
+        }
+
+        .boarding-pass {
+            width: 100%;
+            height: 480px;
+            background: #ffffff;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .ticket-header {
+            padding: 24px 30px;
+            border-bottom: 2px dashed #cbd5e1;
+            background: #f8fafc;
+        }
+
+        .ticket-header-logo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ticket-header-logo img {
+            max-width: 90px;
+        }
+
+        .ticket-flight-no {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: 2px;
+        }
+
+        .ticket-body {
+            padding: 28px 30px;
+            flex-grow: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px 15px;
+            background: #ffffff;
+        }
+
+        .ticket-field {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .ticket-field span.label {
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .ticket-field span.value {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .ticket-footer {
+            padding: 20px 30px;
+            background: #f1f5f9;
+            border-top: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .barcode {
+            width: 130px;
+            height: 32px;
+            background-image: repeating-linear-gradient(90deg,
+                    #0f172a 0px, #0f172a 2px,
+                    transparent 2px, transparent 5px,
+                    #0f172a 5px, #0f172a 8px,
+                    transparent 8px, transparent 10px,
+                    #0f172a 10px, #0f172a 11px,
+                    transparent 11px, transparent 15px);
+        }
+
+        .ticket-number {
+            font-size: 9px;
+            font-family: monospace;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            margin-top: 4px;
+            display: block;
+        }
+
+        .ticket-cta-btn {
+            background: var(--text-main);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .ticket-cta-btn:hover {
+            background: var(--primary);
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+        }
+
+        /* FOOTER */
+        footer {
+            background: #0f172a;
+            padding: 50px 6%;
+            color: #94a3b8;
+            position: relative;
+            z-index: 5;
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .footer-logo img {
+            max-width: 80px;
+        }
+
+        .footer-logo span {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .footer-social a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.3s;
+        }
+
+        .footer-social a:hover {
+            color: var(--primary);
+        }
+
+        .footer-social img {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* MOBILE RESPONSIVENESS & ENHANCEMENTS */
+        @media screen and (max-width: 960px) {
+            .logoContainer {
+                padding: 14px 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 3.2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            /* Showcase layout for mobile */
+            .showcase-sticky {
+                justify-content: center;
+                padding-right: 0;
+            }
+
+            .showcase-text-wrapper {
+                width: 90%;
+                margin: 0 auto;
+                text-align: center;
+            }
+
+            .showcase-text-card h2 {
+                font-size: 2.2rem;
+            }
+
+            /* Features alignment for mobile */
+            .features-container {
+                flex-direction: column;
+                padding: 0 20px;
+            }
+
+            .features-spacer {
+                display: none;
+            }
+
+            .features-cards-list {
+                width: 100%;
+            }
+
+            .feature-card {
+                padding: 24px 20px;
+                gap: 18px;
+                align-items: center;
+            }
+
+            .feature-icon-wrapper {
+                width: 52px;
+                height: 52px;
+            }
+
+            .feature-icon {
+                width: 30px;
+                height: 30px;
+            }
+
+            .feature-card h3 {
+                font-size: 1.3rem;
+            }
+
+            .feature-card p {
+                font-size: 0.9rem;
+            }
+
+            /* Reels on mobile */
+            .swiper-slide {
+                width: 230px;
+                height: 408px;
+            }
+
+            /* Destinations stack on mobile */
+            .horizontal-sticky {
+                height: auto;
+                overflow: visible;
+                display: block;
+                padding: 60px 0;
+            }
+
+            .horizontal-scroll-container {
+                flex-direction: column;
+                width: 100%;
+                padding: 0 20px;
+            }
+
+            .horizontal-intro {
+                width: 100%;
+                padding-right: 0;
+                margin-bottom: 35px;
+                text-align: center;
+            }
+
+            .destination-card {
+                width: 100%;
+                height: 420px;
+                margin-right: 0;
+                margin-bottom: 25px;
+            }
+
+            .destination-card img {
+                width: 100%;
+                transform: none !important;
+            }
+
+            /* Customizer stack on mobile */
+            .customizer-container {
+                grid-template-columns: 1fr;
+                gap: 35px;
+                padding: 0 20px;
+            }
+
+            .customizer-spacer {
+                display: none;
+            }
+
+            .color-options {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <div class="logoContainer">
+        <a href="https://www.makemytrip.com">
+            <img src="https://promos.makemytrip.com/images/mmtlogo.webp" alt="MakeMyTrip">
+        </a>
+        <div class="nav-links">
+            <a href="#showcase-trigger">3D Experience</a>
+            <a href="#features-trigger">Features</a>
+            <a href="#reels-section">Creators</a>
+            <a href="#horizontal-trigger">Destinations</a>
+            <a href="#customizer-trigger">Configure</a>
+        </div>
+    </div>
+
+
+    <!-- 3D STICKY CANVAS WRAPPER -->
+    <div class="sticky-experience-wrapper" id="canvas-sticky-parent">
+
+        <!-- Three.js Canvas Container -->
+        <div class="three-canvas-container" id="canvas-container"></div>
+
+        <!-- HERO SECTION -->
+        <section class="hero-section">
+            <div class="glow-orb"></div>
+            <div class="hero-content">
+                <span class="eyebrow">OPPO × MAKEMYTRIP</span>
+                <h1 class="hero-title">REDEFINE DETAIL</h1>
+                <p class="hero-subtitle">From vibrant cities to sun-kissed horizons. Capture every detail of your
+                    journey with the all-new OPPO Reno16 Series.</p>
+                <div class="scroll-indicator">
+                    <span>SCROLL TO EXPLORE</span>
+                    <div class="mouse-icon">
+                        <div class="wheel"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3D SHOWCASE SECTION -->
+        <section class="showcase-section" id="showcase-trigger">
+            <div class="showcase-sticky">
+                <div class="showcase-text-wrapper">
+                    <div class="showcase-text-card active" id="card-1">
+                        <span class="tag">DESIGN</span>
+                        <h2>HoloVerse 3D</h2>
+                        <p>India's first smartphone with a HoloVerse 3D design that creates a stunning floating effect
+                            with radiant depth at every glance.</p>
+                    </div>
+                    <div class="showcase-text-card" id="card-2">
+                        <span class="tag">DISPLAY</span>
+                        <h2>Visual Portal</h2>
+                        <p>An immersive ultra-narrow borderless display with smooth 120Hz motion, bringing travel
+                            memories and HDR content vividly to life.</p>
+                    </div>
+                    <div class="showcase-text-card" id="card-3">
+                        <span class="tag">PORTRAIT</span>
+                        <h2>3.5X Telephoto Vibe</h2>
+                        <p>A flagship 50MP telephoto portrait sensor that pulls the background compressed, separating
+                            your subject with organic bokeh.</p>
+                    </div>
+                    <div class="showcase-text-card" id="card-4">
+                        <span class="tag">CREATIVE</span>
+                        <h2>Pop Cam & AI Remix</h2>
+                        <p>Express your unique story with instant film stock presets or seamlessly blend photo clips
+                            into aesthetic travel collages.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURES SECTION -->
+        <section class="features-section" id="features-trigger">
+            <div class="features-container">
+                <div class="features-spacer"></div>
+                <div class="features-cards-list">
+
+                    <div class="feature-card glass-card" data-index="0">
+                        <div class="feature-card-glow"></div>
+                        <div class="feature-icon-wrapper">
+                            <img src="https://promos.makemytrip.com/Icons/220626IconCamera.webp" class="feature-icon"
+                                alt="3D Pop Planet">
+                        </div>
+                        <div class="feature-text-content">
+                            <h3>3D Pop Planet Design</h3>
+                            <p>Unique floating effect body using layered micrometer engraving. A physical masterpiece in
+                                your palms.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card glass-card" data-index="1">
+                        <div class="feature-card-glow"></div>
+                        <div class="feature-icon-wrapper">
+                            <img src="https://promos.makemytrip.com/Icons/220626IconCollage.webp" class="feature-icon"
+                                alt="AI Remix">
+                        </div>
+                        <div class="feature-text-content">
+                            <h3>AI Remix Collage</h3>
+                            <p>Reorganize memories on the go. Stitches motion assets and photo logs into dynamic grids
+                                ready for your feed.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card glass-card" data-index="2">
+                        <div class="feature-card-glow"></div>
+                        <div class="feature-icon-wrapper">
+                            <img src="https://promos.makemytrip.com/Icons/220626IconPopup.webp" class="feature-icon"
+                                alt="Pop Cam">
+                        </div>
+                        <div class="feature-text-content">
+                            <h3>Pop Cam</h3>
+                            <p>Capture snapshots with retro instant film aesthetics, customized Polaroid frames, and
+                                vintage grain looks.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card glass-card" data-index="3">
+                        <div class="feature-card-glow"></div>
+                        <div class="feature-icon-wrapper">
+                            <img src="https://promos.makemytrip.com/Icons/220626IconTelescope.webp" class="feature-icon"
+                                alt="3.5X Telephoto">
+                        </div>
+                        <div class="feature-text-content">
+                            <h3>3.5X Telephoto Portrait</h3>
+                            <p>Get professional portrait compositions with natural perspective compression and
+                                edge-to-edge sharpness.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card glass-card" data-index="4">
+                        <div class="feature-card-glow"></div>
+                        <div class="feature-icon-wrapper">
+                            <img src="https://promos.makemytrip.com/Icons/220626IconVideo.webp" class="feature-icon"
+                                alt="4K Video">
+                        </div>
+                        <div class="feature-text-content">
+                            <h3>4K 60fps HDR Video</h3>
+                            <p>Capture shimmering lakes and dusk skies with cinema-grade dynamic range and buttery
+                                smooth stabilization.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- CREATOR REELS SECTION (Smooth on-scroll Swiper Carousel) -->
+    <section class="reels-section-wrapper" id="reels-section">
+        <h2>Travel Inspiration</h2>
+        <p class="section-sub">Watch the OPPO Reno16 Series in action through our creators' lens</p>
+
+        <div class="swiper-container mySwiper">
+            <div class="swiper-wrapper">
+                <!-- Reel 1 -->
+                <div class="swiper-slide" data-video="https://www.instagram.com/reel/DaKzFwfPr-s/"
+                    data-caption="#KashmirDiaries | Shot on Reno16">
+                    <img src="https://promos.makemytrip.com/270726InstaScreenshotReel2.jpg" alt="Reel Inspiration 1">
+                    <div class="play-button-overlay"></div>
+                    <div class="swiper-slide-overlay">
+                        <span>KASHMIR</span>
+                        <h4>#KashmirDiaries</h4>
+                    </div>
+                </div>
+                <!-- Reel 2 -->
+                <div class="swiper-slide" data-video="https://www.instagram.com/reel/DadHKg2oRFi/"
+                    data-caption="#GoaVibes | Sunset Shore">
+                    <img src="https://promos.makemytrip.com/270726InstaScreenshotReel4.jpg" alt="Reel Inspiration 2">
+                    <div class="play-button-overlay"></div>
+                    <div class="swiper-slide-overlay">
+                        <span>GOA</span>
+                        <h4>#GoaVibes</h4>
+                    </div>
+                </div>
+                <!-- Reel 3 -->
+                <div class="swiper-slide" data-video="https://www.instagram.com/reel/DaNgHYLCPtf/"
+                    data-caption="#KeralaBackwaters | Cinematic Travel">
+                    <img src="https://promos.makemytrip.com/270726InstaScreenshotReel1.jpg" alt="Reel Inspiration 3">
+                    <div class="play-button-overlay"></div>
+                    <div class="swiper-slide-overlay">
+                        <span>KERALA</span>
+                        <h4>#KeralaBackwaters</h4>
+                    </div>
+                </div>
+                <!-- Reel 4 -->
+                <div class="swiper-slide" data-video="https://www.instagram.com/reel/DaJ7zBFIs-Y/"
+                    data-caption="#ThaiAdventure | Rainforest Treks">
+                    <img src="https://promos.makemytrip.com/270726InstaScreenshotReel3.jpg" alt="Reel Inspiration 4">
+                    <div class="play-button-overlay"></div>
+                    <div class="swiper-slide-overlay">
+                        <span>THAILAND</span>
+                        <h4>#ThaiAdventure</h4>
+                    </div>
+                </div>
+                <!-- Reel 5 -->
+                <div class="swiper-slide" data-video="https://www.instagram.com/reel/DadOfC5JOEG/"
+                    data-caption="#SingaporeNights | Modern Horizons">
+                    <img src="https://promos.makemytrip.com/270726InstaScreenshotReel5.jpg" alt="Reel Inspiration 5">
+                    <div class="play-button-overlay"></div>
+                    <div class="swiper-slide-overlay">
+                        <span>SINGAPORE</span>
+                        <h4>#SingaporeNights</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INSTAGRAM REELS POPUP MODAL -->
+    <div class="video-modal" id="video-modal">
+        <div class="modal-backdrop"></div>
+        <button class="modal-close-btn" id="modal-close">&times;</button>
+        <div class="phone-mockup">
+            <div class="phone-notch"></div>
+            <div class="phone-screen-container">
+                <video id="modal-video" src="" loop playsinline></video>
+                <div class="insta-overlay-ui">
+                    <div class="insta-header">
+                        <img src="https://promos.makemytrip.com/images/mmt-insta-101024.png" class="insta-avatar"
+                            alt="MMT Logo">
+                        <span class="insta-username">makemytrip</span>
+                    </div>
+                    <div class="insta-caption" id="modal-caption">#TravelInspiration</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HORIZONTAL PACKAGES SECTION -->
+    <section class="horizontal-section" id="horizontal-trigger">
+        <div class="horizontal-sticky">
+            <div class="horizontal-scroll-container" id="scroll-container">
+
+                <div class="horizontal-intro">
+                    <span class="tag">CURATED ESCAPES</span>
+                    <h2>Specially Curated Holidays</h2>
+                    <p>Select your next getaway and capture unforgettable journeys with the OPPO Reno16 Series.</p>
+                </div>
+
+                <!-- Kashmir Card -->
+                <div class="destination-card" data-key="Package_Kashmir">
+                    <div class="image-wrapper">
+                        <img src="https://promos.makemytrip.com/images/030726Kashmir.webp" class="parallax-bg"
+                            alt="Kashmir">
+                    </div>
+                    <div class="card-content">
+                        <div>
+                            <h3>Kashmir</h3>
+                            <p>Serene shikaras & snow-covered peaks.</p>
+                        </div>
+                        <a href="https://holidayz.makemytrip.com/holidays/india/search?packageIds=27307%2C24508%2C59773%2C28297%2C28315&redirectionPage=listing"
+                            target="_blank" class="book-now-btn">Book Now</a>
+                    </div>
+                </div>
+
+                <!-- Himachal Card -->
+                <div class="destination-card" data-key="Package_Himachal">
+                    <div class="image-wrapper">
+                        <img src="https://promos.makemytrip.com/images/030726Himachal.webp" class="parallax-bg"
+                            alt="Himachal">
+                    </div>
+                    <div class="card-content">
+                        <div>
+                            <h3>Himachal</h3>
+                            <p>Adventure trails & pine-scented breezes.</p>
+                        </div>
+                        <a href="https://holidayz.makemytrip.com/holidays/india/search?fromSearchWidget=true&searchDep=Himachal%20Pradesh&dest=Himachal%20Pradesh&destValue=Himachal%20Pradesh&depCity=New%20Delhi&initd=searchwidget_landing_Himachal%20Pradesh_notheme&dateSearched=15%2F09%2F2026&glp=true&pdo=true&rooms=2%2C0%2C0%2C0%2C%2C%2C&affiliate=MMT##page_header"
+                            target="_blank" class="book-now-btn">Book Now</a>
+                    </div>
+                </div>
+
+                <!-- Kerala Card -->
+                <div class="destination-card" data-key="Package_Kerala">
+                    <div class="image-wrapper">
+                        <img src="https://promos.makemytrip.com/images/030726Kerala.webp" class="parallax-bg"
+                            alt="Kerala">
+                    </div>
+                    <div class="card-content">
+                        <div>
+                            <h3>Kerala</h3>
+                            <p>Tranquil backwaters & lush spice groves.</p>
+                        </div>
+                        <a href="https://holidayz.makemytrip.com/holidays/india/search?fromSearchWidget=true&searchDep=Kerala&dest=Kerala&destValue=Kerala&depCity=New%20Delhi&initd=searchwidget_landing_Kerala_notheme&dateSearched=15%2F09%2F2026&glp=true&pdo=true&rooms=2%2C0%2C0%2C0%2C%2C%2C&affiliate=MMT##page_header"
+                            target="_blank" class="book-now-btn">Book Now</a>
+                    </div>
+                </div>
+
+                <!-- South India Card -->
+                <div class="destination-card" data-key="Package_SouthIndia">
+                    <div class="image-wrapper">
+                        <img src="https://promos.makemytrip.com/images/030726SouthIndia.webp" class="parallax-bg"
+                            alt="South India">
+                    </div>
+                    <div class="card-content">
+                        <div>
+                            <h3>South India</h3>
+                            <p>Ancient temples & rich heritage coast.</p>
+                        </div>
+                        <a href="https://holidayz.makemytrip.com/holidays/india/search?fromSearchWidget=true&searchDep=South%20India&dest=South%20India&destValue=South%20India&depCity=New%20Delhi&initd=searchwidget_landing_South%20India_notheme&dateSearched=15%2F09%2F2026&glp=true&pdo=true&rooms=2%2C0%2C0%2C0%2C%2C%2C&affiliate=MMT##page_header"
+                            target="_blank" class="book-now-btn">Book Now</a>
+                    </div>
+                </div>
+
+                <!-- Goa Card -->
+                <div class="destination-card" data-key="Package_Goa">
+                    <div class="image-wrapper">
+                        <img src="https://promos.makemytrip.com/images/030726Goa.webp" class="parallax-bg" alt="Goa">
+                    </div>
+                    <div class="card-content">
+                        <div>
+                            <h3>Goa</h3>
+                            <p>Sun-kissed sands & electric shorelines.</p>
+                        </div>
+                        <a href="https://holidayz.makemytrip.com/holidays/india/search?fromSearchWidget=true&searchDep=Goa&dest=Goa&destValue=Goa&depCity=New%20Delhi&initd=searchwidget_landing_Goa_notheme&dateSearched=15%2F09%2F2026&glp=true&pdo=true&rooms=2%2C0%2C0%2C0%2C%2C%2C&affiliate=MMT##page_header"
+                            target="_blank" class="book-now-btn">Book Now</a>
+                    </div>
+                </div>
+
+                <!-- Thailand Card -->
+                <div class="destination-card" data-key="Package_Thailand">
+                    <div class="image-wrapper">
+                        <img src="https://promos.makemytrip.com/images/030726Thailand.webp" class="parallax-bg"
+                            alt="Thailand">
+                    </div>
+                    <div class="card-content">
+                        <div>
+                            <h3>Thailand</h3>
+                            <p>Tropical islands & vibrant night markets.</p>
+                        </div>
+                        <a href="https://holidayz.makemytrip.com/holidays/india/search?depCity=New%20Delhi&dateSearched=25%2F03%2F2026&dest=Thailand&destValue=Thailand&version=2&affiliate=MMT&rooms=2%2C0%2C0%2C0%2C%2C%2C"
+                            target="_blank" class="book-now-btn">Book Now</a>
+                    </div>
+                </div>
+
+                <!-- Singapore Card -->
+                <div class="destination-card" data-key="Package_Singapore">
+                    <div class="image-wrapper">
+                        <img src="https://promos.makemytrip.com/images/030726Singapore.webp" class="parallax-bg"
+                            alt="Singapore">
+                    </div>
+                    <div class="card-content">
+                        <div>
+                            <h3>Singapore</h3>
+                            <p>Futuristic sky-gardens & iconic skyline.</p>
+                        </div>
+                        <a href="https://holidayz.makemytrip.com/holidays/india/search?depCity=New%20Delhi&dateSearched=01%2F07%2F2026&dest=Singapore&destValue=Singapore&glp=true&pdo=true&affiliate=MMT&rooms=2%2C0%2C0%2C0%2C%2C%2C"
+                            target="_blank" class="book-now-btn">Book Now</a>
+                    </div>
+                </div>
+
+                <!-- Vietnam Card -->
+                <div class="destination-card" data-key="Package_Vietnam">
+                    <div class="image-wrapper">
+                        <img src="https://promos.makemytrip.com/images/030726Vietnam.webp" class="parallax-bg"
+                            alt="Vietnam">
+                    </div>
+                    <div class="card-content">
+                        <div>
+                            <h3>Vietnam</h3>
+                            <p>Emerald bays & vibrant heritage lanes.</p>
+                        </div>
+                        <a href="https://holidayz.makemytrip.com/holidays/india/search?depCity=New%20Delhi&dest=Vietnam&destValue=Vietnam&glp=true&pdo=true&affiliate=MMT&rooms=2%2C0%2C0%2C0%2C%2C%2C&version=2"
+                            target="_blank" class="book-now-btn">Book Now</a>
+                    </div>
+                </div>
+
+                <!-- Japan Card -->
+                <div class="destination-card" data-key="Package_Japan">
+                    <div class="image-wrapper">
+                        <img src="https://promos.makemytrip.com/images/030726Japan.webp" class="parallax-bg"
+                            alt="Japan">
+                    </div>
+                    <div class="card-content">
+                        <div>
+                            <h3>Japan</h3>
+                            <p>Cherry blossoms & futuristic metropolis.</p>
+                        </div>
+                        <a href="https://holidayz.makemytrip.com/holidays/india/search?depCity=New%20Delhi&dateSearched=09%2F07%2F2026&dest=Japan&destValue=Japan&glp=true&pdo=true&version=2&affiliate=MMT&rooms=2%2C0%2C0%2C0%2C%2C%2C"
+                            target="_blank" class="book-now-btn">Book Now</a>
+                    </div>
+                </div>
+
+                <!-- Maldives Card -->
+                <div class="destination-card" data-key="Package_Maldives">
+                    <div class="image-wrapper">
+                        <img src="https://promos.makemytrip.com/images/030726Maldives.webp" class="parallax-bg"
+                            alt="Maldives">
+                    </div>
+                    <div class="card-content">
+                        <div>
+                            <h3>Maldives</h3>
+                            <p>Crystal lagoons & luxury overwater villas.</p>
+                        </div>
+                        <a href="https://holidayz.makemytrip.com/holidays/india/search?depCity=New%20Delhi&dest=Maldives&destValue=Maldives&glp=true&pdo=true&affiliate=MMT&rooms=2%2C0%2C0%2C0%2C%2C%2C"
+                            target="_blank" class="book-now-btn">Book Now</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-logo">
+                <img src="https://promos.makemytrip.com/images/mmtlogo.webp" alt="MakeMyTrip">
+                <span>× OPPO Reno16 Series</span>
+            </div>
+            <div class="footer-social">
+                <span>Follow us on Instagram</span>
+                <a href="https://www.instagram.com/makemytrip" target="_blank">
+                    <img src="https://promos.makemytrip.com/images/mmt-insta-101024.png" alt="Instagram Icon">
+                    @makemytrip
+                </a>
+            </div>
+            <div>
+                <p>&copy; 2026 MAKEMYTRIP (INDIA) PVT. LTD. & OPPO MOBILE.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JS Libraries (GSAP, ScrollTrigger, Lenis, Swiper, Three.js) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+    <script>
+        // ----------------------------------------------------
+        // 1. Lenis Smooth Scroll
+        // ----------------------------------------------------
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            orientation: 'vertical',
+            smoothWheel: true,
+            wheelMultiplier: 1,
+            touchMultiplier: 2,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => {
+            lenis.raf(time * 1000);
+        });
+        gsap.ticker.lagSmoothing(0);
+
+        // ----------------------------------------------------
+        // 2. High Quality Three.js Procedural 3D Phone (Light Mode Tuning)
+        // ----------------------------------------------------
+        const canvasContainer = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+
+        const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.z = 10;
+
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        canvasContainer.appendChild(renderer.domElement);
+
+        // Light setup tailored for Light Theme clarity & studio reflections
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.75);
+        scene.add(ambientLight);
+
+        const keyLight = new THREE.DirectionalLight(0xffffff, 1.1);
+        keyLight.position.set(6, 8, 6);
+        scene.add(keyLight);
+
+        const fillLight = new THREE.DirectionalLight(0x38bdf8, 0.7);
+        fillLight.position.set(-6, -4, 5);
+        scene.add(fillLight);
+
+        const backLight = new THREE.DirectionalLight(0xffffff, 0.6);
+        backLight.position.set(0, 6, -6);
+        scene.add(backLight);
+
+        const phoneGroup = new THREE.Group();
+        scene.add(phoneGroup);
+
+        const phoneWidth = 3.1;
+        const phoneHeight = 6.3;
+        const phoneRadius = 0.45;
+        const phoneThickness = 0.22;
+
+        const phoneShape = new THREE.Shape();
+        phoneShape.moveTo(-phoneWidth / 2 + phoneRadius, -phoneHeight / 2);
+        phoneShape.lineTo(phoneWidth / 2 - phoneRadius, -phoneHeight / 2);
+        phoneShape.quadraticCurveTo(phoneWidth / 2, -phoneHeight / 2, phoneWidth / 2, -phoneHeight / 2 + phoneRadius);
+        phoneShape.lineTo(phoneWidth / 2, phoneHeight / 2 - phoneRadius);
+        phoneShape.quadraticCurveTo(phoneWidth / 2, phoneHeight / 2, phoneWidth / 2 - phoneRadius, phoneHeight / 2);
+        phoneShape.lineTo(-phoneWidth / 2 + phoneRadius, phoneHeight / 2);
+        phoneShape.quadraticCurveTo(-phoneWidth / 2, phoneHeight / 2, -phoneWidth / 2, phoneHeight / 2 - phoneRadius);
+        phoneShape.lineTo(-phoneWidth / 2, -phoneHeight / 2 + phoneRadius);
+        phoneShape.quadraticCurveTo(-phoneWidth / 2, -phoneHeight / 2, -phoneWidth / 2 + phoneRadius, -phoneHeight / 2);
+
+        const chassisGeo = new THREE.ExtrudeGeometry(phoneShape, {
+            depth: phoneThickness - 0.04,
+            bevelEnabled: true,
+            bevelSegments: 8,
+            steps: 1,
+            bevelSize: 0.02,
+            bevelThickness: 0.02
+        });
+        chassisGeo.center();
+
+        const frameGeo = new THREE.ExtrudeGeometry(phoneShape, {
+            depth: phoneThickness,
+            bevelEnabled: true,
+            bevelSegments: 6,
+            steps: 1,
+            bevelSize: 0.015,
+            bevelThickness: 0.015
+        });
+        frameGeo.center();
+
+        // High Quality Physical Materials
+        const chassisMat = new THREE.MeshPhysicalMaterial({
+            color: 0xd8e0ea, // Titanium Silver
+            metalness: 0.4,
+            roughness: 0.28,
+            clearcoat: 1.0,
+            clearcoatRoughness: 0.08
+        });
+
+        const frameMat = new THREE.MeshPhysicalMaterial({
+            color: 0xf1f5f9,
+            metalness: 0.7,
+            roughness: 0.18,
+            clearcoat: 1.0
+        });
+
+        const chassisMesh = new THREE.Mesh(chassisGeo, chassisMat);
+        const frameMesh = new THREE.Mesh(frameGeo, frameMat);
+        frameMesh.position.z = -0.005;
+
+        phoneGroup.add(frameMesh);
+        phoneGroup.add(chassisMesh);
+
+        // Procedural Screen UI Canvas
+        const screenCanvas = document.createElement('canvas');
+        screenCanvas.width = 512;
+        screenCanvas.height = 1024;
+        const screenCtx = screenCanvas.getContext('2d');
+        const screenTexture = new THREE.CanvasTexture(screenCanvas);
+
+        const isLocal = window.location.protocol === 'file:';
+        const screenGeo = new THREE.PlaneGeometry(phoneWidth - 0.06, phoneHeight - 0.06);
+        const screenMat = isLocal ? new THREE.MeshPhysicalMaterial({
+            color: 0x0f172a,
+            roughness: 0.1,
+            metalness: 0.1,
+            clearcoat: 1.0,
+            transparent: true,
+            opacity: 0.0
+        }) : new THREE.MeshBasicMaterial({
+            map: screenTexture,
+            transparent: true,
+            opacity: 0.0
+        });
+        const screenMesh = new THREE.Mesh(screenGeo, screenMat);
+        screenMesh.position.z = phoneThickness / 2 + 0.01;
+        phoneGroup.add(screenMesh);
+
+        function drawScreenUI(state, data = {}) {
+            if (isLocal) return;
+            screenCtx.fillStyle = '#0f172a';
+            screenCtx.fillRect(0, 0, 512, 1024);
+
+            // Subtle Grid
+            screenCtx.strokeStyle = 'rgba(56, 189, 248, 0.15)';
+            screenCtx.lineWidth = 1;
+            for (let i = 0; i < 512; i += 32) {
+                screenCtx.beginPath();
+                screenCtx.moveTo(i, 0); screenCtx.lineTo(i, 1024);
+                screenCtx.stroke();
+            }
+            for (let j = 0; j < 1024; j += 32) {
+                screenCtx.beginPath();
+                screenCtx.moveTo(0, j); screenCtx.lineTo(512, j);
+                screenCtx.stroke();
+            }
+
+            // Top Status Bar
+            screenCtx.fillStyle = '#ffffff';
+            screenCtx.font = '22px sans-serif';
+            screenCtx.fillText('10:16', 40, 50);
+            screenCtx.fillText('5G', 390, 50);
+
+            screenCtx.strokeStyle = '#ffffff';
+            screenCtx.lineWidth = 2;
+            screenCtx.strokeRect(430, 34, 38, 20);
+            screenCtx.fillStyle = '#34c759';
+            screenCtx.fillRect(433, 37, 26, 14);
+
+            const cx = 256;
+            const cy = 512;
+
+            if (state === 'wallpaper') {
+                const imgKey = data.imageKey || 'kashmir';
+                let grad = screenCtx.createRadialGradient(cx, cy, 10, cx, cy, 260);
+                if (imgKey === 'kashmir') {
+                    grad.addColorStop(0, 'rgba(56, 189, 248, 0.45)');
+                    grad.addColorStop(1, 'rgba(15, 23, 42, 0.95)');
+                } else if (imgKey === 'kerala') {
+                    grad.addColorStop(0, 'rgba(16, 185, 129, 0.45)');
+                    grad.addColorStop(1, 'rgba(15, 23, 42, 0.95)');
+                } else {
+                    grad.addColorStop(0, 'rgba(236, 72, 153, 0.45)');
+                    grad.addColorStop(1, 'rgba(15, 23, 42, 0.95)');
+                }
+                screenCtx.fillStyle = grad;
+                screenCtx.fillRect(0, 60, 512, 964);
+
+                screenCtx.fillStyle = '#ffffff';
+                screenCtx.font = 'bold 36px sans-serif';
+                screenCtx.textAlign = 'center';
+                screenCtx.fillText('OPPO Reno16', cx, 460);
+                screenCtx.font = '20px sans-serif';
+                screenCtx.fillStyle = '#94a3b8';
+                screenCtx.fillText('HoloVerse 3D Edition', cx, 500);
+            } else if (state === 'camera') {
+                screenCtx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+                screenCtx.lineWidth = 2;
+                screenCtx.strokeRect(100, 300, 312, 400);
+                screenCtx.fillStyle = '#ffffff';
+                screenCtx.font = '20px sans-serif';
+                screenCtx.textAlign = 'center';
+                screenCtx.fillText('50MP 3.5X TELEPHOTO', cx, 260);
+            }
+            screenTexture.needsUpdate = true;
+        }
+
+        drawScreenUI('wallpaper', { imageKey: 'kashmir' });
+
+        // Camera Module On Back
+        const camBumpGeo = new THREE.BoxGeometry(1.4, 2.5, 0.12);
+        const camBumpMat = new THREE.MeshPhysicalMaterial({
+            color: 0x1e293b,
+            metalness: 0.6,
+            roughness: 0.2,
+            clearcoat: 1.0
+        });
+        const camBump = new THREE.Mesh(camBumpGeo, camBumpMat);
+        camBump.position.set(-0.7, 1.6, -phoneThickness / 2 - 0.06);
+        phoneGroup.add(camBump);
+
+        for (let i = 0; i < 3; i++) {
+            const lensGeo = new THREE.CylinderGeometry(0.28, 0.28, 0.08, 32);
+            const lensMat = new THREE.MeshPhysicalMaterial({
+                color: 0x0284c7,
+                metalness: 0.9,
+                roughness: 0.1,
+                clearcoat: 1.0
+            });
+            const lens = new THREE.Mesh(lensGeo, lensMat);
+            lens.rotation.x = Math.PI / 2;
+            lens.position.set(-0.7, 2.3 - (i * 0.7), -phoneThickness / 2 - 0.12);
+            phoneGroup.add(lens);
+        }
+
+        // Mouse Parallax & Float Rig
+        let mouseX = 0, mouseY = 0;
+        let targetRotX = 0, targetRotY = 0;
+        let scrollRotX = 0, scrollRotY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+            mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+            targetRotY = mouseX * 0.35;
+            targetRotX = -mouseY * 0.35;
+        });
+
+        const clock = new THREE.Clock();
+        function animateThree() {
+            requestAnimationFrame(animateThree);
+            const t = clock.getElapsedTime();
+
+            phoneGroup.rotation.y += (scrollRotY + targetRotY + Math.sin(t * 1.2) * 0.04 - phoneGroup.rotation.y) * 0.08;
+            phoneGroup.rotation.x += (scrollRotX + targetRotX + Math.cos(t * 1.5) * 0.03 - phoneGroup.rotation.x) * 0.08;
+            phoneGroup.position.y += (Math.sin(t * 1.8) * 0.05 - (phoneGroup.position.y - (phoneGroup.userData.targetY || 0))) * 0.08;
+
+            renderer.render(scene, camera);
+        }
+        animateThree();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // ----------------------------------------------------
+        // 3. GSAP Hero & Scroll Animations
+        // ----------------------------------------------------
+        const tlHero = gsap.timeline();
+        tlHero.to(".hero-content .eyebrow", { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" })
+            .to(".hero-title", { opacity: 1, y: 0, duration: 1, ease: "power3.out" }, "-=0.6")
+            .to(".hero-subtitle", { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, "-=0.6")
+            .to(".scroll-indicator", { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, "-=0.4");
+
+        // 3D Phone Showcase scrub timeline
+        const isMobile = window.innerWidth <= 960;
+
+        const tlShowcase = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#showcase-trigger",
+                start: "top top",
+                end: "+=2200",
+                pin: true,
+                scrub: 1,
+                onUpdate: (self) => {
+                    const prog = self.progress;
+                    const index = Math.min(3, Math.floor(prog * 4));
+
+                    document.querySelectorAll('.showcase-text-card').forEach((card, idx) => {
+                        card.classList.toggle('active', idx === index);
+                    });
+
+                    if (prog < 0.25) {
+                        scrollRotY = THREE.MathUtils.lerp(0.3, Math.PI * 0.85, prog * 4);
+                        scrollRotX = 0.1;
+                    } else if (prog < 0.5) {
+                        scrollRotY = THREE.MathUtils.lerp(Math.PI * 0.85, Math.PI * 1.15, (prog - 0.25) * 4);
+                        scrollRotX = -0.15;
+                    } else if (prog < 0.75) {
+                        scrollRotY = THREE.MathUtils.lerp(Math.PI * 1.15, Math.PI * 1.9, (prog - 0.5) * 4);
+                        scrollRotX = 0.2;
+                    } else {
+                        scrollRotY = THREE.MathUtils.lerp(Math.PI * 1.9, Math.PI * 2.1, (prog - 0.75) * 4);
+                        scrollRotX = 0.05;
+                    }
+                }
+            }
+        });
+
+        // Set initial phone positioning in Hero & Showcase (shifted slightly left for clean right features display)
+        phoneGroup.position.set(isMobile ? 0 : -2.0, 0, 1);
+        phoneGroup.scale.set(1.15, 1.15, 1.15);
+
+        // Feature card hover 3D reactivity
+        const featureCards = document.querySelectorAll('.feature-card');
+        featureCards.forEach((card, index) => {
+            card.addEventListener('mouseenter', () => {
+                let targetY = 0.3;
+                let targetX = 0.1;
+                if (index === 0) { targetY = 0.4; }
+                else if (index === 1) { targetY = -0.4; drawScreenUI('wallpaper', { imageKey: 'kashmir' }); }
+                else if (index === 2) { targetY = Math.PI * 0.8; }
+                else if (index === 3) { targetY = Math.PI * 0.95; drawScreenUI('camera'); }
+                else if (index === 4) { targetY = 0.1; drawScreenUI('wallpaper', { imageKey: 'kerala' }); }
+
+                gsap.to({ y: scrollRotY }, {
+                    y: targetY,
+                    duration: 0.7,
+                    overwrite: 'auto',
+                    onUpdate: function () { scrollRotY = this.targets()[0].y; }
+                });
+                gsap.to({ x: scrollRotX }, {
+                    x: targetX,
+                    duration: 0.7,
+                    overwrite: 'auto',
+                    onUpdate: function () { scrollRotX = this.targets()[0].x; }
+                });
+            });
+
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${(x / rect.width) * 100}%`);
+                card.style.setProperty('--mouse-y', `${(y / rect.height) * 100}%`);
+            });
+        });
+
+        // Sticky Canvas visibility trigger
+        ScrollTrigger.create({
+            trigger: "#canvas-sticky-parent",
+            start: "top top",
+            end: "bottom bottom",
+            onEnter: () => gsap.to(canvasContainer, { opacity: 1, duration: 0.4 }),
+            onLeave: () => gsap.to(canvasContainer, { opacity: 0, duration: 0.4 }),
+            onEnterBack: () => gsap.to(canvasContainer, { opacity: 1, duration: 0.4 }),
+            onLeaveBack: () => gsap.to(canvasContainer, { opacity: 0, duration: 0.4 })
+        });
+
+        // ----------------------------------------------------
+        // 4. Reels Swiper with Scroll-Driven Interaction & Modal
+        // ----------------------------------------------------
+        const swiper = new Swiper('.mySwiper', {
+            effect: 'coverflow',
+            grabCursor: true,
+            centeredSlides: true,
+            slidesPerView: 'auto',
+            coverflowEffect: {
+                rotate: 28,
+                stretch: 0,
+                depth: 180,
+                modifier: 1,
+                slideShadows: false,
+            },
+            loop: true,
+            mousewheel: false,
+            autoplay: false
+        });
+
+        // Connect vertical scroll progression strictly while present inside the Travel Inspiration section
+        if (!isMobile) {
+            ScrollTrigger.create({
+                trigger: "#reels-section",
+                start: "center center",
+                end: "+=1200",
+                pin: true,
+                scrub: 0.6,
+                onUpdate: (self) => {
+                    const slideCount = 5;
+                    const targetSlide = Math.min(slideCount - 1, Math.floor(self.progress * slideCount));
+                    swiper.slideToLoop(targetSlide, 500);
+                }
+            });
+        }
+
+        // Modal video playback
+        const slides = document.querySelectorAll('.swiper-slide');
+        const videoModal = document.getElementById('video-modal');
+        const modalVideo = document.getElementById('modal-video');
+        const modalCaption = document.getElementById('modal-caption');
+        const modalClose = document.getElementById('modal-close');
+
+        slides.forEach(slide => {
+            slide.addEventListener('click', () => {
+                const videoSrc = slide.getAttribute('data-video');
+                const captionText = slide.getAttribute('data-caption');
+
+                if (videoSrc) {
+                    swiper.autoplay.stop();
+                    videoModal.classList.add('active');
+                    modalVideo.src = videoSrc;
+                    modalCaption.innerText = captionText;
+                    modalVideo.play().catch(() => { });
+                }
+            });
+        });
+
+        modalClose.addEventListener('click', closeReelVideo);
+        document.querySelector('.modal-backdrop').addEventListener('click', closeReelVideo);
+
+        function closeReelVideo() {
+            videoModal.classList.remove('active');
+            modalVideo.pause();
+            modalVideo.src = "";
+            swiper.autoplay.start();
+        }
+
+        // ----------------------------------------------------
+        // 5. Horizontal Parallax Scroller (Samsung/Apple Style)
+        // ----------------------------------------------------
+        const scrollContainerHorizontal = document.getElementById('scroll-container');
+
+        if (!isMobile) {
+            gsap.to(scrollContainerHorizontal, {
+                x: () => -(scrollContainerHorizontal.scrollWidth - window.innerWidth),
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#horizontal-trigger",
+                    pin: true,
+                    scrub: 1,
+                    start: "center center",
+                    end: () => "+=" + (scrollContainerHorizontal.scrollWidth - window.innerWidth),
+                    invalidateOnRefresh: true
+                }
+            });
+        }
+
+        // ----------------------------------------------------
+        // 6. Customizer & Live Boarding Pass
+        // ----------------------------------------------------
+        const colorDots = document.querySelectorAll('.color-dot');
+        const travelerInput = document.getElementById('traveler-name');
+        const destSelect = document.getElementById('destination-select');
+
+        const ticketPassenger = document.getElementById('ticket-passenger');
+        const ticketDestination = document.getElementById('ticket-destination');
+        const ticketColor = document.getElementById('ticket-color');
+        const ticketBookBtn = document.getElementById('ticket-book-btn');
+
+        colorDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                colorDots.forEach(d => d.classList.remove('active'));
+                dot.classList.add('active');
+
+                const color = dot.getAttribute('data-color');
+                const label = dot.getAttribute('data-label');
+                ticketColor.innerText = label.toUpperCase();
+
+                updatePhoneColorMaterial(color);
+            });
+        });
+
+        function updatePhoneColorMaterial(colorName) {
+            let bodyColorHex, frameColorHex;
+
+            if (colorName === 'silver') {
+                bodyColorHex = 0xd8e0ea;
+                frameColorHex = 0xf1f5f9;
+            } else if (colorName === 'green') {
+                bodyColorHex = 0x065f46;
+                frameColorHex = 0x10b981;
+            } else {
+                bodyColorHex = 0x1e293b;
+                frameColorHex = 0x475569;
+            }
+
+            gsap.to(chassisMesh.material.color, {
+                r: ((bodyColorHex >> 16) & 255) / 255,
+                g: ((bodyColorHex >> 8) & 255) / 255,
+                b: (bodyColorHex & 255) / 255,
+                duration: 0.6
+            });
+
+            gsap.to(frameMesh.material.color, {
+                r: ((frameColorHex >> 16) & 255) / 255,
+                g: ((frameColorHex >> 8) & 255) / 255,
+                b: (frameColorHex & 255) / 255,
+                duration: 0.6
+            });
+        }
+
+        travelerInput.addEventListener('input', (e) => {
+            const val = e.target.value.trim();
+            ticketPassenger.innerText = val ? val.toUpperCase() : "OPPO TRAVELER";
+        });
+
+        destSelect.addEventListener('change', (e) => {
+            const val = e.target.value;
+            const selectedOpt = destSelect.options[destSelect.selectedIndex];
+            const bookingUrl = selectedOpt.getAttribute('data-link');
+
+            ticketDestination.innerText = val.toUpperCase();
+            ticketBookBtn.href = bookingUrl;
+        });
+
+        // Trigger Canvas display in Customizer
+        ScrollTrigger.create({
+            trigger: "#customizer-trigger",
+            start: "top 85%",
+            end: "bottom 15%",
+            onEnter: () => {
+                gsap.to(canvasContainer, { opacity: 1, duration: 0.4 });
+                gsap.to(phoneGroup.position, { x: 0, y: 0.2, z: 2.2, duration: 0.8 });
+                gsap.to(phoneGroup.scale, { x: 1.25, y: 1.25, z: 1.25, duration: 0.8 });
+
+                gsap.to({ y: scrollRotY }, {
+                    y: 0.2,
+                    duration: 0.8,
+                    onUpdate: function () { scrollRotY = this.targets()[0].y; }
+                });
+            },
+            onLeave: () => {
+                gsap.to(canvasContainer, { opacity: 0, duration: 0.4 });
+            },
+            onEnterBack: () => {
+                gsap.to(canvasContainer, { opacity: 1, duration: 0.4 });
+                gsap.to(phoneGroup.position, { x: 0, y: 0.2, z: 2.2, duration: 0.8 });
+                gsap.to(phoneGroup.scale, { x: 1.25, y: 1.25, z: 1.25, duration: 0.8 });
+            },
+            onLeaveBack: () => {
+                gsap.to(canvasContainer, { opacity: 0, duration: 0.4 });
+                gsap.to(phoneGroup.position, { x: isMobile ? 0 : -1.8, y: 0, z: 1, duration: 0.8 });
+                gsap.to(phoneGroup.scale, { x: 1.15, y: 1.15, z: 1.15, duration: 0.8 });
+            }
+        });
+    </script>
+</body>
+
+</html>
