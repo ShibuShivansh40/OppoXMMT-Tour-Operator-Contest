@@ -134,6 +134,10 @@
           class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full">
           <span>📅</span> Campaign Calendar
         </button>
+        <button id="tabSurvey"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full">
+          <span>📊</span> Survey Analytics
+        </button>
       </nav>
 
       <div class="mt-auto pt-6 border-t border-white/5 text-xxs text-slate-500 flex flex-col gap-2">
@@ -162,6 +166,11 @@
         <span class="text-lg">📅</span>
         <span class="text-[10px] font-bold uppercase tracking-wide">Calendar</span>
       </button>
+      <button id="tabSurveyMobile"
+        class="flex-1 flex flex-col items-center justify-center gap-1 py-3 text-slate-400 border-t-2 border-transparent transition-all">
+        <span class="text-lg">📊</span>
+        <span class="text-[10px] font-bold uppercase tracking-wide">Survey</span>
+      </button>
     </nav>
 
     <!-- Main Content Panel -->
@@ -189,7 +198,7 @@
       </div>
 
       <!-- Stats Summary Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div id="globalStatsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div
           class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.03] hover:border-[#00b064]/20">
           <div>
@@ -221,7 +230,8 @@
               class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 text-oppoMint flex items-center justify-center text-lg text-glow">
               📱</div>
           </div>
-          <div id="deviceDistributionList" class="flex flex-col gap-2 overflow-y-auto max-h-[110px] custom-scrollbar pr-1">
+          <div id="deviceDistributionList"
+            class="flex flex-col gap-2 overflow-y-auto max-h-[110px] custom-scrollbar pr-1">
             <!-- Dynamically populated progress bars -->
           </div>
         </div>
@@ -337,7 +347,7 @@
 
       <!-- CAMPAIGN CALENDAR SECTION (Initially hidden) -->
       <section id="calendarSection" class="hidden flex flex-col gap-6 md:gap-8">
-        
+
         <!-- Stats summary for Calendar -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <div class="glass-card rounded-2xl p-5 flex items-center justify-between">
@@ -345,7 +355,8 @@
               <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Total Departures</p>
               <h3 id="statCalendarDepartures" class="text-3xl font-extrabold text-white mt-1">32</h3>
             </div>
-            <div class="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-[#00e5ff] flex items-center justify-center text-xl">
+            <div
+              class="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-[#00e5ff] flex items-center justify-center text-xl">
               ✈️</div>
           </div>
           <div class="glass-card rounded-2xl p-5 flex items-center justify-between">
@@ -353,34 +364,46 @@
               <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">OPPO Devices Allocated</p>
               <h3 id="statCalendarDevices" class="text-3xl font-extrabold text-oppoEmerald mt-1 text-glow">38</h3>
             </div>
-            <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-oppoEmerald flex items-center justify-center text-xl">
+            <div
+              class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-oppoEmerald flex items-center justify-center text-xl">
               📱</div>
           </div>
           <div class="glass-card rounded-2xl p-5 flex items-center justify-between">
             <div>
               <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Campaign Period</p>
-              <h3 class="text-lg font-extrabold text-oppoMint mt-2 font-sans tracking-wide">June - August 2026</h3>
+              <h3 class="text-lg font-extrabold text-oppoMint mt-2 font-sans tracking-wide">July - Sept 2026</h3>
             </div>
-            <div class="w-12 h-12 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center text-xl">
+            <div
+              class="w-12 h-12 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center text-xl">
               📅</div>
           </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           <!-- Calendar Month Widget (Left 5/12 cols) -->
-          <div class="lg:col-span-5 glass-card rounded-2xl p-6 flex flex-col gap-4 border border-[#00b064]/10 bg-[#05120c]/60">
+          <div
+            class="lg:col-span-5 glass-card rounded-2xl p-6 flex flex-col gap-4 border border-[#00b064]/10 bg-[#05120c]/60">
             <div class="flex items-center justify-between">
               <h3 class="text-sm font-extrabold text-white uppercase tracking-wider">Visual Schedule</h3>
               <div class="flex items-center gap-1.5">
-                <button onclick="changeCalendarMonth(-1)" class="w-7 h-7 rounded-lg bg-white/5 border border-white/10 hover:border-oppoEmerald hover:text-oppoEmerald flex items-center justify-center text-xs transition-colors">◀</button>
+                <button onclick="changeCalendarMonth(-1)"
+                  class="w-7 h-7 rounded-lg bg-white/5 border border-white/10 hover:border-oppoEmerald hover:text-oppoEmerald flex items-center justify-center text-xs transition-colors">◀</button>
                 <span id="calendarMonthTitle" class="text-xs font-bold text-white px-2 font-mono">June 2026</span>
-                <button onclick="changeCalendarMonth(1)" class="w-7 h-7 rounded-lg bg-white/5 border border-white/10 hover:border-oppoEmerald hover:text-oppoEmerald flex items-center justify-center text-xs transition-colors">▶</button>
+                <button onclick="changeCalendarMonth(1)"
+                  class="w-7 h-7 rounded-lg bg-white/5 border border-white/10 hover:border-oppoEmerald hover:text-oppoEmerald flex items-center justify-center text-xs transition-colors">▶</button>
               </div>
             </div>
 
             <!-- Calendar Days Header -->
-            <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-slate-500 uppercase tracking-wider mt-2 border-b border-white/5 pb-2">
-              <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+            <div
+              class="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-slate-500 uppercase tracking-wider mt-2 border-b border-white/5 pb-2">
+              <div>Sun</div>
+              <div>Mon</div>
+              <div>Tue</div>
+              <div>Wed</div>
+              <div>Thu</div>
+              <div>Fri</div>
+              <div>Sat</div>
             </div>
 
             <!-- Calendar Days Grid -->
@@ -389,37 +412,42 @@
             </div>
 
             <!-- Selected Date Departures Detail List -->
-            <div id="dateDetailsCard" class="mt-4 p-4 rounded-xl bg-black/40 border border-white/5 hidden flex flex-col gap-2.5">
-              <h4 id="dateDetailsTitle" class="text-xs font-bold text-oppoMint tracking-wide">📍 Departures on Jun 12</h4>
+            <div id="dateDetailsCard"
+              class="mt-4 p-4 rounded-xl bg-black/40 border border-white/5 hidden flex flex-col gap-2.5">
+              <h4 id="dateDetailsTitle" class="text-xs font-bold text-oppoMint tracking-wide">📍 Departures on Jun 12
+              </h4>
               <div id="dateDetailsList" class="flex flex-col gap-2 text-xxs text-slate-300">
                 <!-- Dynamically listed -->
               </div>
             </div>
-            
-            <div id="dateDetailsPlaceholder" class="mt-4 text-center py-4 border border-dashed border-white/10 rounded-xl text-xxs text-slate-500 italic">
+
+            <div id="dateDetailsPlaceholder"
+              class="mt-4 text-center py-4 border border-dashed border-white/10 rounded-xl text-xxs text-slate-500 italic">
               Click on a highlighted day to view destination & device allocation details
             </div>
           </div>
 
           <!-- Schedule Database Table (Right 7/12 cols) -->
-          <div class="lg:col-span-7 glass-card rounded-2xl p-6 flex flex-col gap-4 border border-[#00b064]/10 bg-[#05120c]/60">
+          <div
+            class="lg:col-span-7 glass-card rounded-2xl p-6 flex flex-col gap-4 border border-[#00b064]/10 bg-[#05120c]/60">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <h3 class="text-sm font-extrabold text-white uppercase tracking-wider">Trips & Device Allocation</h3>
                 <p class="text-xxs text-slate-500 mt-0.5">Search or view the complete campaign plan</p>
               </div>
-              <input type="text" id="calendarSearchInput" placeholder="🔍 Search location..." 
+              <input type="text" id="calendarSearchInput" placeholder="🔍 Search location..."
                 class="bg-slate-950 border border-white/10 rounded-xl px-3 py-1.5 text-xxs text-white focus:outline-none focus:border-oppoEmerald transition-colors w-full sm:w-48 placeholder-slate-600">
             </div>
 
             <div class="overflow-x-auto custom-scrollbar border border-white/5 rounded-xl bg-black/20">
               <table class="w-full text-[11px] text-left text-slate-300">
-                <thead class="bg-white/5 text-[9px] uppercase tracking-wider text-slate-400 font-bold border-b border-white/5">
+                <thead
+                  class="bg-white/5 text-[9px] uppercase tracking-wider text-slate-400 font-bold border-b border-white/5">
                   <tr>
                     <th class="px-4 py-3">S.No</th>
                     <th class="px-4 py-3">Location</th>
-                    <th class="px-4 py-3">Departure Date</th>
-                    <th class="px-4 py-3 text-center">OPPO Devices</th>
+                    <th class="px-4 py-3">Date</th>
+                    <th class="px-4 py-3 text-center">Number of devices/ Tour Manager</th>
                     <th class="px-4 py-3 text-right">Status</th>
                   </tr>
                 </thead>
@@ -430,6 +458,39 @@
             </div>
           </div>
         </div>
+      </section>
+
+      <!-- SURVEY RESPONSES SECTION (Initially hidden) -->
+      <section id="surveySection" class="hidden flex flex-col gap-6 md:gap-8">
+
+        <!-- Stats summary for Survey -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div
+            class="glass-card rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:scale-[1.02] hover:border-[#00b064]/20">
+            <div>
+              <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest font-sans">Total Survey Responses
+              </p>
+              <h3 id="statSurveyResponses" class="text-3xl font-extrabold text-white mt-1 font-sans">24</h3>
+            </div>
+            <div
+              class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-oppoEmerald flex items-center justify-center text-xl">
+              📝</div>
+          </div>
+        </div>
+
+        <!-- Survey Loader -->
+        <div id="surveyLoading" class="py-20 text-center flex flex-col items-center gap-3">
+          <span class="text-3xl animate-spin text-oppoMint text-glow">⏳</span>
+          <p class="text-xs font-semibold text-slate-400">Loading survey response metrics...</p>
+        </div>
+
+        <!-- Cards for Q1 to Q8 -->
+        <div id="surveyAnalyticsContainer" class="grid grid-cols-1 lg:grid-cols-2 gap-6 hidden">
+          <!-- Populated dynamically via JS -->
+        </div>
+
+
+
       </section>
 
     </main>
@@ -573,42 +634,37 @@
       searchQuery: '',
       // Calendar states
       calendarYear: 2026,
-      calendarMonth: 5, // June is 5 (0-indexed)
+      calendarMonth: 7, // August is 7 (0-indexed)
       selectedCalendarDate: null,
       calendarSearchQuery: '',
       campaignSchedule: [
-        { sNo: 1, location: "Bhutan", dateRange: "9 to 14 Jun", startDate: "2026-06-09", endDate: "2026-06-14", devices: 4 },
-        { sNo: 2, location: "Vietnam", dateRange: "12 to 22 Jun", startDate: "2026-06-12", endDate: "2026-06-22", devices: null },
-        { sNo: 3, location: "Vietnam", dateRange: "20 to 27 Jun", startDate: "2026-06-20", endDate: "2026-06-27", devices: null },
-        { sNo: 4, location: "Vietnam", dateRange: "10 to 17 July", startDate: "2026-07-10", endDate: "2026-07-17", devices: 1 },
-        { sNo: 5, location: "Vietnam", dateRange: "22 to 28 July", startDate: "2026-07-22", endDate: "2026-07-28", devices: 1 },
-        { sNo: 6, location: "Italy", dateRange: "18 to 25 Jun", startDate: "2026-06-18", endDate: "2026-06-25", devices: 1 },
-        { sNo: 7, location: "Europe (Paris, Netherlands, Swiss)", dateRange: "15 to 25 Jun", startDate: "2026-06-15", endDate: "2026-06-25", devices: null },
-        { sNo: 8, location: "Europe (Amsterdam Swiss Paris)", dateRange: "12 to 15 July", startDate: "2026-07-12", endDate: "2026-07-15", devices: null },
-        { sNo: 9, location: "Europe (Swiss Paris)", dateRange: "15 to 21 July", startDate: "2026-07-15", endDate: "2026-07-21", devices: 1 },
-        { sNo: 10, location: "Europe", dateRange: "19 to 31 July", startDate: "2026-07-19", endDate: "2026-07-31", devices: 1 },
-        { sNo: 11, location: "Europe", dateRange: "21 to 28 July", startDate: "2026-07-21", endDate: "2026-07-28", devices: 1 },
-        { sNo: 12, location: "Europe", dateRange: "23 to 31 July", startDate: "2026-07-23", endDate: "2026-07-31", devices: 1 },
-        { sNo: 13, location: "USA", dateRange: "26 July to 6 Aug", startDate: "2026-07-26", endDate: "2026-08-06", devices: 1 },
-        { sNo: 14, location: "Almaty", dateRange: "24 to 29 Jun", startDate: "2026-06-24", endDate: "2026-06-29", devices: 1 },
-        { sNo: 15, location: "Thailand", dateRange: "21 to 26 Jun", startDate: "2026-06-21", endDate: "2026-06-26", devices: 1 },
-        { sNo: 16, location: "Japan", dateRange: "15 to 22nd July", startDate: "2026-07-15", endDate: "2026-07-22", devices: 1 },
-        { sNo: 17, location: "Indonesia", dateRange: "16 to 22nd July", startDate: "2026-07-16", endDate: "2026-07-22", devices: null },
-        { sNo: 18, location: "Tbilisi & Batumi", dateRange: "10 to 16 July", startDate: "2026-07-10", endDate: "2026-07-16", devices: 1 },
-        { sNo: 19, location: "Indonesia", dateRange: "23 to 28 July", startDate: "2026-07-23", endDate: "2026-07-28", devices: 1 },
-        { sNo: 20, location: "Kerala", dateRange: "23 to 27 June", startDate: "2026-06-23", endDate: "2026-06-27", devices: 1 },
-        { sNo: 21, location: "Sri Lanka", dateRange: "29 Jun to 6 Jul", startDate: "2026-06-29", endDate: "2026-07-06", devices: 1 },
-        { sNo: 22, location: "South (Coorg, Ooty, Mysore)", dateRange: "30 Jun to 7 Jul", startDate: "2026-06-30", endDate: "2026-07-07", devices: 1 },
-        { sNo: 23, location: "Srinagar", dateRange: "7 to 14 July", startDate: "2026-07-07", endDate: "2026-07-14", devices: 2 },
-        { sNo: 24, location: "Leh", dateRange: "10 to 24 July", startDate: "2026-07-10", endDate: "2026-07-24", devices: 1 },
-        { sNo: 25, location: "Andaman (Neil, Havelock, Portblair)", dateRange: "8 to 14 July", startDate: "2026-07-08", endDate: "2026-07-14", devices: 3 },
-        { sNo: 26, location: "North East (Darjeeling, Gantok, Siliguri)", dateRange: "17 to 24 July", startDate: "2026-07-17", endDate: "2026-07-24", devices: 3 },
-        { sNo: 27, location: "Himachal (Shimla, Manali)", dateRange: "15 to 20 July", startDate: "2026-07-15", endDate: "2026-07-20", devices: 2 },
-        { sNo: 28, location: "Kerala (Munnar, Kochi, Allepey)", dateRange: "22 to 30 July", startDate: "2026-07-22", endDate: "2026-07-30", devices: 3 },
-        { sNo: 29, location: "Udaipur", dateRange: "20 to 22 July", startDate: "2026-07-20", endDate: "2026-07-22", devices: 1 },
-        { sNo: 30, location: "Singapore & Malaysia", dateRange: "23 to 26 July", startDate: "2026-07-23", endDate: "2026-07-26", devices: 1 },
-        { sNo: 31, location: "Singapore & Malaysia", dateRange: "28 to 31 July", startDate: "2026-07-28", endDate: "2026-07-31", devices: 1 },
-        { sNo: 32, location: "South Africa", dateRange: "15 to 22 July", startDate: "2026-07-15", endDate: "2026-07-22", devices: 1 }
+        { sNo: 1, location: "Switzerland", dateRange: "1 to 9 Aug", startDate: "2026-08-01", endDate: "2026-08-09", devices: 1 },
+        { sNo: 2, location: "Vietnam", dateRange: "22 to 31 Aug", startDate: "2026-08-22", endDate: "2026-08-31", devices: 1 },
+        { sNo: 3, location: "Scandinavia", dateRange: "23 Jul to 6 Aug", startDate: "2026-07-23", endDate: "2026-08-06", devices: 1 },
+        { sNo: 4, location: "Andaman (Neil, Havelock, Portblair)", dateRange: "21 to 28 Aug", startDate: "2026-08-21", endDate: "2026-08-28", devices: 3 },
+        { sNo: 5, location: "Himachal (Shimla, Manali)", dateRange: "24 to 27 Aug", startDate: "2026-08-24", endDate: "2026-08-27", devices: 2 },
+        { sNo: 6, location: "Kerala", dateRange: "21 to 28 Aug", startDate: "2026-08-21", endDate: "2026-08-28", devices: 3 },
+        { sNo: 7, location: "North East (Bagdogra)", dateRange: "24 to 30 Aug", startDate: "2026-08-24", endDate: "2026-08-30", devices: 3 },
+        { sNo: 8, location: "Kashmir", dateRange: "24 to 27 Aug", startDate: "2026-08-24", endDate: "2026-08-27", devices: 1 },
+        { sNo: 9, location: "Europe( Amsterdam Swiss Paris)", dateRange: "5 to 8 Aug", startDate: "2026-08-05", endDate: "2026-08-08", devices: 1 },
+        { sNo: 10, location: "Europe( Amsterdam Swiss Paris)", dateRange: "26 to 29 Aug", startDate: "2026-08-26", endDate: "2026-08-29", devices: 1 },
+        { sNo: 11, location: "Switzerland", dateRange: "8 to 14 Aug", startDate: "2026-08-08", endDate: "2026-08-14", devices: 1 },
+        { sNo: 12, location: "Switzerland", dateRange: "11 to 16 Aug", startDate: "2026-08-11", endDate: "2026-08-16", devices: 1 },
+        { sNo: 13, location: "Switzerland & Paris", dateRange: "10 to 16 Aug", startDate: "2026-08-10", endDate: "2026-08-16", devices: 1 },
+        { sNo: 14, location: "Switzerland & Paris", dateRange: "29 Aug to 4 Sep", startDate: "2026-08-29", endDate: "2026-09-04", devices: 1 },
+        { sNo: 15, location: "Italy", dateRange: "14 to 21 Aug", startDate: "2026-08-14", endDate: "2026-08-21", devices: 2 },
+        { sNo: 16, location: "Europe", dateRange: "9 to 21 Aug", startDate: "2026-08-09", endDate: "2026-08-21", devices: 2 },
+        { sNo: 17, location: "Europe", dateRange: "10 to 19 Aug", startDate: "2026-08-10", endDate: "2026-08-19", devices: 2 },
+        { sNo: 18, location: "Singapore & Malaysia", dateRange: "12 to 16 Aug", startDate: "2026-08-12", endDate: "2026-08-16", devices: 1 },
+        { sNo: 19, location: "Malaysia", dateRange: "16 to 18 Aug", startDate: "2026-08-16", endDate: "2026-08-18", devices: 1 },
+        { sNo: 20, location: "New Zealand", dateRange: "1 to 13 Aug", startDate: "2026-08-01", endDate: "2026-08-13", devices: 1 },
+        { sNo: 21, location: "Vietnam", dateRange: "5 to 14 Aug", startDate: "2026-08-05", endDate: "2026-08-14", devices: 1 },
+        { sNo: 22, location: "Vietnam", dateRange: "28 Aug to 7 Sep", startDate: "2026-08-28", endDate: "2026-09-07", devices: 1 },
+        { sNo: 23, location: "South Africa", dateRange: "8 to 21 Aug", startDate: "2026-08-08", endDate: "2026-08-21", devices: 1 },
+        { sNo: 24, location: "South East", dateRange: "14 to 23 Aug", startDate: "2026-08-14", endDate: "2026-08-23", devices: 1 },
+        { sNo: 25, location: "Sri Lanka", dateRange: "17 to 23 Aug", startDate: "2026-08-17", endDate: "2026-08-23", devices: 2 },
+        { sNo: 26, location: "South America", dateRange: "23 Aug to 5 Sep", startDate: "2026-08-23", endDate: "2026-09-05", devices: 1 },
+        { sNo: 27, location: "Bali", dateRange: "28 Aug to 4 Sep", startDate: "2026-08-28", endDate: "2026-09-04", devices: 1 }
       ]
     };
 
@@ -640,7 +696,14 @@
       deviceDistributionList: document.getElementById('deviceDistributionList'),
       imageModal: document.getElementById('imageModal'),
       modalImg: document.getElementById('modalImg'),
-      logoutBtn: document.getElementById('logoutBtn')
+      logoutBtn: document.getElementById('logoutBtn'),
+      tabSurvey: document.getElementById('tabSurvey'),
+      tabSurveyMobile: document.getElementById('tabSurveyMobile'),
+      surveySection: document.getElementById('surveySection'),
+      surveyLoading: document.getElementById('surveyLoading'),
+      surveyAnalyticsContainer: document.getElementById('surveyAnalyticsContainer'),
+      statSurveyResponses: document.getElementById('statSurveyResponses'),
+      globalStatsGrid: document.getElementById('globalStatsGrid')
     };
 
     // Load initial config dynamically
@@ -672,7 +735,7 @@
     function updateCalendarStats() {
       const departuresEl = document.getElementById('statCalendarDepartures');
       const devicesEl = document.getElementById('statCalendarDevices');
-      
+
       if (departuresEl && devicesEl) {
         const totalDepartures = state.campaignSchedule.length;
         const totalDevices = state.campaignSchedule.reduce((sum, t) => sum + (t.devices || 0), 0);
@@ -687,6 +750,7 @@
       const galleryDesc = document.getElementById('galleryDesc');
 
       if (tabName === 'showcase') {
+        if (elements.globalStatsGrid) elements.globalStatsGrid.classList.remove('hidden');
         if (elements.galleryFilterBar) elements.galleryFilterBar.classList.remove('hidden');
         if (elements.deviceDistributionBar) elements.deviceDistributionBar.classList.remove('hidden');
         elements.tabShowcase.className = 'flex items-center gap-3 px-4 py-3 rounded-xl bg-oppoGreen text-white font-bold text-sm transition-all duration-300 text-left w-full shadow-lg shadow-oppoGreen/25';
@@ -711,6 +775,7 @@
           elements.tabCalendarMobile.classList.add('text-slate-400', 'border-transparent');
         }
       } else if (tabName === 'winners') {
+        if (elements.globalStatsGrid) elements.globalStatsGrid.classList.remove('hidden');
         if (elements.galleryFilterBar) elements.galleryFilterBar.classList.remove('hidden');
         if (elements.deviceDistributionBar) elements.deviceDistributionBar.classList.remove('hidden');
         elements.tabWinners.className = 'flex items-center gap-3 px-4 py-3 rounded-xl bg-oppoGreen text-white font-bold text-sm transition-all duration-300 text-left w-full shadow-lg shadow-oppoGreen/25';
@@ -735,14 +800,17 @@
           elements.tabCalendarMobile.classList.remove('text-white', 'bg-oppoGreen/20', 'border-oppoEmerald');
           elements.tabCalendarMobile.classList.add('text-slate-400', 'border-transparent');
         }
-      } else {
+      } else if (tabName === 'calendar') {
+        if (elements.globalStatsGrid) elements.globalStatsGrid.classList.add('hidden');
         if (elements.galleryFilterBar) elements.galleryFilterBar.classList.add('hidden');
         if (elements.deviceDistributionBar) elements.deviceDistributionBar.classList.add('hidden');
         if (elements.tabCalendar) elements.tabCalendar.className = 'flex items-center gap-3 px-4 py-3 rounded-xl bg-oppoGreen text-white font-bold text-sm transition-all duration-300 text-left w-full shadow-lg shadow-oppoGreen/25';
         elements.tabShowcase.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full';
         elements.tabWinners.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full';
+        if (elements.tabSurvey) elements.tabSurvey.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full';
         elements.gallerySection.classList.add('hidden');
         elements.winnersSection.classList.add('hidden');
+        if (elements.surveySection) elements.surveySection.classList.add('hidden');
         if (elements.calendarSection) elements.calendarSection.classList.remove('hidden');
         galleryTitle.innerText = "Campaign Calendar";
         galleryDesc.innerText = "Monitor active departures and tracking of allocated campaign devices.";
@@ -762,17 +830,55 @@
           elements.tabWinnersMobile.classList.remove('text-white', 'bg-oppoGreen/20', 'border-oppoEmerald');
           elements.tabWinnersMobile.classList.add('text-slate-400', 'border-transparent');
         }
+        if (elements.tabSurveyMobile) {
+          elements.tabSurveyMobile.classList.remove('text-white', 'bg-oppoGreen/20', 'border-oppoEmerald');
+          elements.tabSurveyMobile.classList.add('text-slate-400', 'border-transparent');
+        }
+      } else if (tabName === 'survey') {
+        if (elements.globalStatsGrid) elements.globalStatsGrid.classList.add('hidden');
+        if (elements.galleryFilterBar) elements.galleryFilterBar.classList.add('hidden');
+        if (elements.deviceDistributionBar) elements.deviceDistributionBar.classList.add('hidden');
+        if (elements.tabSurvey) elements.tabSurvey.className = 'flex items-center gap-3 px-4 py-3 rounded-xl bg-oppoGreen text-white font-bold text-sm transition-all duration-300 text-left w-full shadow-lg shadow-oppoGreen/25';
+        elements.tabShowcase.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full';
+        elements.tabWinners.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full';
+        if (elements.tabCalendar) elements.tabCalendar.className = 'flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white text-sm font-bold transition-all duration-300 text-left w-full';
+        elements.gallerySection.classList.add('hidden');
+        elements.winnersSection.classList.add('hidden');
+        if (elements.calendarSection) elements.calendarSection.classList.add('hidden');
+        if (elements.surveySection) elements.surveySection.classList.remove('hidden');
+        galleryTitle.innerText = "Survey Responses & Analytics";
+        galleryDesc.innerText = "Monitor traveler feedback and photography preferences.";
+        renderSurveyStats();
+        // Update mobile tab bar
+        if (elements.tabSurveyMobile) {
+          elements.tabSurveyMobile.classList.add('text-white', 'bg-oppoGreen/20', 'border-oppoEmerald');
+          elements.tabSurveyMobile.classList.remove('text-slate-400', 'border-transparent');
+        }
+        if (elements.tabShowcaseMobile) {
+          elements.tabShowcaseMobile.classList.remove('text-white', 'bg-oppoGreen/20', 'border-oppoEmerald');
+          elements.tabShowcaseMobile.classList.add('text-slate-400', 'border-transparent');
+        }
+        if (elements.tabWinnersMobile) {
+          elements.tabWinnersMobile.classList.remove('text-white', 'bg-oppoGreen/20', 'border-oppoEmerald');
+          elements.tabWinnersMobile.classList.add('text-slate-400', 'border-transparent');
+        }
+        if (elements.tabCalendarMobile) {
+          elements.tabCalendarMobile.classList.remove('text-white', 'bg-oppoGreen/20', 'border-oppoEmerald');
+          elements.tabCalendarMobile.classList.add('text-slate-400', 'border-transparent');
+        }
       }
     }
 
     elements.tabShowcase.addEventListener('click', () => setTab('showcase'));
     elements.tabWinners.addEventListener('click', () => setTab('winners'));
     if (elements.tabCalendar) elements.tabCalendar.addEventListener('click', () => setTab('calendar'));
+    if (elements.tabSurvey) elements.tabSurvey.addEventListener('click', () => setTab('survey'));
 
     // Mobile bottom tab bar
     if (elements.tabShowcaseMobile) elements.tabShowcaseMobile.addEventListener('click', () => setTab('showcase'));
     if (elements.tabWinnersMobile) elements.tabWinnersMobile.addEventListener('click', () => setTab('winners'));
     if (elements.tabCalendarMobile) elements.tabCalendarMobile.addEventListener('click', () => setTab('calendar'));
+    if (elements.tabSurveyMobile) elements.tabSurveyMobile.addEventListener('click', () => setTab('survey'));
 
     // Logout action handler
     if (elements.logoutBtn) {
@@ -852,8 +958,8 @@
       const matches = {
         role: (e, val) => val === 'all' || e.user_role === val,
         person: (e, val) => val === 'all' || e.full_name === val || e.tour_manager === val,
-        status: (e, val) => val === 'all' || 
-          (val === 'approved' && e.status === 'approved') || 
+        status: (e, val) => val === 'all' ||
+          (val === 'approved' && e.status === 'approved') ||
           (val === 'non_approved' && e.status !== 'approved'),
         location: (e, val) => val === 'all' || e.location === val,
         month: (e, val) => getMatchesMonth(e, val),
@@ -861,7 +967,7 @@
       };
 
       // 1. Person Options: Filter entries by matching all filters *except* person
-      const personsSubset = state.approvedEntries.filter(e => 
+      const personsSubset = state.approvedEntries.filter(e =>
         matches.role(e, currentRole) &&
         matches.status(e, currentStatus) &&
         matches.location(e, currentLoc) &&
@@ -885,7 +991,7 @@
       }
 
       // 2. Location Options: Filter entries by matching all filters *except* location
-      const locationsSubset = state.approvedEntries.filter(e => 
+      const locationsSubset = state.approvedEntries.filter(e =>
         matches.role(e, currentRole) &&
         matches.person(e, personSelect.value) &&
         matches.status(e, currentStatus) &&
@@ -909,7 +1015,7 @@
       }
 
       // 3. Month Options: Filter entries by matching all filters *except* month
-      const monthsSubset = state.approvedEntries.filter(e => 
+      const monthsSubset = state.approvedEntries.filter(e =>
         matches.role(e, currentRole) &&
         matches.person(e, personSelect.value) &&
         matches.status(e, currentStatus) &&
@@ -947,7 +1053,7 @@
 
       // 4. Device Options: Filter entries by matching all filters *except* device,
       // restricted to approved traveler submissions to align with the Traveler Device Distribution widget.
-      const devicesSubset = state.approvedEntries.filter(e => 
+      const devicesSubset = state.approvedEntries.filter(e =>
         e.status === 'approved' &&
         e.user_role === 'traveler' &&
         matches.role(e, currentRole) &&
@@ -997,6 +1103,10 @@
       elements.galleryLoading.classList.remove('hidden');
       elements.galleryEmpty.classList.add('hidden');
       elements.galleryGrid.classList.add('hidden');
+      if (elements.surveyLoading) {
+        elements.surveyLoading.classList.remove('hidden');
+        elements.surveyAnalyticsContainer.classList.add('hidden');
+      }
 
       try {
         // Fetch all submissions (irrespective of approval status)
@@ -1036,11 +1146,32 @@
         } else {
           showToast('Failed to load campaign data.', 'error');
         }
+
+        // Fetch survey stats from Backend (securely mocked on server-side)
+        const surveyRes = await fetch(`${state.apiBaseUrl}/api/survey/stats`);
+        const surveyResult = await surveyRes.json();
+        if (surveyRes.ok && surveyResult.success) {
+          state.surveyStats = surveyResult.stats;
+          state.surveyTotalResponses = surveyResult.totalResponses;
+
+          if (elements.statSurveyResponses) {
+            elements.statSurveyResponses.innerText = state.surveyTotalResponses;
+          }
+        } else {
+          showToast('Failed to retrieve survey statistics.', 'error');
+        }
       } catch (err) {
         console.error(err);
         showToast('Connection to Backend API failed.', 'error');
       } finally {
         elements.galleryLoading.classList.add('hidden');
+        if (elements.surveyLoading) {
+          elements.surveyLoading.classList.add('hidden');
+          elements.surveyAnalyticsContainer.classList.remove('hidden');
+        }
+        if (state.activeTab === 'survey') {
+          renderSurveyStats();
+        }
       }
     }
 
@@ -1142,6 +1273,60 @@
       });
     }
 
+    function renderSurveyStats() {
+      if (!state.surveyStats || !elements.surveyAnalyticsContainer) return;
+
+      elements.surveyAnalyticsContainer.innerHTML = '';
+
+      const keys = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8'];
+
+      keys.forEach((key, index) => {
+        const qData = state.surveyStats[key];
+        if (!qData) return;
+
+        const card = document.createElement('div');
+        card.className = 'glass-card rounded-2xl p-5 md:p-6 flex flex-col gap-4 border border-[#00b064]/10 bg-[#05120c]/60';
+
+        card.innerHTML = `
+          <div class="flex justify-between items-start">
+            <span class="text-xxs font-extrabold text-slate-500 uppercase tracking-wider">Question ${index + 1}</span>
+            
+          </div>
+          <p class="text-xs md:text-sm font-black text-white leading-snug">${qData.question}</p>
+          <div class="flex flex-col gap-3.5 mt-2" id="options-container-${key}">
+            <!-- Populated option progress bars -->
+          </div>
+        `;
+
+        const optionsContainer = card.querySelector(`#options-container-${key}`);
+
+        qData.options.forEach(opt => {
+          const optDiv = document.createElement('div');
+          optDiv.className = 'flex flex-col gap-1.5';
+
+          let barGradient = 'from-oppoGreen to-oppoEmerald';
+          if (key === 'q8' && opt.option === 'OPPO') {
+            barGradient = 'from-[#00b064] via-oppoEmerald to-oppoMint';
+          } else if (key === 'q1' && opt.option === 'Definitely') {
+            barGradient = 'from-oppoGreen to-oppoMint';
+          }
+
+          optDiv.innerHTML = `
+            <div class="flex justify-between items-center text-[11px] font-bold">
+              <span class="text-slate-300 font-sans">${opt.option}</span>
+              <span class="text-oppoMint font-mono font-extrabold">${opt.percentage}% <span class="text-slate-500 font-sans font-semibold text-[10px]">(${opt.count} resp)</span></span>
+            </div>
+            <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden border border-white/5">
+              <div class="h-full bg-gradient-to-r ${barGradient} rounded-full transition-all duration-700" style="width: ${opt.percentage}%"></div>
+            </div>
+          `;
+          optionsContainer.appendChild(optDiv);
+        });
+
+        elements.surveyAnalyticsContainer.appendChild(card);
+      });
+    }
+
     function renderDeviceDistribution() {
       const listEl = document.getElementById('deviceDistributionList');
       if (!listEl) return;
@@ -1164,8 +1349,8 @@
       const matches = {
         role: (e, val) => val === 'all' || e.user_role === val,
         person: (e, val) => val === 'all' || e.full_name === val || e.tour_manager === val,
-        status: (e, val) => val === 'all' || 
-          (val === 'approved' && e.status === 'approved') || 
+        status: (e, val) => val === 'all' ||
+          (val === 'approved' && e.status === 'approved') ||
           (val === 'non_approved' && e.status !== 'approved'),
         location: (e, val) => val === 'all' || e.location === val,
         month: (e, val) => getMatchesMonth(e, val)
@@ -1215,8 +1400,8 @@
         const isActive = state.filterDevice === device;
 
         // Apply distinct style if it's active vs inactive
-        const borderStyle = isActive 
-          ? 'bg-oppoGreen/15 border border-[#00b064]/30 p-2 rounded-xl scale-[1.01]' 
+        const borderStyle = isActive
+          ? 'bg-oppoGreen/15 border border-[#00b064]/30 p-2 rounded-xl scale-[1.01]'
           : 'hover:bg-white/5 border border-transparent p-2 rounded-xl';
 
         itemBtn.className += ` ${borderStyle}`;
@@ -1246,7 +1431,7 @@
             renderGallery();
             renderDeviceDistribution();
             if (state.activeTab === 'winners') renderWinnersList();
-            
+
             const gallerySec = document.getElementById('gallerySection');
             if (gallerySec) {
               gallerySec.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1683,16 +1868,16 @@
 
     function selectCalendarDate(dateStr) {
       state.selectedCalendarDate = dateStr;
-      
+
       const trips = getTripsForDate(dateStr);
       const titleEl = document.getElementById('dateDetailsTitle');
       const listEl = document.getElementById('dateDetailsList');
       const cardEl = document.getElementById('dateDetailsCard');
       const placeholderEl = document.getElementById('dateDetailsPlaceholder');
-      
+
       const parsed = parseDateSafely(dateStr);
       const formattedDate = parsed.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
-      
+
       if (titleEl) titleEl.innerText = `📍 Departures on ${formattedDate}`;
       if (listEl) {
         listEl.innerHTML = '';
@@ -1713,10 +1898,10 @@
           });
         }
       }
-      
+
       if (cardEl) cardEl.classList.remove('hidden');
       if (placeholderEl) placeholderEl.classList.add('hidden');
-      
+
       // Re-render grid to highlight selected day
       renderCalendarGrid();
     }
@@ -1800,11 +1985,11 @@
       if (!tbody) return;
 
       tbody.innerHTML = '';
-      
+
       const filtered = state.campaignSchedule.filter(trip => {
         const query = state.calendarSearchQuery.toLowerCase();
-        return trip.location.toLowerCase().includes(query) || 
-               trip.dateRange.toLowerCase().includes(query);
+        return trip.location.toLowerCase().includes(query) ||
+          trip.dateRange.toLowerCase().includes(query);
       });
 
       if (filtered.length === 0) {
@@ -1827,7 +2012,7 @@
         // Check trip status (in 2026, let's compare dates)
         const end = parseDateSafely(trip.endDate);
         const start = parseDateSafely(trip.startDate);
-        
+
         let statusBadge = '';
         if (today > end) {
           statusBadge = '<span class="bg-slate-500/10 text-slate-400 border border-slate-500/20 px-2 py-0.5 rounded text-[9px] font-bold">Completed</span>';
@@ -1844,9 +2029,22 @@
           <td class="px-4 py-3 text-center font-extrabold text-oppoMint">${trip.devices !== null ? trip.devices : '—'}</td>
           <td class="px-4 py-3 text-right">${statusBadge}</td>
         `;
-        
+
         tbody.appendChild(tr);
       });
+
+      // Add Total Row matching layout
+      const totalDevices = filtered.reduce((sum, t) => sum + (t.devices || 0), 0);
+      const totalTr = document.createElement('tr');
+      totalTr.className = 'bg-white/5 border-t border-white/10 font-bold';
+      totalTr.innerHTML = `
+        <td class="px-4 py-3 font-mono text-slate-500"></td>
+        <td class="px-4 py-3 text-white font-extrabold">Total</td>
+        <td class="px-4 py-3 font-mono"></td>
+        <td class="px-4 py-3 text-center font-extrabold text-oppoMint">${totalDevices}</td>
+        <td class="px-4 py-3 text-right"></td>
+      `;
+      tbody.appendChild(totalTr);
     }
 
     // Explicitly bind to window to resolve inline HTML onclick reference errors
@@ -1871,6 +2069,18 @@
         }
 
         const allData = result.data;
+
+        // Fetch survey database responses for Sheet 5 (un-mocked true data)
+        let surveyData = [];
+        try {
+          const surveyResponse = await fetch(`${state.apiBaseUrl}/api/survey`);
+          const surveyResult = await surveyResponse.json();
+          if (surveyResponse.ok && surveyResult.success) {
+            surveyData = surveyResult.data;
+          }
+        } catch (e) {
+          console.warn('Could not retrieve survey dataset for Excel report.', e);
+        }
 
         // Longest streak calculator helper
         function getLongestStreak(dates) {
@@ -2118,10 +2328,37 @@
         const wsLeaderboard = XLSX.utils.aoa_to_sheet(sheet4Rows);
         XLSX.utils.book_append_sheet(wb, wsLeaderboard, 'Contest Leaderboard');
 
+        // ==================== SHEET 5: Survey Responses ====================
+        const sheet5Rows = [
+          ['S.No', 'Respondent Name', 'Location', 'Email Address', 'Phone Number', 'Q1 (Photography Contest)', 'Q2 (Motivation Driver)', 'Q3 (OPPO Global Awards)', 'Q4 (Find Series Awareness)', 'Q5 (OPPO Interest Factors)', 'Q6 (Camera Importance)', 'Q7 (Travel Use Cases)', 'Q8 (Top Recall Brand)', 'Submitted At']
+        ];
+
+        surveyData.forEach((row, i) => {
+          sheet5Rows.push([
+            i + 1,
+            row.name || 'Anonymous',
+            row.location || '',
+            row.email || '',
+            row.phone || '',
+            row.q1 || '',
+            row.q2 || '',
+            row.q3 || '',
+            row.q4 || '',
+            row.q5 || '',
+            row.q6 || '',
+            Array.isArray(row.q7) ? row.q7.join(', ') : (row.q7 || ''),
+            row.q8 || '',
+            row.created_at ? new Date(row.created_at).toLocaleString('en-IN') : ''
+          ]);
+        });
+
+        const wsSurveyResponses = XLSX.utils.aoa_to_sheet(sheet5Rows);
+        XLSX.utils.book_append_sheet(wb, wsSurveyResponses, 'Survey Responses');
+
         // Write Workbook to browser trigger download
         XLSX.writeFile(wb, 'OPPO_UGC_Campaign_Report.xlsx');
 
-        showToast('Four-Sheet Campaign Report generated and downloaded successfully! 📊', 'success');
+        showToast('Five-Sheet Campaign Report generated and downloaded successfully! 📊', 'success');
 
       } catch (err) {
         console.error(err);

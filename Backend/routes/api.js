@@ -31,7 +31,8 @@ router.get('/metadata/devices', metadataController.getDevices);
 
 // 4. Survey Submission Routing
 router.post('/survey', surveyController.submitSurvey);
-router.get('/survey', apiAuthMiddleware('mmt'), surveyController.getSurveys);
+router.get('/survey', apiAuthMiddleware(['mmt', 'oppo']), surveyController.getSurveys);
+router.get('/survey/stats', apiAuthMiddleware(['mmt', 'oppo']), surveyController.getSurveyStats);
 
 module.exports = router;
 
