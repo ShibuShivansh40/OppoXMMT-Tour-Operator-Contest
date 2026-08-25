@@ -67,6 +67,12 @@ async function getSurveys(req, res) {
 
 const SURVEY_MOCK_CONFIG = {
   totalResponses: 24,
+  q6Percentages: {
+    "Extremely important": 63,
+    "Very important": 29,
+    "Somewhat important": 8,
+    "Not important": 0
+  },
   q8BrandPercentages: {
     "OPPO": 27,
     "Apple": 42,
@@ -120,7 +126,6 @@ async function getSurveyStats(req, res) {
       "Long battery life", 
       "AI photo editing"
     ];
-    const q6Options = ["Extremely important", "Very important", "Somewhat important", "Not important"];
     const q7Options = [
       "Landscapes", 
       "People & portraits", 
@@ -193,18 +198,6 @@ async function getSurveyStats(req, res) {
         options: q5Options.map(opt => ({ option: opt, percentage: q5Pct[opt], count: q5MockCounts[opt] }))
       };
 
-      // Q6
-      const q6Counts = {};
-      q6Options.forEach(opt => q6Counts[opt] = 0);
-      responses.forEach(r => { if (q6Counts[r.q6] !== undefined) q6Counts[r.q6]++; });
-      const q6Pct = {};
-      q6Options.forEach(opt => q6Pct[opt] = Math.round((q6Counts[opt] / N) * 100));
-      const q6MockCounts = distributeMockCounts(q6Pct, SURVEY_MOCK_CONFIG.totalResponses);
-      stats.q6 = {
-        question: "How important is your smartphone camera when you travel?",
-        options: q6Options.map(opt => ({ option: opt, percentage: q6Pct[opt], count: q6MockCounts[opt] }))
-      };
-
       // Q7 (Multi-select)
       const q7Counts = {};
       q7Options.forEach(opt => q7Counts[opt] = 0);
@@ -230,7 +223,6 @@ async function getSurveyStats(req, res) {
         q3: { "Definitely": 63, "Somewhat": 25, "No difference": 8, "Not interested": 4 },
         q4: { "Very familiar": 29, "Somewhat familiar": 42, "Heard of it": 21, "Not familiar": 8 },
         q5: { "Better camera clarity": 38, "Powerful zoom": 21, "Better portraits": 17, "Better night photography": 12, "Long battery life": 8, "AI photo editing": 4 },
-        q6: { "Extremely important": 71, "Very important": 21, "Somewhat important": 8, "Not important": 0 },
         q7: { "Landscapes": 79, "People & portraits": 67, "Selfies": 54, "Food & culture": 46, "Zoom shots": 38, "Videos & Reels": 58, "Night photography": 50 }
       };
 
@@ -254,15 +246,23 @@ async function getSurveyStats(req, res) {
         question: "Which of these would make you most interested in trying an OPPO phone on your next trip?",
         options: q5Options.map(opt => ({ option: opt, percentage: defaultDists.q5[opt], count: distributeMockCounts(defaultDists.q5, SURVEY_MOCK_CONFIG.totalResponses)[opt] }))
       };
-      stats.q6 = {
-        question: "How important is your smartphone camera when you travel?",
-        options: q6Options.map(opt => ({ option: opt, percentage: defaultDists.q6[opt], count: distributeMockCounts(defaultDists.q6, SURVEY_MOCK_CONFIG.totalResponses)[opt] }))
-      };
       stats.q7 = {
         question: "What do you use your smartphone camera for most while travelling? (Select all that apply)",
         options: q7Options.map(opt => ({ option: opt, percentage: defaultDists.q7[opt], count: Math.round((defaultDists.q7[opt] / 100) * SURVEY_MOCK_CONFIG.totalResponses) }))
       };
     }
+
+    // Q6
+    const q6Options = Object.keys(SURVEY_MOCK_CONFIG.q6Percentages);
+    const q6MockCounts = distributeMockCounts(SURVEY_MOCK_CONFIG.q6Percentages, SURVEY_MOCK_CONFIG.totalResponses);
+    stats.q6 = {
+      question: "How important is your smartphone camera when you travel?",
+      options: q6Options.map(opt => ({
+        option: opt,
+        percentage: SURVEY_MOCK_CONFIG.q6Percentages[opt],
+        count: q6MockCounts[opt]
+      }))
+    };
 
     // Q8
     const q8Options = Object.keys(SURVEY_MOCK_CONFIG.q8BrandPercentages);
