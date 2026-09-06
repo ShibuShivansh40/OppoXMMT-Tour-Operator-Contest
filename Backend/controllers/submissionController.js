@@ -359,11 +359,82 @@ async function bulkModerateSubmissions(req, res) {
   }
 }
 
+/**
+ * Bulk delete submissions (Soft delete - preserves data in MongoDB and media in S3).
+ * PUT /api/submissions/bulk-delete
+ */
+async function bulkDeleteSubmissions(req, res) {
+  try {
+    const { ids } = req.body; // ids is an array of numeric IDs
+
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Request body must contain a non-empty array 'ids'."
+      });
+    }
+
+    const result = await db.bulkDeleteSubmissions(ids);
+
+    return res.status(200).json({
+      success: true,
+      message: `Successfully deleted ${result.modifiedCount} submissions (archived safely).`,
+      data: result
+    });
+  } catch (error) {
+    console.error('[Submission Controller] Error bulk deleting submissions:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Database bulk delete failed.',
+      error: error.message
+    });
+  }
+}
+
+/**
+ * Delete single submission (Soft delete).
+ * DELETE /api/submissions/:id
+ */
+async function deleteSubmission(req, res) {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: 'Submission ID is required.'
+      });
+    }
+
+    const result = await db.deleteSubmission(id);
+    if (!result) {
+      return res.status(404).json({
+        success: false,
+        message: `Submission with ID ${id} not found.`
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: `Submission #${id} has been deleted (archived safely).`,
+      data: result
+    });
+  } catch (error) {
+    console.error('[Submission Controller] Error deleting submission:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to delete submission.',
+      error: error.message
+    });
+  }
+}
+
 module.exports = {
   createSubmission,
   getSubmissions,
   moderateSubmission,
   bulkModerateSubmissions,
+  bulkDeleteSubmissions,
+  deleteSubmission,
   selectWinner,
   getStats,
   saveSubmissionScore

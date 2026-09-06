@@ -1,0 +1,200 @@
+[
+  {
+    "_id": "6a7ebcd05e53fc21d6d96c40",
+    "name": "cyrus bhathena",
+    "location": "Thane Maharashtra",
+    "email": "cyrusbhathena@gmail.com",
+    "phone": "9820697574",
+    "q1": "Maybe",
+    "q2": "Smartphone prize",
+    "q3": "Definitely",
+    "q4": "Somewhat familiar",
+    "q5": "Long battery life",
+    "q6": "Extremely important",
+    "q7": [
+      "Landscapes",
+      "People & portraits",
+      "Videos & Reels"
+    ],
+    "q8": "Apple",
+    "created_at": "2026-08-14T06:59:28.863Z"
+  },
+  {
+    "_id": "6a82c3795e53fc21d6d96c84",
+    "name": "Surabhi Patel",
+    "location": "Switzerland",
+    "email": "patelsurabhi76@gmail.com",
+    "phone": "4164506141",
+    "q1": "Definitely",
+    "q2": "MMT travel vouchers",
+    "q3": "Definitely",
+    "q4": "Very familiar",
+    "q5": "Better camera clarity",
+    "q6": "Extremely important",
+    "q7": [
+      "Landscapes",
+      "People & portraits",
+      "Selfies",
+      "Food & culture",
+      "Zoom shots",
+      "Videos & Reels",
+      "Night photography"
+    ],
+    "q8": "Google",
+    "created_at": "2026-08-17T08:16:57.339Z"
+  },
+  {
+    "_id": "6a82c38d5e53fc21d6d96c85",
+    "name": "Arpan Shah",
+    "location": "Brampton Ontario Canada",
+    "email": "arpanshah1011@gmail.com",
+    "phone": "5199922182",
+    "q1": "Definitely",
+    "q2": "MMT travel vouchers",
+    "q3": "Somewhat",
+    "q4": "Not familiar",
+    "q5": "Better portraits",
+    "q6": "Very important",
+    "q7": [
+      "Landscapes",
+      "People & portraits",
+      "Selfies"
+    ],
+    "q8": "Samsung",
+    "created_at": "2026-08-17T08:17:17.716Z"
+  },
+  {
+    "_id": "6a82c3c7e66c81c572863658",
+    "name": "Shah Virendra",
+    "location": "Gandhinagar",
+    "email": "virendrashah55@gmail.com",
+    "phone": "9909028571",
+    "q1": "Definitely",
+    "q2": "Smartphone prize",
+    "q3": "Definitely",
+    "q4": "Very familiar",
+    "q5": "Better camera clarity",
+    "q6": "Extremely important",
+    "q7": [
+      "Landscapes"
+    ],
+    "q8": "Google pixel",
+    "created_at": "2026-08-17T08:18:15.542Z"
+  },
+  {
+    "_id": "6a82c40ce66c81c572863659",
+    "name": "Shah Vaishal Prakashbhai",
+    "location": "Ahmedabad",
+    "email": "vaishalshah.shah1998@gmail.com",
+    "phone": "8487939527",
+    "q1": "Definitely",
+    "q2": "MMT travel vouchers",
+    "q3": "Definitely",
+    "q4": "Heard of it",
+    "q5": "Better camera clarity",
+    "q6": "Extremely important",
+    "q7": [
+      "People & portraits"
+    ],
+    "q8": "Iphone or else Samsung S series",
+    "created_at": "2026-08-17T08:19:24.358Z"
+  },
+  {
+    "_id": "6a82c4585e53fc21d6d96c86",
+    "name": "Arpan Das",
+    "location": "Howrah, West Bengal",
+    "email": "arpandas2110@gmail.com",
+    "phone": "8961833670",
+    "q1": "Definitely",
+    "q2": "Smartphone prize",
+    "q3": "Definitely",
+    "q4": "Heard of it",
+    "q5": "Better camera clarity",
+    "q6": "Extremely important",
+    "q7": [
+      "Landscapes",
+      "People & portraits",
+      "Food & culture",
+      "Zoom shots",
+      "Videos & Reels",
+      "Night photography"
+    ],
+    "q8": "Iphone",
+    "created_at": "2026-08-17T08:20:40.797Z"
+  },
+  {
+    "_id": "6a82c45ee66c81c57286365a",
+    "name": "Kashmira Shah",
+    "location": "Gandhinagar Gujarat",
+    "email": "vcshah55@rediffmail.com",
+    "phone": "8238007280",
+    "q1": "Definitely",
+    "q2": "Smartphone prize",
+    "q3": "Definitely",
+    "q4": "Very familiar",
+    "q5": "Better camera clarity",
+    "q6": "Extremely important",
+    "q7": [
+      "Landscapes"
+    ],
+    "q8": "Samsung",
+    "created_at": "2026-08-17T08:20:46.613Z"
+  },
+  {
+    "_id": "6a82c4a0e66c81c57286365b",
+    "name": "Fart",
+    "location": "Atlanta ga",
+    "email": "fareeda.hajiani@gmail.com",
+    "phone": "6784074122",
+    "q1": "Definitely",
+    "q2": "Smartphone prize",
+    "q3": "Definitely",
+    "q4": "Somewhat familiar",
+    "q5": "Powerful zoom",
+    "q6": "Extremely important",
+    "q7": [
+      "People & portraits",
+      "Selfies",
+      "Zoom shots",
+      "Videos & Reels"
+    ],
+    "q8": "Apple  iphone",
+    "created_at": "2026-08-17T08:21:52.022Z"
+  },
+  {
+    "_id": "6a82c81fe66c81c57286365c",
+    "name": "Desai Varshaben Mukeshkumar",
+    "location": "USA californiya",
+    "email": "vmdesai_2005@yahoo.co.in",
+    "phone": "9825263442",
+    "q1": "Definitely",
+    "q2": "Smartphone prize",
+    "q3": "Somewhat",
+    "q4": "Very familiar",
+    "q5": "Better camera clarity",
+    "q6": "Very important",
+    "q7": [
+      "Landscapes"
+    ],
+    "q8": "Apple",
+    "created_at": "2026-08-17T08:36:47.780Z"
+  },
+  {
+    "_id": "6a82cc34e66c81c57286365d",
+    "name": "Desai Mukeshkumar Ramanlal",
+    "location": "USA californiya",
+    "email": "mrdesai_2005@yahoo.com",
+    "phone": "9638063442",
+    "q1": "Definitely",
+    "q2": "Cash rewards",
+    "q3": "Not interested",
+    "q4": "Somewhat familiar",
+    "q5": "Better camera clarity",
+    "q6": "Very important",
+    "q7": [
+      "Landscapes"
+    ],
+    "q8": "Smart pphone",
+    "created_at": "2026-08-17T08:54:12.009Z"
+  }
+]

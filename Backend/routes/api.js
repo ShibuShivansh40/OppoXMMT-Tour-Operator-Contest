@@ -20,7 +20,9 @@ router.post('/submissions', submissionController.createSubmission);
 router.get('/submissions', apiAuthMiddleware(['mmt', 'oppo']), submissionController.getSubmissions);
 router.get('/submissions/stats', apiAuthMiddleware(['mmt', 'oppo']), submissionController.getStats);
 router.put('/submissions/bulk-moderate', apiAuthMiddleware('mmt'), submissionController.bulkModerateSubmissions);
+router.put('/submissions/bulk-delete', apiAuthMiddleware('mmt'), submissionController.bulkDeleteSubmissions);
 router.put('/submissions/:id/moderate', apiAuthMiddleware('mmt'), submissionController.moderateSubmission);
+router.delete('/submissions/:id', apiAuthMiddleware('mmt'), submissionController.deleteSubmission);
 router.put('/submissions/:id/winner', apiAuthMiddleware('oppo'), submissionController.selectWinner);
 router.put('/submissions/:id/score', apiAuthMiddleware('oppo'), submissionController.saveSubmissionScore);
 

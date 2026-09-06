@@ -99,10 +99,14 @@
         Admin Dashboard</p>
     </div>
 
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-2 md:gap-3">
       <a href="/MMT_Dashboard/bulk_approve.html"
-        class="bg-mmtBlue hover:bg-mmtBlue/90 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 shadow shadow-mmtBlue/15 active:scale-95">
+        class="bg-mmtBlue hover:bg-mmtBlue/90 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 shadow shadow-mmtBlue/15 active:scale-95">
         <span>⚡</span> Bulk Approve
+      </a>
+      <a href="/MMT_Dashboard/bulk_delete.html"
+        class="bg-red-600/20 hover:bg-red-600 text-red-300 hover:text-white px-3 py-1.5 rounded-lg border border-red-500/30 text-xs font-bold transition-all flex items-center gap-1 shadow shadow-red-600/10 active:scale-95">
+        <span>🗑️</span> Bulk Delete
       </a>
       <button id="logoutBtn"
         class="bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-white/10 text-xs font-semibold transition-all">
@@ -140,6 +144,10 @@
         <button onclick="window.location.href='/MMT_Dashboard/bulk_approve.html'"
           class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 hover:text-white text-slate-400 font-bold text-sm transition-all duration-300 text-left">
           <span>⚡</span> Bulk Approve
+        </button>
+        <button onclick="window.location.href='/MMT_Dashboard/bulk_delete.html'"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 hover:text-red-400 text-slate-400 font-bold text-sm transition-all duration-300 text-left">
+          <span>🗑️</span> Bulk Delete
         </button>
       </nav>
 
@@ -336,6 +344,31 @@
           </div>
         </div>
 
+        <!-- Queue Batch Action Command Bar -->
+        <div id="queueBatchActionCard" class="glass-card rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-l-4 border-l-oppoMint shadow-xl hidden">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-mmtBlue/15 flex items-center justify-center text-sm">⚡</div>
+            <div>
+              <h4 class="font-extrabold text-white text-xs md:text-sm">Selected entries: <span id="queueSelectedCount" class="text-oppoMint font-black text-sm md:text-base">0</span></h4>
+              <p class="text-[10px] text-slate-400">Perform bulk action on selected items.</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 w-full sm:w-auto flex-wrap">
+            <button id="queueBtnBulkApprove"
+              class="flex-1 sm:flex-none bg-oppoEmerald hover:bg-oppoEmerald/90 text-white font-extrabold py-2 px-3.5 rounded-xl text-xs active:scale-95 transition-all shadow shadow-oppoEmerald/15 flex items-center justify-center gap-1">
+              <span>✔</span> Approve
+            </button>
+            <button id="queueBtnBulkReject"
+              class="flex-1 sm:flex-none bg-amber-600 hover:bg-amber-500 text-white font-extrabold py-2 px-3.5 rounded-xl text-xs active:scale-95 transition-all shadow shadow-amber-600/15 flex items-center justify-center gap-1">
+              <span>✖</span> Reject
+            </button>
+            <button id="queueBtnBulkDelete"
+              class="flex-1 sm:flex-none bg-red-600 hover:bg-red-500 text-white font-extrabold py-2 px-3.5 rounded-xl text-xs active:scale-95 transition-all shadow shadow-red-600/20 flex items-center justify-center gap-1">
+              <span>🗑️</span> Delete Selected
+            </button>
+          </div>
+        </div>
+
         <!-- Submission List Grid / Table -->
         <div class="glass-card rounded-2xl overflow-hidden shadow-2xl flex flex-col border border-white/5">
 
@@ -354,11 +387,14 @@
 
           <!-- Submissions Queue list -->
           <div class="overflow-x-auto w-full custom-scrollbar -webkit-overflow-scrolling-touch">
-            <table id="queueTable" class="w-full text-left text-sm border-collapse hidden" style="min-width: 700px;">
+            <table id="queueTable" class="w-full text-left text-sm border-collapse hidden" style="min-width: 750px;">
               <thead>
                 <tr
-                  class="bg-white/5 text-slate-300 text-xxs font-extrabold uppercase tracking-widest border-b border-white/5">
-                  <th class="p-3 pl-5 whitespace-nowrap">ID</th>
+                  class="bg-white/5 text-slate-300 text-xxs font-extrabold uppercase tracking-widest border-b border-white/5 select-none">
+                  <th class="p-3 pl-4 w-10 text-center">
+                    <input type="checkbox" id="queueSelectAllCheckbox" class="w-4 h-4 rounded bg-slate-900 border-white/10 text-mmtBlue focus:ring-mmtBlue cursor-pointer">
+                  </th>
+                  <th class="p-3 whitespace-nowrap">ID</th>
                   <th class="p-3 whitespace-nowrap">Submitter</th>
                   <th class="p-3 whitespace-nowrap">File Details</th>
                   <th class="p-3 whitespace-nowrap">Destination</th>
@@ -573,6 +609,37 @@
     </div>
   </div>
 
+  <!-- Delete Confirmation Modal -->
+  <div id="deleteConfirmModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="max-w-md w-full glass-card rounded-2xl p-6 border border-red-500/30 shadow-2xl flex flex-col gap-4 bg-[#0b162c]">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-red-600/20 text-red-400 flex items-center justify-center text-2xl flex-shrink-0">
+          ⚠️
+        </div>
+        <div>
+          <h3 class="text-lg font-black text-white">Confirm Deletion</h3>
+          <p class="text-xs text-slate-400 mt-0.5">Remove entries from all dashboards.</p>
+        </div>
+      </div>
+
+      <div class="bg-black/30 rounded-xl p-4 border border-white/5 text-xs text-slate-300 flex flex-col gap-2">
+        <p>You are about to delete <strong id="deleteModalCount" class="text-red-400 text-sm">0</strong> submission(s).</p>
+        <p class="text-[11px] text-slate-400 border-t border-white/10 pt-2">This action will remove the selected entries from the moderation queue and client dashboards.</p>
+      </div>
+
+      <div class="flex items-center justify-end gap-3 mt-2">
+        <button id="cancelDeleteModalBtn"
+          class="px-4 py-2.5 rounded-xl border border-white/10 text-slate-300 hover:text-white hover:bg-white/5 text-xs font-bold transition-all">
+          Cancel
+        </button>
+        <button id="confirmDeleteActionBtn"
+          class="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-black shadow-lg shadow-red-600/30 transition-all flex items-center gap-2">
+          <span>🗑️</span> Confirm &amp; Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Script Logic -->
   <script>
     // Safari-compatible date parser
@@ -594,7 +661,9 @@
       galFilterStatus: 'all',
       galFilterRole: 'all',
       submissions: [],
-      stats: { total: 0, approved: 0, pending: 0, uniqueLocations: 0 }
+      stats: { total: 0, approved: 0, pending: 0, uniqueLocations: 0 },
+      selectedQueueIds: new Set(),
+      pendingDeleteIds: []
     };
 
     // DOM Elements
@@ -622,10 +691,20 @@
       filterRoleAll: document.getElementById('filterRoleAll'),
       filterRoleTraveler: document.getElementById('filterRoleTraveler'),
       filterRoleOperator: document.getElementById('filterRoleOperator'),
+      queueBatchActionCard: document.getElementById('queueBatchActionCard'),
+      queueSelectedCount: document.getElementById('queueSelectedCount'),
+      queueBtnBulkApprove: document.getElementById('queueBtnBulkApprove'),
+      queueBtnBulkReject: document.getElementById('queueBtnBulkReject'),
+      queueBtnBulkDelete: document.getElementById('queueBtnBulkDelete'),
+      queueSelectAllCheckbox: document.getElementById('queueSelectAllCheckbox'),
       queueLoading: document.getElementById('queueLoading'),
       queueEmpty: document.getElementById('queueEmpty'),
       queueTable: document.getElementById('queueTable'),
       queueBody: document.getElementById('queueBody'),
+      deleteConfirmModal: document.getElementById('deleteConfirmModal'),
+      deleteModalCount: document.getElementById('deleteModalCount'),
+      cancelDeleteModalBtn: document.getElementById('cancelDeleteModalBtn'),
+      confirmDeleteActionBtn: document.getElementById('confirmDeleteActionBtn'),
       kpiTotal: document.getElementById('kpiTotal'),
       kpiApproved: document.getElementById('kpiApproved'),
       kpiPending: document.getElementById('kpiPending'),
@@ -1063,6 +1142,9 @@
 
     function renderQueue() {
       elements.queueBody.innerHTML = '';
+      state.selectedQueueIds.clear();
+      updateQueueSelectionUI();
+
       if (state.submissions.length === 0) {
         elements.queueEmpty.classList.remove('hidden');
         elements.queueTable.classList.add('hidden');
@@ -1074,11 +1156,25 @@
 
       state.submissions.forEach(sub => {
         const tr = document.createElement('tr');
-        tr.className = 'hover:bg-white/5 transition-colors border-b border-white/5 text-xs';
+        tr.className = 'hover:bg-white/5 transition-colors border-b border-white/5 text-xs select-none cursor-pointer';
+
+        // --- Cell 0: Checkbox ---
+        const tdCheck = document.createElement('td');
+        tdCheck.className = 'p-4 pl-4 text-center';
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'queue-row-checkbox w-4 h-4 rounded bg-slate-900 border-white/10 text-mmtBlue focus:ring-mmtBlue cursor-pointer';
+        checkbox.dataset.id = sub.id;
+        checkbox.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toggleQueueSelect(sub.id, checkbox.checked);
+        });
+        tdCheck.appendChild(checkbox);
+        tr.appendChild(tdCheck);
 
         // --- Cell 1: ID ---
         const tdId = document.createElement('td');
-        tdId.className = 'p-4 pl-6 font-mono text-slate-500 text-xs';
+        tdId.className = 'p-4 font-mono text-slate-500 text-xs';
         tdId.textContent = '#' + sub.id;
         tr.appendChild(tdId);
 
@@ -1115,7 +1211,10 @@
           videoThumb.className = 'w-36 h-24 rounded bg-white/5 border border-white/10 flex items-center justify-center text-xl flex-shrink-0';
           videoThumb.textContent = '🎥';
           previewWrapper.appendChild(videoThumb);
-          previewWrapper.addEventListener('click', () => window.open(sub.media_url, '_blank'));
+          previewWrapper.addEventListener('click', (e) => {
+            e.stopPropagation();
+            window.open(sub.media_url, '_blank');
+          });
         } else {
           const thumb = document.createElement('img');
           thumb.src = sub.thumbnail_url || sub.media_url;
@@ -1124,7 +1223,10 @@
           thumb.alt = sub.file_name || 'UGC Asset';
           thumb.onerror = () => { thumb.src = 'https://placehold.co/100x100?text=Media'; };
           previewWrapper.appendChild(thumb);
-          previewWrapper.addEventListener('click', () => openImageModal(sub));
+          previewWrapper.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openImageModal(sub);
+          });
         }
 
         const labelDiv = document.createElement('div');
@@ -1183,20 +1285,36 @@
 
         if (sub.status === 'pending') {
           const btnWrap = document.createElement('div');
-          btnWrap.className = 'flex justify-end gap-2';
+          btnWrap.className = 'flex justify-end gap-1.5 items-center';
 
           const approveBtn = document.createElement('button');
-          approveBtn.className = 'bg-oppoEmerald hover:bg-oppoEmerald/90 text-white font-extrabold py-1.5 px-3.5 rounded-lg text-xs active:scale-95 transition-all shadow shadow-oppoEmerald/10';
+          approveBtn.className = 'bg-oppoEmerald hover:bg-oppoEmerald/90 text-white font-extrabold py-1.5 px-3 rounded-lg text-xs active:scale-95 transition-all shadow shadow-oppoEmerald/10';
           approveBtn.textContent = 'Approve';
-          approveBtn.addEventListener('click', () => moderate(sub.id, 'approved'));
+          approveBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            moderate(sub.id, 'approved');
+          });
 
           const rejectBtn = document.createElement('button');
-          rejectBtn.className = 'bg-red-600 hover:bg-red-500 text-white font-extrabold py-1.5 px-3.5 rounded-lg text-xs active:scale-95 transition-all shadow shadow-red-600/10';
+          rejectBtn.className = 'bg-red-600 hover:bg-red-500 text-white font-extrabold py-1.5 px-3 rounded-lg text-xs active:scale-95 transition-all shadow shadow-red-600/10';
           rejectBtn.textContent = 'Reject';
-          rejectBtn.addEventListener('click', () => moderate(sub.id, 'rejected'));
+          rejectBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            moderate(sub.id, 'rejected');
+          });
+
+          const delBtn = document.createElement('button');
+          delBtn.className = 'bg-red-600/15 hover:bg-red-600 text-red-400 hover:text-white font-bold py-1.5 px-2.5 rounded-lg text-xs active:scale-95 transition-all border border-red-500/20';
+          delBtn.innerHTML = '🗑️';
+          delBtn.title = 'Delete submission';
+          delBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            promptDelete([sub.id]);
+          });
 
           btnWrap.appendChild(approveBtn);
           btnWrap.appendChild(rejectBtn);
+          btnWrap.appendChild(delBtn);
           tdAction.appendChild(btnWrap);
         } else {
           const actionWrap = document.createElement('div');
@@ -1209,19 +1327,173 @@
           badge.textContent = sub.status;
 
           const changeBtn = document.createElement('button');
-          changeBtn.className = 'text-slate-400 hover:text-white underline font-semibold text-xs transition-colors ml-2';
+          changeBtn.className = 'text-slate-400 hover:text-white underline font-semibold text-xs transition-colors ml-1';
           changeBtn.textContent = 'Change';
           const newStatus = sub.status === 'approved' ? 'rejected' : 'approved';
-          changeBtn.addEventListener('click', () => moderate(sub.id, newStatus));
+          changeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            moderate(sub.id, newStatus);
+          });
+
+          const delBtn = document.createElement('button');
+          delBtn.className = 'bg-red-600/15 hover:bg-red-600 text-red-400 hover:text-white font-bold py-1 px-2 rounded-lg text-xs active:scale-95 transition-all border border-red-500/20';
+          delBtn.innerHTML = '🗑️';
+          delBtn.title = 'Delete submission';
+          delBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            promptDelete([sub.id]);
+          });
 
           actionWrap.appendChild(badge);
           actionWrap.appendChild(changeBtn);
+          actionWrap.appendChild(delBtn);
           tdAction.appendChild(actionWrap);
         }
 
         tr.appendChild(tdAction);
+
+        // Entire row click selects/deselects
+        tr.addEventListener('click', (e) => {
+          if (e.target.closest('button') || e.target.closest('a') || e.target.closest('input')) return;
+          checkbox.checked = !checkbox.checked;
+          toggleQueueSelect(sub.id, checkbox.checked);
+        });
+
         elements.queueBody.appendChild(tr);
       });
+    }
+
+    function toggleQueueSelect(id, isSelected) {
+      if (isSelected) {
+        state.selectedQueueIds.add(id);
+      } else {
+        state.selectedQueueIds.delete(id);
+      }
+      updateQueueSelectionUI();
+    }
+
+    function updateQueueSelectionUI() {
+      const count = state.selectedQueueIds.size;
+      if (elements.queueSelectedCount) elements.queueSelectedCount.innerText = count;
+
+      if (count > 0) {
+        if (elements.queueBatchActionCard) elements.queueBatchActionCard.classList.remove('hidden');
+      } else {
+        if (elements.queueBatchActionCard) elements.queueBatchActionCard.classList.add('hidden');
+      }
+
+      const rowCheckboxes = document.querySelectorAll('.queue-row-checkbox');
+      if (rowCheckboxes.length > 0 && elements.queueSelectAllCheckbox) {
+        elements.queueSelectAllCheckbox.checked = Array.from(rowCheckboxes).every(cb => cb.checked);
+      }
+    }
+
+    if (elements.queueSelectAllCheckbox) {
+      elements.queueSelectAllCheckbox.addEventListener('change', (e) => {
+        const checked = e.target.checked;
+        const rowCheckboxes = document.querySelectorAll('.queue-row-checkbox');
+        rowCheckboxes.forEach(cb => {
+          cb.checked = checked;
+          const id = parseInt(cb.dataset.id, 10);
+          if (checked) {
+            state.selectedQueueIds.add(id);
+          } else {
+            state.selectedQueueIds.delete(id);
+          }
+        });
+        updateQueueSelectionUI();
+      });
+    }
+
+    // Queue Batch Actions
+    if (elements.queueBtnBulkApprove) {
+      elements.queueBtnBulkApprove.addEventListener('click', () => executeQueueBulkModerate('approved'));
+    }
+    if (elements.queueBtnBulkReject) {
+      elements.queueBtnBulkReject.addEventListener('click', () => executeQueueBulkModerate('rejected'));
+    }
+    if (elements.queueBtnBulkDelete) {
+      elements.queueBtnBulkDelete.addEventListener('click', () => {
+        const ids = Array.from(state.selectedQueueIds);
+        if (ids.length > 0) promptDelete(ids);
+      });
+    }
+
+    async function executeQueueBulkModerate(targetStatus) {
+      const ids = Array.from(state.selectedQueueIds);
+      if (ids.length === 0) return;
+      try {
+        const res = await fetch(`${state.apiBaseUrl}/api/submissions/bulk-moderate`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ids, status: targetStatus })
+        });
+        const result = await res.json();
+        if (res.ok && result.success) {
+          showToast(`Successfully marked ${ids.length} entries as ${targetStatus}!`, 'success');
+          state.selectedQueueIds.clear();
+          updateQueueSelectionUI();
+          await loadAllData();
+        } else {
+          showToast(result.message || 'Failed to moderate.', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('Connection to backend API failed.', 'error');
+      }
+    }
+
+    function promptDelete(ids) {
+      state.pendingDeleteIds = ids;
+      if (elements.deleteModalCount) elements.deleteModalCount.innerText = ids.length;
+      if (elements.deleteConfirmModal) elements.deleteConfirmModal.classList.remove('hidden');
+    }
+
+    function hideDeleteModal() {
+      if (elements.deleteConfirmModal) elements.deleteConfirmModal.classList.add('hidden');
+      state.pendingDeleteIds = [];
+    }
+
+    if (elements.cancelDeleteModalBtn) {
+      elements.cancelDeleteModalBtn.addEventListener('click', hideDeleteModal);
+    }
+    if (elements.deleteConfirmModal) {
+      elements.deleteConfirmModal.addEventListener('click', (e) => {
+        if (e.target === elements.deleteConfirmModal) hideDeleteModal();
+      });
+    }
+    if (elements.confirmDeleteActionBtn) {
+      elements.confirmDeleteActionBtn.addEventListener('click', async () => {
+        const ids = state.pendingDeleteIds;
+        hideDeleteModal();
+        if (ids && ids.length > 0) {
+          await executeDelete(ids);
+        }
+      });
+    }
+
+    async function executeDelete(ids) {
+      try {
+        const res = await fetch(`${state.apiBaseUrl}/api/submissions/bulk-delete`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ ids })
+        });
+        const result = await res.json();
+        if (res.ok && result.success) {
+          showToast(`Successfully deleted ${ids.length} submission(s)!`, 'success');
+          state.selectedQueueIds.clear();
+          updateQueueSelectionUI();
+          await loadAllData();
+        } else {
+          showToast(result.message || 'Failed to delete submissions.', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('Connection to backend API failed.', 'error');
+      }
     }
 
     // Moderate Submission status

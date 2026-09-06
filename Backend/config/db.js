@@ -82,11 +82,18 @@ async function getSubmissions(filters = {}) {
   if (filters.isWinner !== undefined) {
     query.is_winner = filters.isWinner === 'true' || filters.isWinner === true;
   }
+  // Exclude soft-deleted submissions unless explicitly requested
+  if (filters.includeDeleted !== 'true') {
+    query.is_deleted = { $ne: true };
+  }
 
   if (submissionsCollection) {
     return await submissionsCollection.find(query).sort({ id: -1 }).toArray();
   } else {
     let list = [...mockDb];
+    if (filters.includeDeleted !== 'true') {
+      list = list.filter(r => !r.is_deleted);
+    }
     if (filters.status) list = list.filter(r => r.status === filters.status);
     if (filters.role) list = list.filter(r => r.user_role === filters.role);
     if (filters.isWinner !== undefined) {
@@ -148,21 +155,56 @@ async function bulkUpdateSubmissions(ids, updateFields) {
 }
 
 /**
+ * Bulk soft-delete submissions (Keeps data in Mongo and files in S3, marks is_deleted: true).
+ */
+async function bulkDeleteSubmissions(ids) {
+  const numericIds = ids.map(id => parseInt(id, 10));
+  const updateFields = { is_deleted: true, deleted_at: new Date(), updated_at: new Date() };
+
+  if (submissionsCollection) {
+    const result = await submissionsCollection.updateMany(
+      { id: { $in: numericIds } },
+      { $set: updateFields }
+    );
+    return { modifiedCount: result.modifiedCount };
+  } else {
+    let modifiedCount = 0;
+    mockDb.forEach(record => {
+      if (numericIds.includes(record.id)) {
+        Object.assign(record, updateFields);
+        modifiedCount++;
+      }
+    });
+    return { modifiedCount };
+  }
+}
+
+/**
+ * Soft-delete single submission by ID.
+ */
+async function deleteSubmission(id) {
+  return await updateSubmission(id, { is_deleted: true, deleted_at: new Date() });
+}
+
+/**
  * Fetch database summary stats/KPI values.
  */
 async function getStats() {
+  const baseQuery = { is_deleted: { $ne: true } };
+
   if (submissionsCollection) {
-    const total = await submissionsCollection.countDocuments({});
-    const approved = await submissionsCollection.countDocuments({ status: 'approved' });
-    const pending = await submissionsCollection.countDocuments({ status: 'pending' });
-    const locationsList = await submissionsCollection.distinct('location');
+    const total = await submissionsCollection.countDocuments(baseQuery);
+    const approved = await submissionsCollection.countDocuments({ ...baseQuery, status: 'approved' });
+    const pending = await submissionsCollection.countDocuments({ ...baseQuery, status: 'pending' });
+    const locationsList = await submissionsCollection.distinct('location', baseQuery);
     const locations = locationsList ? locationsList.length : 0;
     return { total, approved, pending, uniqueLocations: locations };
   } else {
-    const total = mockDb.length;
-    const approved = mockDb.filter(r => r.status === 'approved').length;
-    const pending = mockDb.filter(r => r.status === 'pending').length;
-    const uniqueLocations = [...new Set(mockDb.map(r => r.location))].length;
+    const active = mockDb.filter(r => !r.is_deleted);
+    const total = active.length;
+    const approved = active.filter(r => r.status === 'approved').length;
+    const pending = active.filter(r => r.status === 'pending').length;
+    const uniqueLocations = [...new Set(active.map(r => r.location))].length;
     return { total, approved, pending, uniqueLocations };
   }
 }
@@ -214,6 +256,8 @@ module.exports = {
   getSubmissions,
   updateSubmission,
   bulkUpdateSubmissions,
+  bulkDeleteSubmissions,
+  deleteSubmission,
   getStats,
   insertSurveyResponse,
   getSurveyResponses,
