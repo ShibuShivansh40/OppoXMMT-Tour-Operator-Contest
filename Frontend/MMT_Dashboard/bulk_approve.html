@@ -562,7 +562,18 @@
         const result = await res.json();
         if (res.ok && result.success) {
           showToast(`Successfully deleted ${idsArray.length} submissions!`, 'success');
+          // Optimistically remove from state and re-render immediately
+          const idSet = new Set(idsArray.map(id => parseInt(id, 10)));
+          state.submissions = state.submissions.filter(s => !idSet.has(s.id));
           state.selectedIds.clear();
+          updateSelectionUI();
+          renderQueue();
+
+          // Broadcast deletion event to other tabs
+          try {
+            localStorage.setItem('mmt_submissions_updated', Date.now().toString());
+          } catch (e) {}
+
           await loadData();
         } else {
           showToast(result.message || 'Bulk deletion failed.', 'error');

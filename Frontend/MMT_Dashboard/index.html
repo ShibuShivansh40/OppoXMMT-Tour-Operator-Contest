@@ -906,44 +906,46 @@
 
     // API fetches
     async function loadAllData() {
-      await fetchStats();
-      
-      // Fetch all submissions for the overview charts & active locations dropbox
-      try {
-        const res = await fetch(`${state.apiBaseUrl}/api/submissions`);
-        const result = await res.json();
-        if (res.ok && result.success) {
-          const allSubmissions = result.data;
-          
-          // Populate Active Locations Dropbox on home page
-          const overviewDestSelect = document.getElementById('overviewDestSelect');
-          if (overviewDestSelect) {
-            const prevVal = overviewDestSelect.value;
-            overviewDestSelect.innerHTML = '<option value="all">📍 Select Active Location...</option>';
-            const locations = [...new Set(allSubmissions.map(s => s.location).filter(Boolean))].sort();
-            locations.forEach(loc => {
-              const opt = document.createElement('option');
-              opt.value = loc;
-              opt.textContent = loc;
-              overviewDestSelect.appendChild(opt);
-            });
-            if (locations.includes(prevVal)) {
-              overviewDestSelect.value = prevVal;
-            }
-          }
-          
-          // Render Overview Charts
-          renderOverviewCharts(allSubmissions);
-        }
-      } catch (err) {
-        console.error('Failed to load submissions for overview charts/dropbox:', err);
-      }
-
+      // 1. Immediately refresh the active tab first so the user sees updated content with zero lag
       if (state.activeTab === 'moderation') {
         await fetchSubmissions();
       } else if (state.activeTab === 'gallery') {
         await fetchGallerySubmissions();
       }
+
+      await fetchStats();
+      
+      // 2. Fetch all submissions for the overview charts & active locations dropbox in background
+      fetch(`${state.apiBaseUrl}/api/submissions`)
+        .then(res => res.json())
+        .then(result => {
+          if (result.success && result.data) {
+            const allSubmissions = result.data;
+            
+            // Populate Active Locations Dropbox on home page
+            const overviewDestSelect = document.getElementById('overviewDestSelect');
+            if (overviewDestSelect) {
+              const prevVal = overviewDestSelect.value;
+              overviewDestSelect.innerHTML = '<option value="all">📍 Select Active Location...</option>';
+              const locations = [...new Set(allSubmissions.map(s => s.location).filter(Boolean))].sort();
+              locations.forEach(loc => {
+                const opt = document.createElement('option');
+                opt.value = loc;
+                opt.textContent = loc;
+                overviewDestSelect.appendChild(opt);
+              });
+              if (locations.includes(prevVal)) {
+                overviewDestSelect.value = prevVal;
+              }
+            }
+            
+            // Render Overview Charts
+            renderOverviewCharts(allSubmissions);
+          }
+        })
+        .catch(err => {
+          console.error('Failed to load submissions for overview charts/dropbox:', err);
+        });
     }
 
     function renderOverviewCharts(submissions) {
@@ -1484,8 +1486,22 @@
         const result = await res.json();
         if (res.ok && result.success) {
           showToast(`Successfully deleted ${ids.length} submission(s)!`, 'success');
+          // Optimistically remove deleted items from memory & DOM immediately
+          const idSet = new Set(ids.map(id => parseInt(id, 10)));
+          state.submissions = state.submissions.filter(s => !idSet.has(s.id));
           state.selectedQueueIds.clear();
           updateQueueSelectionUI();
+          if (state.activeTab === 'moderation') {
+            renderQueue();
+          } else if (state.activeTab === 'gallery') {
+            renderGallery();
+          }
+
+          // Broadcast deletion event to other open dashboard tabs
+          try {
+            localStorage.setItem('mmt_submissions_updated', Date.now().toString());
+          } catch (e) {}
+
           await loadAllData();
         } else {
           showToast(result.message || 'Failed to delete submissions.', 'error');
@@ -2061,6 +2077,20 @@
         });
       }
     }, 0);
+
+    // Synchronize across tabs when deletions/moderations occur in other pages (e.g. bulk_delete.html)
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'mmt_submissions_updated') {
+        loadAllData();
+      }
+    });
+
+    // Refresh when user returns to this tab from another page
+    window.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        loadAllData();
+      }
+    });
 
     // Initial load
     loadAllData();

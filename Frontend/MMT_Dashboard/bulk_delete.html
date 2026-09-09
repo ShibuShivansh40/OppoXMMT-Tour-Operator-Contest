@@ -604,7 +604,18 @@
         const result = await res.json();
         if (res.ok && result.success) {
           showToast(`Successfully deleted ${idsArray.length} entries!`, 'success');
+          // Optimistically remove from state and re-render immediately (0ms visual latency)
+          const idSet = new Set(idsArray.map(id => parseInt(id, 10)));
+          state.submissions = state.submissions.filter(s => !idSet.has(s.id));
           state.selectedIds.clear();
+          updateSelectionUI();
+          renderQueue();
+
+          // Broadcast deletion event to other tabs (e.g. MMT_Dashboard/index.html)
+          try {
+            localStorage.setItem('mmt_submissions_updated', Date.now().toString());
+          } catch (e) {}
+
           await fetchSubmissions();
         } else {
           showToast(result.message || 'Bulk delete failed.', 'error');
