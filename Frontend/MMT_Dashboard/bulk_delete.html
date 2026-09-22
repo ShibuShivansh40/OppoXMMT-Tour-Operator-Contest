@@ -5,7 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bulk Deletion Tool | MMT UGC Admin Dashboard</title>
-  <meta name="description" content="Bulk deletion tool for MakeMyTrip admin teams to manage and moderate campaign submissions.">
+  <meta name="description"
+    content="Bulk deletion tool for MakeMyTrip admin teams to manage and moderate campaign submissions.">
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -92,7 +93,8 @@
           style="background-color: white; padding: 6px 10px; border-radius: 8px;">
       </a>
       <span class="text-white/20">|</span>
-      <p class="text-sm md:text-lg uppercase tracking-wider text-red-400 font-extrabold text-glow flex items-center gap-1.5">
+      <p
+        class="text-sm md:text-lg uppercase tracking-wider text-red-400 font-extrabold text-glow flex items-center gap-1.5">
         <span>🗑️</span> Bulk Deletion Tool
       </p>
     </div>
@@ -120,8 +122,10 @@
     <!-- Title and Description -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
       <div>
-        <h1 class="text-2xl md:text-3xl font-black uppercase tracking-tight">Bulk <span class="custom-gradient-text text-glow">Deletion</span></h1>
-        <p class="text-xs md:text-sm text-slate-400 mt-1">Select multiple entries to remove them from the campaign queue and all dashboards.</p>
+        <h1 class="text-2xl md:text-3xl font-black uppercase tracking-tight">Bulk <span
+            class="custom-gradient-text text-glow">Deletion</span></h1>
+        <p class="text-xs md:text-sm text-slate-400 mt-1">Select multiple entries to remove them from the campaign queue
+          and all dashboards.</p>
       </div>
 
       <!-- Filters Container -->
@@ -165,11 +169,14 @@
     </div>
 
     <!-- Batch Action Command Bar -->
-    <div id="batchActionCard" class="glass-card rounded-2xl p-4 md:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 border-l-4 border-l-red-500 shadow-xl">
+    <div id="batchActionCard"
+      class="glass-card rounded-2xl p-4 md:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 border-l-4 border-l-red-500 shadow-xl">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-full bg-red-600/15 flex items-center justify-center text-lg text-red-400">🗑️</div>
+        <div class="w-10 h-10 rounded-full bg-red-600/15 flex items-center justify-center text-lg text-red-400">🗑️
+        </div>
         <div>
-          <h2 class="font-extrabold text-white text-sm md:text-base">Selected for deletion: <span id="selectedCountText" class="text-red-400 font-black text-lg">0</span></h2>
+          <h2 class="font-extrabold text-white text-sm md:text-base">Selected for deletion: <span id="selectedCountText"
+              class="text-red-400 font-black text-lg">0</span></h2>
           <p class="text-xxs text-slate-400">Selected submissions will be removed from all dashboards in one batch.</p>
         </div>
       </div>
@@ -200,9 +207,11 @@
       <div class="overflow-x-auto w-full custom-scrollbar -webkit-overflow-scrolling-touch">
         <table id="queueTable" class="w-full text-left text-sm border-collapse hidden" style="min-width: 800px;">
           <thead>
-            <tr class="bg-white/5 text-slate-300 text-xxs font-extrabold uppercase tracking-widest border-b border-white/5 select-none">
+            <tr
+              class="bg-white/5 text-slate-300 text-xxs font-extrabold uppercase tracking-widest border-b border-white/5 select-none">
               <th class="p-4 pl-6 w-12 text-center">
-                <input type="checkbox" id="selectAllCheckbox" class="w-4.5 h-4.5 rounded bg-slate-900 border-white/10 text-red-600 focus:ring-red-600 cursor-pointer">
+                <input type="checkbox" id="selectAllCheckbox"
+                  class="w-4.5 h-4.5 rounded bg-slate-900 border-white/10 text-red-600 focus:ring-red-600 cursor-pointer">
               </th>
               <th class="p-4 w-16">ID</th>
               <th class="p-4">Submitter Info</th>
@@ -223,10 +232,13 @@
   </main>
 
   <!-- Delete Confirmation Modal -->
-  <div id="confirmModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="max-w-md w-full glass-card rounded-2xl p-6 border border-red-500/30 shadow-2xl flex flex-col gap-4 bg-[#0b162c]">
+  <div id="confirmModal"
+    class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div
+      class="max-w-md w-full glass-card rounded-2xl p-6 border border-red-500/30 shadow-2xl flex flex-col gap-4 bg-[#0b162c]">
       <div class="flex items-center gap-3">
-        <div class="w-12 h-12 rounded-2xl bg-red-600/20 text-red-400 flex items-center justify-center text-2xl flex-shrink-0">
+        <div
+          class="w-12 h-12 rounded-2xl bg-red-600/20 text-red-400 flex items-center justify-center text-2xl flex-shrink-0">
           ⚠️
         </div>
         <div>
@@ -236,8 +248,10 @@
       </div>
 
       <div class="bg-black/30 rounded-xl p-4 border border-white/5 text-xs text-slate-300 flex flex-col gap-2">
-        <p>You are about to delete <strong id="modalDeleteCount" class="text-red-400 text-sm">0</strong> submission(s).</p>
-        <p class="text-[11px] text-slate-400 border-t border-white/10 pt-2">This action will remove the selected entries from the moderation queue and client dashboards.</p>
+        <p>You are about to delete <strong id="modalDeleteCount" class="text-red-400 text-sm">0</strong> submission(s).
+        </p>
+        <p class="text-[11px] text-slate-400 border-t border-white/10 pt-2">This action will remove the selected entries
+          from the moderation queue and client dashboards.</p>
       </div>
 
       <div class="flex items-center justify-end gap-3 mt-2">
@@ -254,8 +268,10 @@
   </div>
 
   <!-- Image Zoom Modal -->
-  <div id="imageModal" class="hidden fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
-    <button onclick="closeImageModal()" class="absolute top-6 right-6 text-white hover:text-red-400 text-3xl font-bold bg-white/5 hover:bg-white/15 w-12 h-12 rounded-full flex items-center justify-center transition-all focus:outline-none">&times;</button>
+  <div id="imageModal"
+    class="hidden fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+    <button onclick="closeImageModal()"
+      class="absolute top-6 right-6 text-white hover:text-red-400 text-3xl font-bold bg-white/5 hover:bg-white/15 w-12 h-12 rounded-full flex items-center justify-center transition-all focus:outline-none">&times;</button>
     <div class="max-w-4xl max-h-[85vh] overflow-hidden rounded-2xl shadow-2xl border border-white/10 bg-slate-950/80">
       <img id="modalImg" src="" alt="Contest Entry Zoomed" class="w-full h-full object-contain max-h-[80vh]">
     </div>
@@ -604,18 +620,7 @@
         const result = await res.json();
         if (res.ok && result.success) {
           showToast(`Successfully deleted ${idsArray.length} entries!`, 'success');
-          // Optimistically remove from state and re-render immediately (0ms visual latency)
-          const idSet = new Set(idsArray.map(id => parseInt(id, 10)));
-          state.submissions = state.submissions.filter(s => !idSet.has(s.id));
           state.selectedIds.clear();
-          updateSelectionUI();
-          renderQueue();
-
-          // Broadcast deletion event to other tabs (e.g. MMT_Dashboard/index.html)
-          try {
-            localStorage.setItem('mmt_submissions_updated', Date.now().toString());
-          } catch (e) {}
-
           await fetchSubmissions();
         } else {
           showToast(result.message || 'Bulk delete failed.', 'error');

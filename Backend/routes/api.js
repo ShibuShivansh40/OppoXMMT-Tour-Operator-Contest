@@ -5,6 +5,7 @@ const uploadController = require('../controllers/uploadController');
 const submissionController = require('../controllers/submissionController');
 const metadataController = require('../controllers/metadataController');
 const surveyController = require('../controllers/surveyController');
+const winnerConsentController = require('../controllers/winnerConsentController');
 const { apiAuthMiddleware, handleLogin, handleLogout } = require('../middleware/auth');
 
 // 0. Authentication Routing
@@ -36,5 +37,10 @@ router.post('/survey', surveyController.submitSurvey);
 router.get('/survey', apiAuthMiddleware(['mmt', 'oppo']), surveyController.getSurveys);
 router.get('/survey/stats', apiAuthMiddleware(['mmt', 'oppo']), surveyController.getSurveyStats);
 
+// 5. Winner Verification & Social Media Consent Routing
+router.post('/winner-consent', winnerConsentController.submitWinnerConsent);
+router.get('/winner-consent', apiAuthMiddleware(['mmt', 'oppo']), winnerConsentController.getWinnerConsents);
+
 module.exports = router;
+
 

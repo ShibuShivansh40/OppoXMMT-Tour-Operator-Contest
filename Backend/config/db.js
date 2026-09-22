@@ -9,9 +9,11 @@ let client = null;
 let dbInstance = null;
 let submissionsCollection = null;
 let surveyResponsesCollection = null;
+let winnerConsentsCollection = null;
 
 let mockDb = [];
 let mockSurveyDb = [];
+let mockWinnerConsentDb = [];
 
 if (isDbConfigured) {
   console.log('[Database] Connecting to MongoDB Atlas...');
@@ -20,6 +22,7 @@ if (isDbConfigured) {
     dbInstance = client.db();
     submissionsCollection = dbInstance.collection('submissions_migrated');
     surveyResponsesCollection = dbInstance.collection('survey_responses');
+    winnerConsentsCollection = dbInstance.collection('winner_consents');
     console.log('[Database] MongoDB Atlas connection pool established.');
   }).catch(err => {
     console.error('[Database] MongoDB connection failed:', err.message);
@@ -249,6 +252,47 @@ async function getSurveyResponses() {
   }
 }
 
+/**
+ * Insert a new winner consent submission.
+ */
+async function insertWinnerConsent(data) {
+  const cleanData = {
+    name: data.name || '',
+    phone: data.phone || '',
+    address: data.address || '',
+    pincode: data.pincode || '',
+    city: data.city || '',
+    state: data.state || '',
+    instagram_handle: data.instagram_handle || '',
+    consent_winner_announcement: !!data.consent_winner_announcement,
+    consent_social_feature: !!data.consent_social_feature,
+    ip_address: data.ip_address || null,
+    user_agent: data.user_agent || null,
+    created_at: new Date()
+  };
+
+  if (winnerConsentsCollection) {
+    const result = await winnerConsentsCollection.insertOne(cleanData);
+    cleanData._id = result.insertedId;
+    return cleanData;
+  } else {
+    cleanData.id = mockWinnerConsentDb.length + 1;
+    mockWinnerConsentDb.push(cleanData);
+    return cleanData;
+  }
+}
+
+/**
+ * Fetch all winner consent submissions.
+ */
+async function getWinnerConsents() {
+  if (winnerConsentsCollection) {
+    return await winnerConsentsCollection.find({}).sort({ created_at: -1 }).toArray();
+  } else {
+    return [...mockWinnerConsentDb].sort((a, b) => b.created_at - a.created_at);
+  }
+}
+
 module.exports = {
   client,
   isDbConfigured: () => isDbConfigured,
@@ -261,7 +305,10 @@ module.exports = {
   getStats,
   insertSurveyResponse,
   getSurveyResponses,
+  insertWinnerConsent,
+  getWinnerConsents,
   getMockDb: () => mockDb,
   setMockDb: (data) => { mockDb = data; },
-  getMockSurveyDb: () => mockSurveyDb
+  getMockSurveyDb: () => mockSurveyDb,
+  getMockWinnerConsentDb: () => mockWinnerConsentDb
 };

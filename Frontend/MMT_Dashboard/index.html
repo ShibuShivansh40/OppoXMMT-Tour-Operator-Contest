@@ -255,10 +255,12 @@
         </div>
 
         <!-- Destination Quick Filter Dropdown -->
-        <div class="glass-card rounded-2xl p-5 md:p-6 border border-white/5 bg-[#0b162c]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div
+          class="glass-card rounded-2xl p-5 md:p-6 border border-white/5 bg-[#0b162c]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h4 class="font-extrabold text-white text-sm md:text-base">📍 Active Locations Quick View</h4>
-            <p class="text-xs text-slate-400 mt-0.5">Select a destination to filter and view its submissions in the UGC Gallery.</p>
+            <p class="text-xs text-slate-400 mt-0.5">Select a destination to filter and view its submissions in the UGC
+              Gallery.</p>
           </div>
           <div class="relative w-full sm:w-64">
             <select id="overviewDestSelect"
@@ -328,28 +330,42 @@
           <!-- Filters Container -->
           <div class="flex flex-wrap items-center gap-3">
             <!-- Status Filters -->
-            <div class="flex items-center gap-1 text-xs bg-[#0b162c] p-1 border border-white/10 rounded-xl flex-wrap font-sans">
-              <button id="filterAll" class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200">All Entries</button>
-              <button id="filterPending" class="bg-mmtBlue text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200 shadow-md">Pending</button>
-              <button id="filterApproved" class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200">Approved</button>
-              <button id="filterRejected" class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200">Rejected</button>
+            <div
+              class="flex items-center gap-1 text-xs bg-[#0b162c] p-1 border border-white/10 rounded-xl flex-wrap font-sans">
+              <button id="filterAll"
+                class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200">All
+                Entries</button>
+              <button id="filterPending"
+                class="bg-mmtBlue text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200 shadow-md">Pending</button>
+              <button id="filterApproved"
+                class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200">Approved</button>
+              <button id="filterRejected"
+                class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200">Rejected</button>
             </div>
 
             <!-- Role Filters -->
-            <div class="flex items-center gap-1 text-xs bg-[#0b162c] p-1 border border-white/10 rounded-xl flex-wrap font-sans">
-              <button id="filterRoleAll" class="bg-mmtBlue text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200 shadow-md">All Roles</button>
-              <button id="filterRoleTraveler" class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200">Travelers</button>
-              <button id="filterRoleOperator" class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200">Tour Managers</button>
+            <div
+              class="flex items-center gap-1 text-xs bg-[#0b162c] p-1 border border-white/10 rounded-xl flex-wrap font-sans">
+              <button id="filterRoleAll"
+                class="bg-mmtBlue text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200 shadow-md">All
+                Roles</button>
+              <button id="filterRoleTraveler"
+                class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200">Travelers</button>
+              <button id="filterRoleOperator"
+                class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all duration-200">Tour
+                Managers</button>
             </div>
           </div>
         </div>
 
         <!-- Queue Batch Action Command Bar -->
-        <div id="queueBatchActionCard" class="glass-card rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-l-4 border-l-oppoMint shadow-xl hidden">
+        <div id="queueBatchActionCard"
+          class="glass-card rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-l-4 border-l-oppoMint shadow-xl hidden">
           <div class="flex items-center gap-3">
             <div class="w-9 h-9 rounded-full bg-mmtBlue/15 flex items-center justify-center text-sm">⚡</div>
             <div>
-              <h4 class="font-extrabold text-white text-xs md:text-sm">Selected entries: <span id="queueSelectedCount" class="text-oppoMint font-black text-sm md:text-base">0</span></h4>
+              <h4 class="font-extrabold text-white text-xs md:text-sm">Selected entries: <span id="queueSelectedCount"
+                  class="text-oppoMint font-black text-sm md:text-base">0</span></h4>
               <p class="text-[10px] text-slate-400">Perform bulk action on selected items.</p>
             </div>
           </div>
@@ -392,7 +408,8 @@
                 <tr
                   class="bg-white/5 text-slate-300 text-xxs font-extrabold uppercase tracking-widest border-b border-white/5 select-none">
                   <th class="p-3 pl-4 w-10 text-center">
-                    <input type="checkbox" id="queueSelectAllCheckbox" class="w-4 h-4 rounded bg-slate-900 border-white/10 text-mmtBlue focus:ring-mmtBlue cursor-pointer">
+                    <input type="checkbox" id="queueSelectAllCheckbox"
+                      class="w-4 h-4 rounded bg-slate-900 border-white/10 text-mmtBlue focus:ring-mmtBlue cursor-pointer">
                   </th>
                   <th class="p-3 whitespace-nowrap">ID</th>
                   <th class="p-3 whitespace-nowrap">Submitter</th>
@@ -410,7 +427,9 @@
 
           <!-- Load More Button -->
           <div id="queueLoadMoreContainer" class="flex justify-center my-6 hidden">
-            <button id="queueLoadMoreBtn" class="bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white px-5 py-2 rounded-xl border border-white/10 text-xs font-semibold transition-all">Load More</button>
+            <button id="queueLoadMoreBtn"
+              class="bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white px-5 py-2 rounded-xl border border-white/10 text-xs font-semibold transition-all">Load
+              More</button>
           </div>
 
         </div>
@@ -443,11 +462,13 @@
             <!-- Role Category -->
             <div class="flex items-center gap-1 bg-[#0b162c] p-1 border border-white/10 rounded-xl">
               <button id="galFilterRoleAll"
-                class="bg-mmtBlue text-white font-bold py-1.5 px-3 rounded-lg transition-all shadow-md">All Roles</button>
+                class="bg-mmtBlue text-white font-bold py-1.5 px-3 rounded-lg transition-all shadow-md">All
+                Roles</button>
               <button id="galFilterRoleTraveler"
                 class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all">Travelers</button>
               <button id="galFilterRoleOperator"
-                class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all">Tour Managers</button>
+                class="hover:bg-white/5 text-slate-400 hover:text-white font-bold py-1.5 px-3 rounded-lg transition-all">Tour
+                Managers</button>
             </div>
 
             <!-- Destination Dropdown Filter -->
@@ -495,7 +516,8 @@
         <div>
           <h2 class="text-2xl md:text-3xl font-black tracking-tight text-white uppercase">Survey <span
               class="custom-gradient-text text-glow">Responses</span></h2>
-          <p class="text-sm text-slate-400 mt-1">Monitor feedback and responses submitted by travellers for the Super Every Journey Contest.</p>
+          <p class="text-sm text-slate-400 mt-1">Monitor feedback and responses submitted by travellers for the Super
+            Every Journey Contest.</p>
         </div>
 
         <!-- Survey Stats Cards -->
@@ -505,28 +527,36 @@
               <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Total Surveys</p>
               <h3 id="surveyStatTotal" class="text-2xl font-extrabold text-white mt-1">0</h3>
             </div>
-            <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 text-[#00e5ff] flex items-center justify-center text-lg">📝</div>
+            <div
+              class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 text-[#00e5ff] flex items-center justify-center text-lg">
+              📝</div>
           </div>
           <div class="glass-card rounded-2xl p-5 flex items-center justify-between">
             <div>
               <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Would Participate</p>
               <h3 id="surveyStatParticipate" class="text-2xl font-extrabold text-oppoEmerald mt-1">0%</h3>
             </div>
-            <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-oppoEmerald flex items-center justify-center text-lg">📈</div>
+            <div
+              class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-oppoEmerald flex items-center justify-center text-lg">
+              📈</div>
           </div>
           <div class="glass-card rounded-2xl p-5 flex items-center justify-between">
             <div>
               <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Familiar with Find</p>
               <h3 id="surveyStatFamiliar" class="text-2xl font-extrabold text-oppoMint mt-1">0%</h3>
             </div>
-            <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-oppoMint flex items-center justify-center text-lg">📱</div>
+            <div
+              class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-oppoMint flex items-center justify-center text-lg">
+              📱</div>
           </div>
           <div class="glass-card rounded-2xl p-5 flex items-center justify-between">
             <div>
               <p class="text-xxs font-bold text-slate-400 uppercase tracking-widest">Camera Important</p>
               <h3 id="surveyStatCamera" class="text-2xl font-extrabold text-mmtOrange mt-1">0%</h3>
             </div>
-            <div class="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/20 text-mmtOrange flex items-center justify-center text-lg">📷</div>
+            <div
+              class="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/20 text-mmtOrange flex items-center justify-center text-lg">
+              📷</div>
           </div>
         </div>
 
@@ -534,7 +564,8 @@
         <div class="glass-card rounded-2xl p-6 min-h-[300px] flex flex-col gap-6 border border-white/5 bg-[#0b162c]/40">
           <div class="flex items-center justify-between">
             <h3 class="text-sm font-bold text-slate-300 uppercase tracking-wider">Responses List</h3>
-            <span id="surveyResponsesCountLabel" class="text-xxs bg-white/10 px-2.5 py-1 rounded-full text-slate-300 font-bold">0 Items</span>
+            <span id="surveyResponsesCountLabel"
+              class="text-xxs bg-white/10 px-2.5 py-1 rounded-full text-slate-300 font-bold">0 Items</span>
           </div>
 
           <!-- Loading State -->
@@ -565,43 +596,48 @@
     onclick="closeImageModal()">
     <button class="absolute top-4 right-4 text-white text-3xl font-bold hover:scale-115 transition-transform z-50"
       onclick="closeImageModal()">×</button>
-    
+
     <!-- Prevent click inside content area from closing modal -->
     <div class="relative w-full max-w-5xl flex flex-col items-center gap-4 animate-zoom-in"
       onclick="event.stopPropagation()">
-      
+
       <!-- Image & Navigation Row -->
       <div class="relative w-full flex items-center justify-between gap-4">
         <!-- Previous Button -->
-        <button id="modalPrevBtn" class="bg-black/60 hover:bg-black/80 text-white rounded-full w-12 h-12 flex items-center justify-center border border-white/10 hover:border-white/30 transition-all font-bold text-2xl active:scale-90 select-none z-10 flex-shrink-0">
+        <button id="modalPrevBtn"
+          class="bg-black/60 hover:bg-black/80 text-white rounded-full w-12 h-12 flex items-center justify-center border border-white/10 hover:border-white/30 transition-all font-bold text-2xl active:scale-90 select-none z-10 flex-shrink-0">
           ‹
         </button>
-        
+
         <!-- Image Container -->
-        <div class="flex-grow flex items-center justify-center max-h-[70vh] relative overflow-hidden bg-slate-950/40 rounded-xl border border-white/5">
-          <img id="modalImg" src=""
-            class="max-w-full max-h-[70vh] object-contain rounded-lg shadow-2xl">
+        <div
+          class="flex-grow flex items-center justify-center max-h-[70vh] relative overflow-hidden bg-slate-950/40 rounded-xl border border-white/5">
+          <img id="modalImg" src="" class="max-w-full max-h-[70vh] object-contain rounded-lg shadow-2xl">
         </div>
-        
+
         <!-- Next Button -->
-        <button id="modalNextBtn" class="bg-black/60 hover:bg-black/80 text-white rounded-full w-12 h-12 flex items-center justify-center border border-white/10 hover:border-white/30 transition-all font-bold text-2xl active:scale-90 select-none z-10 flex-shrink-0">
+        <button id="modalNextBtn"
+          class="bg-black/60 hover:bg-black/80 text-white rounded-full w-12 h-12 flex items-center justify-center border border-white/10 hover:border-white/30 transition-all font-bold text-2xl active:scale-90 select-none z-10 flex-shrink-0">
           ›
         </button>
       </div>
 
       <!-- Action Panel & Meta Details -->
-      <div id="modalActionPanel" class="w-full max-w-3xl bg-slate-900/90 backdrop-blur-md border border-white/10 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-2xl">
+      <div id="modalActionPanel"
+        class="w-full max-w-3xl bg-slate-900/90 backdrop-blur-md border border-white/10 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-2xl">
         <div class="text-left">
           <h4 id="modalMetaTitle" class="text-white font-bold text-sm flex items-center gap-1.5">📍 Loading...</h4>
           <p id="modalMetaSubtitle" class="text-slate-400 text-xs mt-1">Loading details...</p>
         </div>
-        
+
         <!-- Moderation Actions -->
         <div class="flex items-center gap-3">
-          <button id="modalApproveBtn" class="bg-oppoEmerald hover:bg-oppoEmerald/90 text-white font-extrabold py-2.5 px-6 rounded-xl text-xs transition-all active:scale-95 shadow shadow-oppoEmerald/20 flex items-center gap-1.5">
+          <button id="modalApproveBtn"
+            class="bg-oppoEmerald hover:bg-oppoEmerald/90 text-white font-extrabold py-2.5 px-6 rounded-xl text-xs transition-all active:scale-95 shadow shadow-oppoEmerald/20 flex items-center gap-1.5">
             ✔️ Approve
           </button>
-          <button id="modalRejectBtn" class="bg-red-600 hover:bg-red-500 text-white font-extrabold py-2.5 px-6 rounded-xl text-xs transition-all active:scale-95 shadow shadow-red-600/20 flex items-center gap-1.5">
+          <button id="modalRejectBtn"
+            class="bg-red-600 hover:bg-red-500 text-white font-extrabold py-2.5 px-6 rounded-xl text-xs transition-all active:scale-95 shadow shadow-red-600/20 flex items-center gap-1.5">
             ❌ Reject
           </button>
         </div>
@@ -610,10 +646,13 @@
   </div>
 
   <!-- Delete Confirmation Modal -->
-  <div id="deleteConfirmModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="max-w-md w-full glass-card rounded-2xl p-6 border border-red-500/30 shadow-2xl flex flex-col gap-4 bg-[#0b162c]">
+  <div id="deleteConfirmModal"
+    class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div
+      class="max-w-md w-full glass-card rounded-2xl p-6 border border-red-500/30 shadow-2xl flex flex-col gap-4 bg-[#0b162c]">
       <div class="flex items-center gap-3">
-        <div class="w-12 h-12 rounded-2xl bg-red-600/20 text-red-400 flex items-center justify-center text-2xl flex-shrink-0">
+        <div
+          class="w-12 h-12 rounded-2xl bg-red-600/20 text-red-400 flex items-center justify-center text-2xl flex-shrink-0">
           ⚠️
         </div>
         <div>
@@ -623,8 +662,10 @@
       </div>
 
       <div class="bg-black/30 rounded-xl p-4 border border-white/5 text-xs text-slate-300 flex flex-col gap-2">
-        <p>You are about to delete <strong id="deleteModalCount" class="text-red-400 text-sm">0</strong> submission(s).</p>
-        <p class="text-[11px] text-slate-400 border-t border-white/10 pt-2">This action will remove the selected entries from the moderation queue and client dashboards.</p>
+        <p>You are about to delete <strong id="deleteModalCount" class="text-red-400 text-sm">0</strong> submission(s).
+        </p>
+        <p class="text-[11px] text-slate-400 border-t border-white/10 pt-2">This action will remove the selected entries
+          from the moderation queue and client dashboards.</p>
       </div>
 
       <div class="flex items-center justify-end gap-3 mt-2">
@@ -914,14 +955,14 @@
       }
 
       await fetchStats();
-      
+
       // 2. Fetch all submissions for the overview charts & active locations dropbox in background
       fetch(`${state.apiBaseUrl}/api/submissions`)
         .then(res => res.json())
         .then(result => {
           if (result.success && result.data) {
             const allSubmissions = result.data;
-            
+
             // Populate Active Locations Dropbox on home page
             const overviewDestSelect = document.getElementById('overviewDestSelect');
             if (overviewDestSelect) {
@@ -938,7 +979,7 @@
                 overviewDestSelect.value = prevVal;
               }
             }
-            
+
             // Render Overview Charts
             renderOverviewCharts(allSubmissions);
           }
@@ -1500,7 +1541,7 @@
           // Broadcast deletion event to other open dashboard tabs
           try {
             localStorage.setItem('mmt_submissions_updated', Date.now().toString());
-          } catch (e) {}
+          } catch (e) { }
 
           await loadAllData();
         } else {

@@ -83,6 +83,7 @@ if (require.main === module) {
                   console.log(`  Public Link: ${publicUrl}`);
                   console.log(`  Traveler Page: ${publicUrl}/Traveler_Landing_Page/index.html`);
                   console.log(`  Operator Page: ${publicUrl}/Operator_Landing_Page/index.html`);
+                  console.log(`  Winner Consent: ${publicUrl}/Winner_Consent/index.html`);
                   console.log(`  MMT Dashboard: ${publicUrl}/MMT_Dashboard/index.html`);
                   console.log(`================================================================\n`);
                 } else {
