@@ -147,6 +147,10 @@
             <span id="summaryInsta" class="font-bold text-[#0052e4]">-</span>
           </div>
           <div class="flex justify-between border-b border-slate-200 pb-1.5">
+            <span class="text-slate-500 font-semibold">Facebook Handle:</span>
+            <span id="summaryFb" class="font-bold text-[#0052e4]">-</span>
+          </div>
+          <div class="flex justify-between border-b border-slate-200 pb-1.5">
             <span class="text-slate-500 font-semibold">Contact Phone:</span>
             <span id="summaryPhone" class="font-bold text-slate-900">-</span>
           </div>
@@ -208,7 +212,7 @@
               </div>
 
               <!-- Instagram Handle -->
-              <div class="flex flex-col gap-1.5 md:col-span-2">
+              <div class="flex flex-col gap-1.5">
                 <label for="instagram_handle" class="text-xs font-bold text-slate-800">
                   Instagram Handle <span class="required-star">*</span>
                 </label>
@@ -217,7 +221,21 @@
                   <input type="text" id="instagram_handle" name="instagram_handle" placeholder="your_instagram_handle" required
                     class="w-full bg-slate-50 border border-gray-300 rounded-lg py-2.5 pl-8 pr-3.5 text-slate-900 placeholder-gray-400 text-xs font-semibold">
                 </div>
-                <span class="text-[11px] text-gray-500">Used to tag you in the official MakeMyTrip & OPPO winner announcement post.</span>
+                <span class="text-[11px] text-gray-500">Used to tag you in the official winner announcement post.</span>
+              </div>
+
+              <!-- Facebook Handle -->
+              <div class="flex flex-col gap-1.5">
+                <label for="facebook_handle" class="text-xs font-bold text-slate-800 flex items-center justify-between">
+                  <span>Facebook Profile / Handle</span>
+                  <span class="text-[11px] font-normal text-slate-400">(Optional)</span>
+                </label>
+                <div class="relative flex items-center">
+                  <span class="absolute left-3 text-xs font-bold text-slate-400 select-none">@</span>
+                  <input type="text" id="facebook_handle" name="facebook_handle" placeholder="your_facebook_handle or profile link"
+                    class="w-full bg-slate-50 border border-gray-300 rounded-lg py-2.5 pl-8 pr-3.5 text-slate-900 placeholder-gray-400 text-xs font-semibold">
+                </div>
+                <span class="text-[11px] text-gray-500">Used to tag or feature you on official Facebook channels.</span>
               </div>
             </div>
           </section>
@@ -340,7 +358,7 @@
                     class="w-4 h-4 mt-0.5 rounded text-[#0052e4] focus:ring-[#0052e4] border-gray-300 cursor-pointer">
                   <div class="flex flex-col">
                     <span class="text-xs font-bold text-slate-900 leading-snug">
-                      ● Publicly announce you as a contest winner <span class="required-star">*</span>
+                      We can publicly announce you as a contest winner <span class="required-star">*</span>
                     </span>
                     <span class="text-[11px] text-slate-500 mt-0.5">
                       I agree to let MakeMyTrip and OPPO publish my name, city, and winner title on official campaign channels.
@@ -354,10 +372,24 @@
                     class="w-4 h-4 mt-0.5 rounded text-[#0052e4] focus:ring-[#0052e4] border-gray-300 cursor-pointer">
                   <div class="flex flex-col">
                     <span class="text-xs font-bold text-slate-900 leading-snug">
-                      ● Feature your submitted photo(s) on Instagram and Facebook <span class="required-star">*</span>
+                      We can feature your submitted photo(s) on Instagram and Facebook <span class="required-star">*</span>
                     </span>
                     <span class="text-[11px] text-slate-500 mt-0.5">
                       I authorize MakeMyTrip and OPPO India to post and feature my contest photo(s) on their Instagram and Facebook channels.
+                    </span>
+                  </div>
+                </label>
+
+                <!-- Consent 3: Tag social media handle -->
+                <label id="cardConsent3" class="consent-card flex items-start gap-3 bg-white p-3.5 border border-gray-200 rounded-xl cursor-pointer">
+                  <input type="checkbox" id="consent_tag_handles" name="consent_tag_handles" required
+                    class="w-4 h-4 mt-0.5 rounded text-[#0052e4] focus:ring-[#0052e4] border-gray-300 cursor-pointer">
+                  <div class="flex flex-col">
+                    <span class="text-xs font-bold text-slate-900 leading-snug">
+                      We can tag your social media handle (if provided) in these posts <span class="required-star">*</span>
+                    </span>
+                    <span class="text-[11px] text-slate-500 mt-0.5">
+                      I grant permission to tag my social media handle(s) across official promotional posts.
                     </span>
                   </div>
                 </label>
@@ -366,7 +398,7 @@
               <!-- Quick Select All -->
               <div class="flex justify-end pt-1">
                 <button type="button" id="selectAllConsentsBtn" class="text-[11px] font-bold text-[#0052e4] hover:underline flex items-center gap-1">
-                  ✓ Select both consents
+                  ✓ Select all 3 consents
                 </button>
               </div>
             </div>
@@ -425,19 +457,23 @@
       name: document.getElementById('name'),
       phone: document.getElementById('phone'),
       instagramHandle: document.getElementById('instagram_handle'),
+      facebookHandle: document.getElementById('facebook_handle'),
       address: document.getElementById('address'),
       pincode: document.getElementById('pincode'),
       city: document.getElementById('city'),
       state: document.getElementById('state'),
       consentAnnouncement: document.getElementById('consent_winner_announcement'),
       consentSocial: document.getElementById('consent_social_feature'),
+      consentTagHandles: document.getElementById('consent_tag_handles'),
 
       cardConsent1: document.getElementById('cardConsent1'),
       cardConsent2: document.getElementById('cardConsent2'),
+      cardConsent3: document.getElementById('cardConsent3'),
 
       // Success Display fields
       winnerSuccessName: document.getElementById('winnerSuccessName'),
       summaryInsta: document.getElementById('summaryInsta'),
+      summaryFb: document.getElementById('summaryFb'),
       summaryPhone: document.getElementById('summaryPhone'),
       summaryCityState: document.getElementById('summaryCityState')
     };
@@ -455,15 +491,23 @@
       } else {
         elements.cardConsent2.classList.remove('checked');
       }
+
+      if (elements.consentTagHandles.checked) {
+        elements.cardConsent3.classList.add('checked');
+      } else {
+        elements.cardConsent3.classList.remove('checked');
+      }
     }
 
     elements.consentAnnouncement.addEventListener('change', syncCardClasses);
     elements.consentSocial.addEventListener('change', syncCardClasses);
+    elements.consentTagHandles.addEventListener('change', syncCardClasses);
 
     // Select all consents button
     elements.selectAllConsentsBtn.addEventListener('click', () => {
       elements.consentAnnouncement.checked = true;
       elements.consentSocial.checked = true;
+      elements.consentTagHandles.checked = true;
       syncCardClasses();
     });
 
@@ -502,6 +546,7 @@
       const nameVal = elements.name.value.trim();
       const phoneVal = elements.phone.value.trim();
       let instaVal = elements.instagramHandle.value.trim();
+      let fbVal = elements.facebookHandle ? elements.facebookHandle.value.trim() : '';
       const addressVal = elements.address.value.trim();
       const pincodeVal = elements.pincode.value.trim();
       const cityVal = elements.city.value.trim();
@@ -509,6 +554,7 @@
 
       const consentAnnouncementVal = elements.consentAnnouncement.checked;
       const consentSocialVal = elements.consentSocial.checked;
+      const consentTagVal = elements.consentTagHandles.checked;
 
       // Validation
       if (!nameVal) {
@@ -530,6 +576,10 @@
       }
       if (!instaVal.startsWith('@')) {
         instaVal = '@' + instaVal;
+      }
+
+      if (fbVal && !fbVal.startsWith('@') && !fbVal.startsWith('http://') && !fbVal.startsWith('https://')) {
+        fbVal = '@' + fbVal;
       }
 
       if (!addressVal) {
@@ -556,8 +606,8 @@
         return;
       }
 
-      if (!consentAnnouncementVal || !consentSocialVal) {
-        showNotification('Both consent checkboxes are mandatory to verify and announce contest winners.', 'error');
+      if (!consentAnnouncementVal || !consentSocialVal || !consentTagVal) {
+        showNotification('All 3 consent checkboxes are mandatory to verify and announce contest winners.', 'error');
         return;
       }
 
@@ -574,8 +624,10 @@
         city: cityVal,
         state: stateVal,
         instagram_handle: instaVal,
+        facebook_handle: fbVal,
         consent_winner_announcement: true,
-        consent_social_feature: true
+        consent_social_feature: true,
+        consent_tag_handles: true
       };
 
       try {
@@ -594,6 +646,9 @@
           elements.formCard.classList.add('hidden');
           elements.winnerSuccessName.innerText = nameVal;
           elements.summaryInsta.innerText = instaVal;
+          if (elements.summaryFb) {
+            elements.summaryFb.innerText = fbVal || 'Not provided';
+          }
           elements.summaryPhone.innerText = `+91 ${phoneVal}`;
           elements.summaryCityState.innerText = `${cityVal}, ${stateVal} (${pincodeVal})`;
           elements.successCard.classList.remove('hidden');
@@ -638,6 +693,7 @@
       elements.form.reset();
       elements.cardConsent1.classList.remove('checked');
       elements.cardConsent2.classList.remove('checked');
+      elements.cardConsent3.classList.remove('checked');
       elements.successCard.classList.add('hidden');
       elements.formCard.classList.remove('hidden');
     });

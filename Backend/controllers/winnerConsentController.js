@@ -14,8 +14,10 @@ async function submitWinnerConsent(req, res) {
       city,
       state,
       instagram_handle,
+      facebook_handle,
       consent_winner_announcement,
-      consent_social_feature
+      consent_social_feature,
+      consent_tag_handles
     } = req.body;
 
     // Field validation checks
@@ -45,11 +47,12 @@ async function submitWinnerConsent(req, res) {
     // Consent validation checks
     const hasAnnouncementConsent = consent_winner_announcement === true || consent_winner_announcement === 'true';
     const hasSocialFeatureConsent = consent_social_feature === true || consent_social_feature === 'true';
+    const hasTagConsent = consent_tag_handles === true || consent_tag_handles === 'true';
 
-    if (!hasAnnouncementConsent || !hasSocialFeatureConsent) {
+    if (!hasAnnouncementConsent || !hasSocialFeatureConsent || !hasTagConsent) {
       return res.status(400).json({
         success: false,
-        message: 'Both consent checkboxes must be agreed to in order to verify your contest prize.'
+        message: 'All 3 consent checkboxes must be agreed to in order to verify your contest prize.'
       });
     }
 
@@ -57,6 +60,15 @@ async function submitWinnerConsent(req, res) {
     let cleanInsta = String(instagram_handle).trim();
     if (!cleanInsta.startsWith('@')) {
       cleanInsta = '@' + cleanInsta;
+    }
+
+    // Clean Facebook Handle (optional)
+    let cleanFb = '';
+    if (facebook_handle) {
+      cleanFb = String(facebook_handle).trim();
+      if (cleanFb && !cleanFb.startsWith('@') && !cleanFb.startsWith('http://') && !cleanFb.startsWith('https://')) {
+        cleanFb = '@' + cleanFb;
+      }
     }
 
     // Metadata capture for verification
@@ -72,8 +84,10 @@ async function submitWinnerConsent(req, res) {
       city: String(city).trim(),
       state: String(state).trim(),
       instagram_handle: cleanInsta,
+      facebook_handle: cleanFb,
       consent_winner_announcement: true,
       consent_social_feature: true,
+      consent_tag_handles: true,
       ip_address: ipAddress,
       user_agent: userAgent
     });

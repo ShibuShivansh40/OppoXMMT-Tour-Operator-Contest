@@ -264,8 +264,10 @@ async function insertWinnerConsent(data) {
     city: data.city || '',
     state: data.state || '',
     instagram_handle: data.instagram_handle || '',
+    facebook_handle: data.facebook_handle || '',
     consent_winner_announcement: !!data.consent_winner_announcement,
     consent_social_feature: !!data.consent_social_feature,
+    consent_tag_handles: !!data.consent_tag_handles,
     ip_address: data.ip_address || null,
     user_agent: data.user_agent || null,
     created_at: new Date()
