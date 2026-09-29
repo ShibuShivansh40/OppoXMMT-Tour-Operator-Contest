@@ -18,3 +18,6 @@ test_photo.jpg
 Backend/test_s3.js
 Backend/test_upload_pipeline.js
 Backend/fix_s3_cors.js
+
+# Data files
+*.csv
