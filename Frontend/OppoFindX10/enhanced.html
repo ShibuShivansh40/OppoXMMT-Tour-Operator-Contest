@@ -1250,7 +1250,7 @@
 
             /* Hero Section on Mobile */
             .hero-section {
-                min-height: 92vh;
+                min-height: 100vh;
                 justify-content: flex-start;
                 padding: 95px 20px 30px;
                 text-align: center;
@@ -2517,6 +2517,17 @@
         let scrollRotX = 0.05, scrollRotY = 0.28;
         let currentRotX = 0, currentRotY = 0.28, currentRotZ = 0;
 
+        // Mobile spacing & scroll transition configuration:
+        // initialMobileY gives generous top spacing below the Hero Title & Subtitle at start,
+        // shiftedMobileY is the position it smoothly shifts to when the user scrolls past the Title.
+        const initialMobileY = -2.15;
+        const shiftedMobileY = -0.92;
+        const restingX = isMobile ? 0 : -2.55;
+        const restingY = isMobile ? initialMobileY : -0.85;
+        const restingZ = 1.0;
+        const restingScale = isMobile ? 0.65 : 0.85;
+        const targetMobileScale = 0.72;
+
         window.addEventListener('mousemove', (e) => {
             mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
             mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
@@ -2547,7 +2558,8 @@
             phoneGroup.rotation.set(currentRotX, currentRotY, currentRotZ);
 
             // Base position keeps phone comfortably below the fixed top navbar
-            const basePosY = phoneGroup.userData.targetY !== undefined ? phoneGroup.userData.targetY : (isMobile ? -0.92 : -0.85);
+            const defaultBaseY = isMobile ? initialMobileY : -0.85;
+            const basePosY = phoneGroup.userData.targetY !== undefined ? phoneGroup.userData.targetY : defaultBaseY;
             const desiredPosY = basePosY + floatY;
             phoneGroup.position.y += (desiredPosY - phoneGroup.position.y) * 0.065;
 
@@ -2586,15 +2598,10 @@
         // ----------------------------------------------------
         // 3. GSAP Hero & Scroll Animations
         // ----------------------------------------------------
-        // Position phone comfortably lower than top navigation bar with refined scale
-        const restingX = isMobile ? 0 : -2.55;
-        const restingY = isMobile ? -0.92 : -0.85;
-        const restingZ = 1.0;
-        const restingScale = isMobile ? 0.72 : 0.85;
 
         phoneGroup.userData.targetY = restingY;
         phoneGroup.position.set(restingX, restingY - 0.35, restingZ);
-        phoneGroup.scale.set(isMobile ? 0.65 : 0.76, isMobile ? 0.65 : 0.76, isMobile ? 0.65 : 0.76);
+        phoneGroup.scale.set(isMobile ? 0.58 : 0.76, isMobile ? 0.58 : 0.76, isMobile ? 0.58 : 0.76);
         phoneGroup.rotation.set(0.22, -0.6, 0.05);
 
         // Hero entrance timeline: Synchronized text & 3D cinematic phone reveal
@@ -2629,6 +2636,28 @@
                 }
             }, 0.2);
 
+        // Mobile Hero ScrollTrigger:
+        // While user is viewing the Title, keeps phone spaced lower with generous clearance.
+        // As user scrolls past the Title, smoothly shifts the phone up to its standard position.
+        if (isMobile) {
+            ScrollTrigger.create({
+                trigger: ".hero-section",
+                start: "top top",
+                end: "bottom top",
+                scrub: 1.0,
+                onUpdate: (self) => {
+                    const prog = Math.max(0, Math.min(1, self.progress));
+                    phoneGroup.userData.targetY = THREE.MathUtils.lerp(initialMobileY, shiftedMobileY, prog);
+                    const curScale = THREE.MathUtils.lerp(restingScale, targetMobileScale, prog);
+                    phoneGroup.scale.set(curScale, curScale, curScale);
+                },
+                onLeaveBack: () => {
+                    phoneGroup.userData.targetY = initialMobileY;
+                    phoneGroup.scale.set(restingScale, restingScale, restingScale);
+                }
+            });
+        }
+
         // 3D Phone Showcase scrub timeline (Choreographed multi-angle showcase)
         const tlShowcase = gsap.timeline({
             scrollTrigger: {
@@ -2637,6 +2666,12 @@
                 end: "+=2200",
                 pin: true,
                 scrub: 1.2,
+                onLeaveBack: () => {
+                    if (isMobile) {
+                        phoneGroup.userData.targetY = shiftedMobileY;
+                        phoneGroup.scale.set(targetMobileScale, targetMobileScale, targetMobileScale);
+                    }
+                },
                 onUpdate: (self) => {
                     const prog = self.progress;
                     const index = Math.min(3, Math.floor(prog * 4));
