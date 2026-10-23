@@ -2311,22 +2311,22 @@
         // 3. CNC Machined Side Hardware Controls
         const btnMat = new THREE.MeshPhysicalMaterial({ color: 0xd0dce6, metalness: 0.92, roughness: 0.22 });
 
-        // Power Button with Concentric Center Accent (Right Side)
-        const pwrBtnGeo = new THREE.BoxGeometry(0.038, 0.52, 0.065);
-        const pwrBtn = new THREE.Mesh(pwrBtnGeo, btnMat);
-        pwrBtn.position.set(phoneW / 2 + 0.018, 0.55, 0);
-        phoneGroup.add(pwrBtn);
-
-        // Continuous Volume Rocker Bar (Left Side)
-        const volBtnGeo = new THREE.BoxGeometry(0.038, 0.96, 0.065);
+        // Continuous Volume Rocker Bar (Right Side Upper)
+        const volBtnGeo = new THREE.BoxGeometry(0.038, 0.92, 0.065);
         const volBtn = new THREE.Mesh(volBtnGeo, btnMat);
-        volBtn.position.set(-phoneW / 2 - 0.018, 0.85, 0);
+        volBtn.position.set(phoneW / 2 + 0.018, 1.25, 0);
         phoneGroup.add(volBtn);
 
-        // 3-Stage Textured Alert Slider (Left Top)
+        // Power Button with Concentric Center Accent (Right Side Lower)
+        const pwrBtnGeo = new THREE.BoxGeometry(0.038, 0.52, 0.065);
+        const pwrBtn = new THREE.Mesh(pwrBtnGeo, btnMat);
+        pwrBtn.position.set(phoneW / 2 + 0.018, 0.45, 0);
+        phoneGroup.add(pwrBtn);
+
+        // 3-Stage Textured Alert Slider (Left Side Upper)
         const alertBtnGeo = new THREE.BoxGeometry(0.038, 0.36, 0.065);
         const alertBtn = new THREE.Mesh(alertBtnGeo, btnMat);
-        alertBtn.position.set(-phoneW / 2 - 0.018, 1.82, 0);
+        alertBtn.position.set(-phoneW / 2 - 0.018, 1.70, 0);
         phoneGroup.add(alertBtn);
 
         // 4. Bottom Port Array (USB-C Port, Acoustic Grille & Mic)
@@ -2418,14 +2418,14 @@
         backTex.generateMipmaps = true;
         backTex.minFilter = THREE.LinearMipmapLinearFilter;
 
-        // Helper: Generate ShapeGeometry with Inverted X UVs so the back does NOT mirror
+        // Helper: Generate ShapeGeometry with Correct UVs (Camera on Left, OPPO Logo unmirrored)
         function createBackMappedShapeGeometry(w, h, r, curveSegments = 32) {
             const shape = createRoundedRectShape(w, h, r);
             const geo = new THREE.ShapeGeometry(shape, curveSegments);
             const pos = geo.attributes.position;
             const uvs = geo.attributes.uv;
             for (let i = 0; i < pos.count; i++) {
-                const u = (w / 2 - pos.getX(i)) / w; // Correct orientation from rear
+                const u = (pos.getX(i) + w / 2) / w; // Authentic orientation when viewed from rear
                 const v = (pos.getY(i) + h / 2) / h;
                 uvs.setXY(i, u, v);
             }
@@ -2442,36 +2442,57 @@
         backMesh.position.z = -phoneT / 2 - 0.018;
         phoneGroup.add(backMesh);
 
-        // Rear Frosted Velvet Glass Specular Reflection Overlay
+        // Rear Frosted Velvet Glass Specular Reflection Overlay (Crystal transmission to preserve logo clarity)
         const backGlassMat = new THREE.MeshPhysicalMaterial({
-            color: 0xe0f2fe,
-            roughness: 0.22,
-            metalness: 0.35,
+            color: 0xffffff,
+            roughness: 0.14,
+            metalness: 0.18,
             clearcoat: 1.0,
-            clearcoatRoughness: 0.08,
-            transmission: 0.90,
+            clearcoatRoughness: 0.04,
+            transmission: 0.96,
             transparent: true,
-            opacity: 0.32,
-            ior: 1.48
+            opacity: 0.16,
+            ior: 1.50
         });
         const backGlassMesh = new THREE.Mesh(backGeo, backGlassMat);
         backGlassMesh.rotation.y = Math.PI;
         backGlassMesh.position.z = -phoneT / 2 - 0.019;
         phoneGroup.add(backGlassMesh);
 
-        // Subtle 3D Chamfered Relief for Camera Island (matches official shape & position)
+        // Dedicated Official OPPO Metallic PVD Wordmark Logo (Crisp, High-Specularity, Unmirrored)
+        const logoTex = texLoader.load('textures/oppo_logo.png');
+        logoTex.encoding = THREE.sRGBEncoding;
+        const logoGeo = new THREE.PlaneGeometry(1.06, 0.30);
+        const logoMat = new THREE.MeshPhysicalMaterial({
+            map: logoTex,
+            transparent: true,
+            color: 0xffffff,
+            metalness: 0.96,
+            roughness: 0.12,
+            clearcoat: 1.0,
+            clearcoatRoughness: 0.04,
+            reflectivity: 0.98,
+            depthWrite: false
+        });
+        const logoMesh = new THREE.Mesh(logoGeo, logoMat);
+        logoMesh.rotation.y = Math.PI;
+        logoMesh.position.set(0, -2.04, -phoneT / 2 - 0.021);
+        phoneGroup.add(logoMesh);
+
+        // Subtle 3D Chamfered Relief for Camera Island (matches official top-left position)
         const camReliefGroup = new THREE.Group();
-        camReliefGroup.position.set(-0.40, 1.88, -phoneT / 2 - 0.022);
+        camReliefGroup.position.set(0.41, 2.11, -phoneT / 2 - 0.022);
+        camReliefGroup.rotation.y = Math.PI;
 
         // Chamfered Beveled Glass Rim around Camera Island
-        const islandShape = createRoundedRectShape(1.92, 1.92, 0.42);
+        const islandShape = createRoundedRectShape(1.94, 1.96, 0.44);
         const islandGeo = new THREE.ExtrudeGeometry(islandShape, {
-            depth: 0.02,
+            depth: 0.016,
             bevelEnabled: true,
             bevelSegments: 6,
             steps: 1,
-            bevelSize: 0.012,
-            bevelThickness: 0.012
+            bevelSize: 0.008,
+            bevelThickness: 0.008
         });
         islandGeo.center();
         const islandMat = new THREE.MeshPhysicalMaterial({
@@ -2487,20 +2508,21 @@
         const islandMesh = new THREE.Mesh(islandGeo, islandMat);
         camReliefGroup.add(islandMesh);
 
-        // Chamfered Titanium Ring around Main Optics (top left)
-        const optRingGeo = new THREE.RingGeometry(0.32, 0.38, 36);
+        // Chamfered Titanium Rings around Main Optics (precisely aligned over top-left camera lenses)
+        const optRingGeo = new THREE.RingGeometry(0.305, 0.370, 48);
         const optRingMat = new THREE.MeshPhysicalMaterial({
-            color: 0x94a3b8,
-            metalness: 0.95,
-            roughness: 0.15,
-            clearcoat: 1.0
+            color: 0xc0cdda,
+            metalness: 0.96,
+            roughness: 0.12,
+            clearcoat: 1.0,
+            clearcoatRoughness: 0.03
         });
         const optRing1 = new THREE.Mesh(optRingGeo, optRingMat);
-        optRing1.position.set(-0.35, 0.35, -0.014);
+        optRing1.position.set(-0.47, 0.46, 0.017);
         camReliefGroup.add(optRing1);
 
         const optRing2 = new THREE.Mesh(optRingGeo, optRingMat);
-        optRing2.position.set(-0.35, -0.35, -0.014);
+        optRing2.position.set(-0.47, -0.41, 0.017);
         camReliefGroup.add(optRing2);
 
         phoneGroup.add(camReliefGroup);
